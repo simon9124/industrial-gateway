@@ -37,27 +37,27 @@
     <context-menu id="ctx"
                   ref="ctx">
       <li class="ctx-header"></li>
-      <li v-if="level!==3"
+      <li v-if="level===1||(level===2&&id&&id.slice(0,1)==='1')"
           class="ctx-item"
           @click="itemHandle('add')">新建{{level===1?'通道':"设备"}}</li>
       <li v-if="level!==1"
           class="ctx-item"
           @click="itemHandle('del')">删除{{level===2?'通道':"设备"}}</li>
-      <li v-if="level!==3"
+      <li v-if="level===1||(level===2&&id&&id.slice(0,1)==='1')"
           class="ctx-sperator">
         <hr>
       </li>
-      <li v-if="level!==3"
+      <li v-if="level===1||(level===2&&id&&id.slice(0,1)==='1')"
           class="ctx-item"
           @click="itemHandle('copy')">复制{{level===1?'通道':"设备"}}</li>
-      <li v-if="level!==1"
+      <li v-if="level!==1&&id&&id.slice(0,1)==='1'"
           class="ctx-sperator">
         <hr>
       </li>
-      <li v-if="level!==1"
+      <li v-if="level!==1&&id&&id.slice(0,1)==='1'"
           class="ctx-item"
           @click="itemHandle('up')">{{level===2?'通道':"设备"}}上移</li>
-      <li v-if="level!==1"
+      <li v-if="level!==1&&id&&id.slice(0,1)==='1'"
           class="ctx-item"
           @click="itemHandle('down')">{{level===2?'通道':"设备"}}下移</li>
     </context-menu>
@@ -77,6 +77,10 @@ export default {
     data: {
       type: Array,
       default: () => []
+    },
+    // 被选择的id
+    id: {
+      type: String
     }
   },
   data () {
