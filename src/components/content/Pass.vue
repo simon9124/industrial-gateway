@@ -429,7 +429,7 @@
         <el-checkbox v-model="formPass.otherParams.linkReset">启用链路复位机制</el-checkbox>
         <div class="params-dialog-row-div">
           端口无接收数据时间（秒）
-          <el-input v-model="formPass.otherParams.delayTime"
+          <el-input v-model="formPass.otherParams.linkNoDataTime"
                     style="width:100px"
                     :disabled="!formPass.otherParams.linkReset"></el-input>
           &nbsp;超过该时间，端口将重新关闭、打开（>=60）
@@ -572,7 +572,7 @@
 
       <div slot="footer"
            class="dialog-footer">
-        <el-button @click="dialogParamsVisible = false">取 消</el-button>
+        <el-button @click="formPass.otherParams=paramsOrg;dialogParamsVisible = false">取 消</el-button>
         <el-button @click="dialogParamsVisible = false"
                    type="primary">确 定</el-button>
       </div>
@@ -633,6 +633,7 @@ export default {
     // 点击按钮 - 其他参数
     setParams () {
       this.dialogParamsVisible = true;
+      this.paramsOrg = JSON.parse(JSON.stringify(this.formPass.otherParams));
       this.dialogParamsTitle = `${this.id.slice(0, 1) === "1" ? "采集" : "数据服务"}通道 其他参数`;
     }
   },

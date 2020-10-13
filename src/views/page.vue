@@ -21,6 +21,7 @@
           <div class="left-panel-title">服务导航</div>
           <left-tree class="left-panel-tree"
                      :data="data"
+                     :id="id"
                      @item-click="itemClick"
                      @item-handle="itemHandle">
           </left-tree>
