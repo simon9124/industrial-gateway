@@ -325,7 +325,7 @@
         <el-checkbox v-model="formPass.otherParams.linkReset">启用链路复位机制</el-checkbox>
         <div class="params-dialog-row-div">
           端口无接收数据时间（秒）
-          <el-input v-model="formPass.otherParams.delayTime"
+          <el-input v-model="formPass.otherParams.linkNoDataTime"
                     style="width:100px"
                     :disabled="!formPass.otherParams.linkReset"></el-input>
           &nbsp;超过该时间，端口将重新关闭、打开（>=60）
@@ -490,6 +490,7 @@ export default {
       type: Number,
       default: 3
     },
+    // 被选择的id
     id: {
       type: String
     }
@@ -503,39 +504,7 @@ export default {
       dialogParamsTitle: "", // 其他参数 - 弹框名称
       /* 通道 */
       formPass: { // 表单数据
-        passName: "C1",
-        passDescribe: "通道1",
-        factory: "莫迪康",
-        factoryDescribe: "MODBUS RTU",
-        factoryPath: "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\IND_MODBUS_RTU",
-        passType: "串口",
-        sata: "COM01",
-        baudRate: "9600",
-        dataBits: "8",
-        checkBits: "无校验",
-        stopBits: "1",
-        ip: "192.168.0.253",
-        port: "50001",
-        otherParams: {
-          scanDelay: false,
-          delayTime: 100,
-          linkReset: false,
-          linkNoDataTime: 60,
-          faultDiagnosis: false,
-          faultNoDataTime: 60,
-          faultShooting: "1",
-          packetScanning: "1",
-          alternatePass: false,
-          passType: "串口",
-          sata: "COM01",
-          baudRate: "9600",
-          dataBits: "8",
-          checkBits: "无校验",
-          stopBits: "1",
-          ip: "192.168.0.253",
-          port: "50001"
-        },
-        delayTime: 10
+        otherParams: {}
       },
       passTypeList: ["串口", "TCP客户端", "TCP服务端", "UDP", "虚拟端口"], // select - 通道类型
       sataList: ["COM01", "COM02", "COM03"], // 串口
@@ -570,6 +539,41 @@ export default {
     newBuild () {
       this.dialogDisposeVisible = true;
       this.dialogDisposeTitle = `采集${this.level === 1 ? "通道" : "设备"}配置`;
+      this.formPass = {
+        passName: "C1",
+        passDescribe: "通道1",
+        factory: "莫迪康",
+        factoryDescribe: "MODBUS RTU",
+        factoryPath: "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\IND_MODBUS_RTU",
+        passType: "串口",
+        sata: "COM01",
+        baudRate: "9600",
+        dataBits: "8",
+        checkBits: "无校验",
+        stopBits: "1",
+        ip: "192.168.0.253",
+        port: "50001",
+        otherParams: {
+          scanDelay: false,
+          delayTime: 100,
+          linkReset: false,
+          linkNoDataTime: 60,
+          faultDiagnosis: false,
+          faultNoDataTime: 60,
+          faultShooting: "1",
+          packetScanning: "1",
+          alternatePass: false,
+          passType: "串口",
+          sata: "COM01",
+          baudRate: "9600",
+          dataBits: "8",
+          checkBits: "无校验",
+          stopBits: "1",
+          ip: "192.168.0.253",
+          port: "50001"
+        },
+        delayTime: 10
+      };
     },
     // 回调：表单提交
     itemAdd () {
