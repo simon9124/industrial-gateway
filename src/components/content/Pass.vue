@@ -421,6 +421,16 @@
           <el-input v-model="formPass.otherParams.delayTime"
                     style="width:100px"
                     :disabled="!formPass.otherParams.scanDelay"></el-input>
+          <el-popover placement="top-start"
+                      title="提示"
+                      width="200"
+                      trigger="hover"
+                      content="该参数使用一些比较慢的设备，帧与帧之间需要有一定的间隔，否则设备不能正常工作"
+                      style="margin-left:5px">
+            <el-button slot="reference"
+                       type="primary"
+                       plain>?</el-button>
+          </el-popover>
         </div>
       </el-row>
 

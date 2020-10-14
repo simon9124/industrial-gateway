@@ -317,6 +317,16 @@
           <el-input v-model="formPass.otherParams.delayTime"
                     style="width:100px"
                     :disabled="!formPass.otherParams.scanDelay"></el-input>
+          <el-popover placement="top-start"
+                      title="提示"
+                      width="200"
+                      trigger="hover"
+                      content="该参数使用一些比较慢的设备，帧与帧之间需要有一定的间隔，否则设备不能正常工作"
+                      style="margin-left:5px">
+            <el-button slot="reference"
+                       type="primary"
+                       plain>?</el-button>
+          </el-popover>
         </div>
       </el-row>
 
@@ -474,12 +484,53 @@
       </div>
     </el-dialog>
 
+    <!-- dialog · 复制 -->
+    <el-dialog class="copy-dialog"
+               :title="dialogCopyTitle"
+               :visible.sync="dialogCopyVisible">
+      <el-table ref="multipleTable"
+                :data="tableData"
+                tooltip-effect="dark"
+                style="width: 100%"
+                @selection-change="handleSelectionChange">
+        <el-table-column type="selection"
+                         width="55">
+        </el-table-column>
+        <el-table-column type="index"
+                         label="序号"
+                         width="55">
+        </el-table-column>
+        <el-table-column :prop="level===1?'passName':'equipmentName'"
+                         label="对象名称"
+                         width="130">
+        </el-table-column>
+        <el-table-column :prop="level===1?'passDescribe':'equipmentDescribe'"
+                         label="对象描述">
+        </el-table-column>
+      </el-table>
+      <!-- <div style="margin-top: 20px">
+    <el-button @click="toggleSelection([tableData[1], tableData[2]])">切换第二、第三行的选中状态</el-button>
+    <el-button @click="toggleSelection()">取消选择</el-button>
+  </div> -->
+
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="multipleSubmit('cancel')">取 消</el-button>
+        <el-button @click="multipleSubmit('submit')"
+                   type="primary">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 export default {
   props: {
+    // 树数据
+    treeData: {
+      type: Array
+    },
     // 树节点的操作方式：add / delete / up / down
     handleType: {
       type: String,
@@ -493,6 +544,14 @@ export default {
     // 被选择的id
     id: {
       type: String
+    },
+    // 通道列表
+    passList: {
+      type: Array
+    },
+    // 设备列表
+    equipmentList: {
+      type: Array
     }
   },
   data () {
@@ -502,6 +561,10 @@ export default {
       dialogDisposeTitle: "", // 配置 - 弹框名称
       dialogParamsVisible: false, // 其他参数 - 是否可见
       dialogParamsTitle: "", // 其他参数 - 弹框名称
+      dialogCopyTitle: "", // 复制 - 是否可见
+      dialogCopyVisible: false, // 复制 - 弹框名称
+      tableData: [], // 复制 - 表格数据
+      multipleSelection: [], // 复制 - 选中的数据
       /* 通道 */
       formPass: { // 表单数据
         otherParams: {}
@@ -575,10 +638,47 @@ export default {
         delayTime: 10
       };
     },
-    // 回调：表单提交
+    // 回调：新增 通道/设备
     itemAdd () {
       this.$emit("item-add", this.level === 1 ? this.formPass : this.formEquipment);
       this.dialogDisposeVisible = false;
+    },
+    // 复制
+    copyItems () {
+      this.dialogCopyVisible = true;
+      this.dialogCopyTitle = `${this.level === 1 ? "通道" : "设备"}复制（采集）-创建多个${this.level === 1 ? "通道" : "设备"}`;
+      /* 选出[采集服务/数据服务]下可复制的[通道/设备] */
+      const passSelectList = []; // 空数组：可复制的通道
+      const equipmentSelectList = []; // 空数组：可复制的设备
+      this.treeData.forEach(service => {
+        service.children.forEach(pass => {
+          service.id === this.id && this.passList.forEach(_pass => { // 选出通道
+            pass.id === _pass.id && passSelectList.push(_pass);
+          });
+          pass.id === this.id && pass.children.forEach(equipment => { // 选出设备
+            this.equipmentList.forEach(_equipment => {
+              equipment.id === _equipment.id && equipmentSelectList.push(_equipment);
+            });
+          });
+        });
+      });
+      // console.log(passSelectList);
+      // console.log(equipmentSelectList);
+      this.tableData = this.level === 1 ? passSelectList : equipmentSelectList;
+    },
+    // 复制 - 获取选中的数据
+    handleSelectionChange (val) {
+      this.multipleSelection = val;
+    },
+    // 回调：复制 通道/设备
+    multipleSubmit (type) {
+      if (type === "cancel") {
+        this.$refs.multipleTable.clearSelection();
+        this.dialogCopyVisible = false;
+      } else {
+        this.$emit("items-copy", this.multipleSelection);
+        this.dialogCopyVisible = false;
+      }
     },
     // 回调：删除 通道/设备
     itemDelete () {
@@ -595,7 +695,7 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .header /deep/ {
-  // 配置表单
+  // 配置dialog
   .dispose-dialog {
     .el-dialog {
       min-width: 1000px;
@@ -611,7 +711,7 @@ export default {
       }
     }
   }
-  // 参数表单
+  // 参数dialog
   .params-dialog {
     .el-dialog {
       min-width: 660px;
@@ -634,6 +734,16 @@ export default {
       }
       &-select {
         margin-bottom: 10px;
+      }
+    }
+  }
+  // 复制dialog
+  .copy-dialog {
+    .el-dialog {
+      max-width: 700px;
+      min-width: 500px;
+      &__body {
+        padding: 10px 20px;
       }
     }
   }

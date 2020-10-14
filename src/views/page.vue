@@ -8,7 +8,11 @@
                 :handleType="handleType"
                 :level="level"
                 :id="id"
+                :tree-data="data"
+                :pass-list="passList"
+                :equipment-list="equipmentList"
                 @item-add="itemAdd"
+                @items-copy="itemsCopy"
                 @item-delete="itemHandle('del')"></Header>
       </el-header>
 
@@ -56,10 +60,14 @@ export default {
   components: { Header, LeftTree, Group, Pass, Equipment },
   data () {
     return {
+      /* tree */
       data: [], // 树数据
       level: 1, // 被选择的树的层级
       id: null, // 被选择内容的id
       handleType: "", // 树节点的操作方式
+      /* mockData */
+      passList: passList,
+      equipmentList: equipmentList,
       /* 动态高度 */
       contentHeight: "0px" // 中部内容
     };
@@ -76,7 +84,7 @@ export default {
     },
     // 点击树节点
     itemClick (param) {
-      console.log(param);
+      // console.log(param);
       const { level, id } = param;
       this.level = level;
       this.id = id;
@@ -138,16 +146,37 @@ export default {
         }).then(() => {
           treeData.forEach(service => {
             service.children.forEach((pass, i) => {
-              this.level === 2 && this.id === pass.id && service.children.splice(i, 1);
+              /* 删除通道 */
+              if (this.level === 2 && this.id === pass.id) {
+                pass.children.forEach((equipment, _i) => { // 从设备列表删除 - 通道下面的设备
+                  equipmentList.forEach((_equipment, __i) => {
+                    equipment.id === _equipment.id && equipmentList.splice(__i, 1);
+                  });
+                });
+                service.children.splice(i, 1); // 从树中删除
+                passList.forEach((_pass, _i) => { // 从通道列表删除
+                  _pass.id === pass.id && passList.splice(_i, 1);
+                });
+              }
+              /* 删除设备 */
               this.level === 3 && pass.children.forEach((equipment, _i) => {
-                this.id === equipment.id && pass.children.splice(_i, 1);
+                if (this.id === equipment.id) {
+                  pass.children.splice(_i, 1); // 从树中删除
+                  equipmentList.forEach((_equipment, __i) => { // 从通道列表删除
+                    _equipment.id === equipment.id && equipmentList.splice(__i, 1);
+                  });
+                }
               });
             });
           });
+          // console.log(equipmentList);
         }).catch(() => { });
       }
       if (this.handleType === "add") { // 新增
         this.$refs.header.newBuild();
+      }
+      if (this.handleType === "copy") { // 复制
+        this.$refs.header.copyItems();
       }
     },
     // 封装：上移/下移，已经到最底层的message错误提示信息
@@ -172,7 +201,8 @@ export default {
     itemAdd (formData) {
       console.log(formData);
       treeData.forEach(service => {
-        if (this.level === 1 && service.id === this.id) { // 新增通道
+        /* 新增通道 */
+        if (this.level === 1 && service.id === this.id) {
           formData.id = this.id + Math.random().toString(36).substr(-10); // 随机生成id
           const obj = {
             text: `${formData.passName}[${formData.passDescribe}]`,
@@ -184,9 +214,10 @@ export default {
             opened: true // 父节点须设置opened为true，否则子节点首次新增时打不开
           };
           service.children.push(obj); // 新增到树
-          passList.push(formData); // 新增到设备列表
+          passList.push(formData); // 新增到通道列表
         }
-        this.level === 2 && service.children.forEach(pass => { // 新增设备
+        /* 新增设备 */
+        this.level === 2 && service.children.forEach(pass => {
           if (pass.id === this.id) {
             formData.id = Math.random().toString(36).substr(-10); // 随机生成id
             const obj = {
@@ -202,7 +233,52 @@ export default {
         });
       });
       // console.log(treeData);
-      console.log(passList);
+      // console.log(passList);
+      // console.log(equipmentList);
+    },
+    // 复制
+    itemsCopy (multipleSelection) {
+      // console.log(multipleSelection);
+      treeData.forEach(service => {
+        /* 复制通道 */
+        if (this.level === 1 && service.id === this.id) {
+          multipleSelection.forEach(selection => {
+            const selectionCopy = JSON.parse(JSON.stringify(selection)); // 深拷贝
+            selectionCopy.id = this.id + Math.random().toString(36).substr(-10); // 随机生成id
+            const obj = {
+              text: `${selectionCopy.passName}[${selectionCopy.passDescribe}]`,
+              icon: "fa fa-laptop",
+              id: selectionCopy.id,
+              level: 2,
+              children: [],
+              selected: false,
+              opened: true // 父节点须设置opened为true，否则子节点首次新增时打不开
+            };
+            service.children.push(obj); // 在树里复制
+            passList.push(selectionCopy); // 在通道列表复制
+          });
+        }
+        /* 复制设备 */
+        this.level === 2 && service.children.forEach(pass => {
+          if (pass.id === this.id) {
+            multipleSelection.forEach(selection => {
+              const selectionCopy = JSON.parse(JSON.stringify(selection)); // 深拷贝
+              selectionCopy.id = this.id + Math.random().toString(36).substr(-10); // 随机生成id
+              const obj = {
+                text: `${selectionCopy.equipmentName}[${selectionCopy.equipmentDescribe}]`,
+                icon: "fa fa-edit",
+                id: selectionCopy.id,
+                level: 3,
+                selected: false
+              };
+              pass.children.push(obj); // 在树里复制
+              equipmentList.push(selectionCopy); // 在设备列表复制
+            });
+          }
+        });
+      });
+      // console.log(treeData);
+      // console.log(passList);
       // console.log(equipmentList);
     }
   }
