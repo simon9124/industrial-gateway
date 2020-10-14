@@ -34,13 +34,13 @@ const treeData = [
         level: 2,
         children: [
           {
-            text: "D1[设备1]",
+            text: "D3[设备3]",
             icon: "fa fa-edit",
             id: "1-2-1",
             level: 3
           },
           {
-            text: "D2[设备2]",
+            text: "D4[设备4]",
             icon: "fa fa-edit",
             id: "1-2-2",
             level: 3
@@ -56,7 +56,7 @@ const treeData = [
     level: 1,
     children: [
       {
-        text: "C1[通道1]",
+        text: "C3[通道3]",
         icon: "fa fa-laptop",
         id: "2-1",
         level: 2

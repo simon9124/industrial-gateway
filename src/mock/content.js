@@ -75,8 +75,8 @@ const passList = [
   },
   {
     id: "2-1",
-    passName: "C1",
-    passDescribe: "通道1",
+    passName: "C3",
+    passDescribe: "通道3",
     factory: "莫迪康",
     factoryDescribe: "MODBUS RTU",
     factoryPath:
@@ -142,8 +142,8 @@ const equipmentList = [
   },
   {
     id: "1-2-1",
-    equipmentName: "D1",
-    equipmentDescribe: "设备1",
+    equipmentName: "D3",
+    equipmentDescribe: "设备3",
     userParam: "",
     MODBUSAdd: "3",
     searchNum: 32,
@@ -155,8 +155,8 @@ const equipmentList = [
   },
   {
     id: "1-2-2",
-    equipmentName: "D2",
-    equipmentDescribe: "设备2",
+    equipmentName: "D4",
+    equipmentDescribe: "设备4",
     userParam: "",
     MODBUSAdd: "4",
     searchNum: 32,
