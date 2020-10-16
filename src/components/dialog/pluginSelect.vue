@@ -55,15 +55,15 @@
             </el-col>
           </el-row>
 
-          <el-table :data="tableData"
+          <el-table :data="formPass.plugin.plugins"
                     tooltip-effect="dark">
             <el-table-column type="index"
                              label="序号"
                              width="55">
             </el-table-column>
-            <el-table-column prop="pluginName"
+            <el-table-column prop="name"
                              label="插件名称"
-                             width="180">
+                             width="200">
             </el-table-column>
             <el-table-column prop="platform"
                              label="平台"
@@ -75,7 +75,7 @@
             </el-table-column>
             <el-table-column prop="lastModifiedDate"
                              label="最后修改日期"
-                             width="180">
+                             width="160">
             </el-table-column>
           </el-table>
 
@@ -117,27 +117,7 @@ export default {
   data () {
     return {
       dialogVisible: false, // 是否可见
-      dialogTitle: "", // 弹框名称
-      tableData: [
-        {
-          pluginName: "BA_BACNET_IP.335x",
-          platform: "335x",
-          edition: "5.0.0.1",
-          lastModifiedDate: "2017-11-08 07:55:30"
-        },
-        {
-          pluginName: "BA_BACNET_IP.dll",
-          platform: "dll",
-          edition: "5.0.0.1",
-          lastModifiedDate: "2019-02-19 03:45:30"
-        },
-        {
-          pluginName: "BA_BACNET_IP.xt",
-          platform: "xt",
-          edition: "",
-          lastModifiedDate: "2020-02-22 08:47:32"
-        }
-      ]
+      dialogTitle: "" // 弹框名称
     };
   },
   methods: {
