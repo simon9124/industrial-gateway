@@ -47,7 +47,7 @@
     }
   }
 
-  // 参数表单
+  // dialog - 参数
   .params-dialog {
     .el-dialog {
       min-width: 660px;
@@ -76,6 +76,25 @@
 
       &-select {
         margin-bottom: 10px;
+      }
+    }
+  }
+
+  // dialog - 插件
+  .plugin-dialog {
+    .el-dialog {
+      min-width: 1000px;
+
+      &__body {
+        padding: 10px 20px;
+      }
+
+      .el-form {
+        margin: 10px 20px;
+
+        &-item {
+          margin-bottom: 10px;
+        }
       }
     }
   }
