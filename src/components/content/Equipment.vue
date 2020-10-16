@@ -123,6 +123,7 @@ import { equipmentList } from "@/mock/content.js"; // mockData
 
 export default {
   props: {
+    // 被选择的id
     id: {
       type: String
     }

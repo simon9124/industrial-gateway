@@ -8,8 +8,9 @@
                 :handleType="handleType"
                 :level="level"
                 :id="id"
-                :tree-data="data"
+                :tree-data="treeData"
                 :pass-list="passList"
+                :plugin-list="pluginList"
                 :equipment-list="equipmentList"
                 @item-add="itemAdd"
                 @items-copy="itemsCopy"
@@ -24,7 +25,7 @@
                   :style="{height:contentHeight}">
           <div class="left-panel-title">服务导航</div>
           <left-tree class="left-panel-tree"
-                     :data="data"
+                     :data="treeData"
                      :id="id"
                      @item-click="itemClick"
                      @item-handle="itemHandle">
@@ -35,7 +36,9 @@
         <el-container class="right-panel is-vertical">
           <Group v-if="level===1"></Group>
           <Pass v-if="level===2"
-                :id="id"></Pass>
+                :id="id"
+                :pass-list="passList"
+                :plugin-list="pluginList"></Pass>
           <Equipment v-if="level===3"
                      :id="id"></Equipment>
         </el-container>
@@ -52,22 +55,27 @@ import LeftTree from "@/components/Tree"; // 组件：左侧树
 import Group from "@/components/content/Group"; // 组件：右侧内容 - 组
 import Pass from "@/components/content/Pass"; // 组件：右侧内容 - 通道
 import Equipment from "@/components/content/Equipment"; // 组件：右侧内容 - 通道
-// mockData
-import { treeData } from "@/mock/tree.js";
-import { passList, equipmentList } from "@/mock/content.js";
+/* mockData */
+import { treeData } from "@/mock/tree.js"; // mockData - 服务导航
+import { pluginList } from "@/mock/plugin.js"; // mockData - 插件列表
+import {
+  passList, // mockData - 通道列表
+  equipmentList // mockData - 设备列表
+} from "@/mock/content.js";
 
 export default {
   components: { Header, LeftTree, Group, Pass, Equipment },
   data () {
     return {
+      /* data */
+      treeData: [], // 树数据
+      passList: [], // 通道列表
+      pluginList: [], // 插件列表
+      equipmentList: [], // 设备列表
       /* tree */
-      data: [], // 树数据
       level: 1, // 被选择的树的层级
       id: null, // 被选择内容的id
       handleType: "", // 树节点的操作方式
-      /* mockData */
-      passList: passList,
-      equipmentList: equipmentList,
       /* 动态高度 */
       contentHeight: "0px" // 中部内容
     };
@@ -79,8 +87,12 @@ export default {
     this.getTreeData();
   },
   methods: {
+    // 获取数据
     getTreeData () {
-      this.data = treeData;
+      this.treeData = treeData;
+      this.passList = passList;
+      this.pluginList = pluginList;
+      this.equipmentList = equipmentList;
     },
     // 点击树节点
     itemClick (param) {
