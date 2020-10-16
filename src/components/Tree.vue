@@ -25,13 +25,21 @@
 <template>
   <div>
 
-    <!-- 树 -->
-    <div @contextmenu.prevent="$refs.ctx.open($event)">
+    <!-- 树 · 含右键菜单-->
+    <div v-if="contextmenu"
+         @contextmenu.prevent="$refs.ctx.open($event)">
       <v-jstree :data="data"
-                collapse
+                :collapse="collapse"
                 @item-click="itemClick"
                 @item-toggle="itemClick"></v-jstree>
     </div>
+
+    <!-- 树 · 不含右键菜单-->
+    <v-jstree v-else
+              :data="data"
+              :collapse="collapse"
+              @item-click="itemClick"
+              @item-toggle="itemClick"></v-jstree>
 
     <!--右键菜单-->
     <context-menu id="ctx"
@@ -81,6 +89,16 @@ export default {
     // 被选择的id
     id: {
       type: String
+    },
+    // 是否显示右键菜单
+    contextmenu: {
+      type: Boolean,
+      default: true
+    },
+    // 是否全部展开
+    collapse: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
