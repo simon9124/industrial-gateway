@@ -4,10 +4,13 @@ const passList = [
     id: "1-1",
     passName: "C1",
     passDescribe: "通道1",
-    factory: "莫迪康",
-    factoryDescribe: "MODBUS RTU",
-    factoryPath:
-      "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\IND_MODBUS_RTU",
+    plugin: {
+      name: "IND_MODBUS_TCP",
+      describe: "MODBUS TCP",
+      factory: "莫迪康",
+      classification: "通用标准",
+      path: "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\IND_MODBUS_RTU"
+    },
     passType: "串口",
     sata: "COM01",
     baudRate: "9600",
@@ -41,9 +44,13 @@ const passList = [
     id: "1-2",
     passName: "C2",
     passDescribe: "通道2",
-    factory: "大数据",
-    factoryDescribe: "仿真驱动(数据模拟器)",
-    factoryPath: "C:Users\\43577Desktop软件CESTCPluginIoTN_SIMULATOR",
+    plugin: {
+      name: "IND_CJT188_2004",
+      describe: "T188 2004",
+      factory: "城建",
+      classification: "通用标准",
+      path: "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\IND_CJT188_2004"
+    },
     passType: "虚拟端口",
     sata: null,
     baudRate: null,
@@ -77,10 +84,13 @@ const passList = [
     id: "2-1",
     passName: "C3",
     passDescribe: "通道3",
-    factory: "莫迪康",
-    factoryDescribe: "MODBUS RTU",
-    factoryPath:
-      "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\IND_MODBUS_RTU",
+    plugin: {
+      name: "PLC_AB_LOGIX_TCP",
+      describe: "AB LOGIX 5000 TCP",
+      factory: "AB",
+      classification: "PLC",
+      path: "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\PLC_AB_LOGIX_TCP"
+    },
     passType: "串口",
     sata: "COM01",
     baudRate: "9600",
