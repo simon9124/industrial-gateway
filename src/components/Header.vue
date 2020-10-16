@@ -63,21 +63,20 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label-width="55px"
-                          label="厂家："
-                          prop="factory">
+                          label="厂家：">
               <el-input disabled
-                        v-model="formPass.factory"></el-input>
+                        v-model="formPass.plugin.factory"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label-width="55px"
-                          label="描述："
-                          prop="factoryDescribe">
+                          label="描述：">
               <el-input disabled
-                        v-model="formPass.factoryDescribe"></el-input>
+                        v-model="formPass.plugin.describe"></el-input>
             </el-form-item>
           </el-col>
-          <el-button style="margin:0 0 20px 5px">选择插件</el-button>
+          <el-button style="margin:0 0 20px 5px"
+                     @click="pluginSelect">选择插件</el-button>
           <el-button style="margin-bottom:20px">帮助</el-button>
         </el-row>
 
@@ -86,7 +85,7 @@
             <el-form-item label-width="55px"
                           label="路径：">
               <el-input disabled
-                        v-model="formPass.factoryPath"></el-input>
+                        v-model="formPass.plugin.path"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -508,10 +507,6 @@
                          label="对象描述">
         </el-table-column>
       </el-table>
-      <!-- <div style="margin-top: 20px">
-    <el-button @click="toggleSelection([tableData[1], tableData[2]])">切换第二、第三行的选中状态</el-button>
-    <el-button @click="toggleSelection()">取消选择</el-button>
-  </div> -->
 
       <div slot="footer"
            class="dialog-footer">
@@ -521,11 +516,21 @@
       </div>
     </el-dialog>
 
+    <!-- dialog - 选择插件 -->
+    <plugin-select ref="pluginSelect"
+                   :id="id"
+                   :form-pass="formPass"
+                   :plugin-list="pluginList"
+                   @plugin-click="pluginClick"></plugin-select>
+
   </div>
 </template>
 
 <script>
+import PluginSelect from "@/components/dialog/pluginSelect"; // 组件：选择插件
+
 export default {
+  components: { PluginSelect },
   props: {
     // 树数据
     treeData: {
@@ -549,6 +554,10 @@ export default {
     passList: {
       type: Array
     },
+    // 插件列表
+    pluginList: {
+      type: Array
+    },
     // 设备列表
     equipmentList: {
       type: Array
@@ -567,7 +576,8 @@ export default {
       multipleSelection: [], // 复制 - 选中的数据
       /* 通道 */
       formPass: { // 表单数据
-        otherParams: {}
+        otherParams: {},
+        plugin: {}
       },
       passTypeList: ["串口", "TCP客户端", "TCP服务端", "UDP", "虚拟端口"], // select - 通道类型
       sataList: ["COM01", "COM02", "COM03"], // 串口
@@ -605,9 +615,13 @@ export default {
       this.formPass = {
         passName: "C1",
         passDescribe: "通道1",
-        factory: "莫迪康",
-        factoryDescribe: "MODBUS RTU",
-        factoryPath: "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\IND_MODBUS_RTU",
+        plugin: {
+          name: "IND_MODBUS_TCP",
+          describe: "MODBUS TCP",
+          factory: "莫迪康",
+          classification: "通用标准",
+          path: "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\IND_MODBUS_RTU"
+        },
         passType: "串口",
         sata: "COM01",
         baudRate: "9600",
@@ -688,6 +702,17 @@ export default {
     setParams () {
       this.dialogParamsVisible = true;
       this.dialogParamsTitle = `${this.id.slice(0, 1) === "1" ? "采集" : "数据服务"}通道 其他参数`;
+    },
+    // 点击按钮 - 选择插件 - 调用子组件事件
+    pluginSelect () {
+      this.$refs.pluginSelect.pluginSelect();
+    },
+    // 点击树节点 - 选择插件
+    pluginClick (param) {
+      // console.log(param);
+      const { level } = param;
+      level === 2 && (this.formPass.plugin = param);
+      console.log(this.formPass);
     }
   }
 };
@@ -744,6 +769,24 @@ export default {
       min-width: 500px;
       &__body {
         padding: 10px 20px;
+      }
+    }
+  }
+  // 插件dialog
+  .plugin-dialog {
+    .el-dialog {
+      min-width: 1000px;
+
+      &__body {
+        padding: 10px 20px;
+      }
+
+      .el-form {
+        margin: 10px 20px;
+
+        &-item {
+          margin-bottom: 10px;
+        }
       }
     }
   }
