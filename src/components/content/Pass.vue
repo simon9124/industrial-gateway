@@ -28,21 +28,20 @@
       <el-row>
         <el-col style="width:358px">
           <el-form-item label-width="55px"
-                        label="厂家："
-                        prop="factory">
+                        label="厂家：">
             <el-input disabled
-                      v-model="formPass.factory"></el-input>
+                      v-model="formPass.plugin.factory"></el-input>
           </el-form-item>
         </el-col>
         <el-col style="width:358px">
           <el-form-item label-width="55px"
-                        label="描述："
-                        prop="factoryDescribe">
+                        label="描述：">
             <el-input disabled
-                      v-model="formPass.factoryDescribe"></el-input>
+                      v-model="formPass.plugin.describe"></el-input>
           </el-form-item>
         </el-col>
-        <el-button style="margin:0 0 20px 20px">选择插件</el-button>
+        <el-button style="margin:0 0 20px 20px"
+                   @click="pluginSelect">选择插件</el-button>
         <el-button style="margin-bottom:20px">帮助</el-button>
       </el-row>
 
@@ -51,7 +50,7 @@
           <el-form-item label-width="55px"
                         label="路径：">
             <el-input disabled
-                      v-model="formPass.factoryPath"></el-input>
+                      v-model="formPass.plugin.path"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -202,21 +201,20 @@
           <el-row>
             <el-col style="width:358px">
               <el-form-item label-width="55px"
-                            label="厂家："
-                            prop="factory">
+                            label="厂家：">
                 <el-input disabled
-                          v-model="formPass.factory"></el-input>
+                          v-model="formPass.plugin.factory"></el-input>
               </el-form-item>
             </el-col>
             <el-col style="width:358px">
               <el-form-item label-width="55px"
-                            label="描述："
-                            prop="factoryDescribe">
+                            label="描述：">
                 <el-input disabled
-                          v-model="formPass.factoryDescribe"></el-input>
+                          v-model="formPass.plugin.describe"></el-input>
               </el-form-item>
             </el-col>
-            <el-button style="margin:0 0 20px 20px">选择插件</el-button>
+            <el-button style="margin:0 0 20px 20px"
+                       @click="pluginSelect">选择插件</el-button>
             <el-button style="margin-bottom:20px">帮助</el-button>
           </el-row>
 
@@ -225,7 +223,7 @@
               <el-form-item label-width="55px"
                             label="路径：">
                 <el-input disabled
-                          v-model="formPass.factoryPath"></el-input>
+                          v-model="formPass.plugin.path"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -345,7 +343,7 @@
           <el-collapse v-model="activeNames">
             <el-collapse-item title="基本参数"
                               name="1">
-              <div>延迟回复：10</div>
+              <div>延迟回复：{{formPass.delayTime}}</div>
             </el-collapse-item>
           </el-collapse>
 
@@ -588,23 +586,42 @@
       </div>
     </el-dialog>
 
+    <!-- dialog - 选择插件 -->
+    <plugin-select ref="pluginSelect"
+                   :id="id"
+                   :form-pass="formPass"
+                   :plugin-list="pluginList"
+                   @plugin-click="pluginClick"></plugin-select>
+
   </div>
 </template>
 
 <script>
-import { passList } from "@/mock/content.js"; // mockData
+import LeftTree from "@/components/Tree"; // 组件：左侧树
+import PluginSelect from "@/components/dialog/pluginSelect"; // 组件：选择插件
 
 export default {
+  components: { LeftTree, PluginSelect },
   props: {
+    // 左侧树被选择的id
     id: {
       type: String
+    },
+    // 通道列表
+    passList: {
+      type: Array,
+      default: () => []
+    },
+    // 插件列表
+    pluginList: {
+      type: Array,
+      default: () => []
     }
   },
   data () {
     return {
+      /* form */
       formPass: {}, // 表单数据
-      dialogParamsVisible: false, // 其他参数 - 是否可见
-      dialogParamsTitle: "", // 其他参数 - 弹框名称
       passTypeList: ["串口", "TCP客户端", "TCP服务端", "UDP", "虚拟端口"], // select - 通道类型
       sataList: ["COM01", "COM02", "COM03"], // 串口
       baudList: ["1200", "2400", "4800", "9600"], // 波特率
@@ -627,7 +644,10 @@ export default {
           registerAddr: "0",
           dataFormat: "0"
         }
-      ]
+      ],
+      /* dialog */
+      dialogParamsVisible: false, // 其他参数 - 是否可见
+      dialogParamsTitle: "" // 其他参数 - 弹框名称
     };
   },
   created () {
@@ -636,15 +656,26 @@ export default {
   methods: {
     // 获取数据
     getData () {
-      passList.forEach((pass, i) => {
-        pass.id === this.id && (this.formPass = passList[i]);
+      this.passList.forEach((pass, i) => {
+        pass.id === this.id && (this.formPass = this.passList[i]);
       });
     },
     // 点击按钮 - 其他参数
     setParams () {
       this.dialogParamsVisible = true;
-      this.paramsOrg = JSON.parse(JSON.stringify(this.formPass.otherParams));
+      this.paramsOrg = JSON.parse(JSON.stringify(this.formPass.otherParams)); // 深拷贝，取消时还原数据用
       this.dialogParamsTitle = `${this.id.slice(0, 1) === "1" ? "采集" : "数据服务"}通道 其他参数`;
+    },
+    // 点击按钮 - 选择插件 - 调用子组件事件
+    pluginSelect () {
+      this.$refs.pluginSelect.pluginSelect();
+    },
+    // 点击树节点 - 插件
+    pluginClick (param) {
+      // console.log(param);
+      const { level } = param;
+      level === 2 && (this.formPass.plugin = param);
+      console.log(this.formPass);
     }
   },
   watch: {
