@@ -50,7 +50,7 @@
   // dialog - 参数
   .params-dialog {
     .el-dialog {
-      min-width: 660px;
+      min-width: 920px;
     }
 
     .params-dialog-row:not(:last-child) {
@@ -62,16 +62,8 @@
     }
 
     &-row {
-      .el-select {
-        width: 130px;
-      }
-
       &-div {
         margin-left: 24px;
-
-        input {
-          // height: 30px;
-        }
       }
 
       &-select {

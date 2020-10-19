@@ -759,7 +759,7 @@ export default {
   // 参数dialog
   .params-dialog {
     .el-dialog {
-      min-width: 660px;
+      min-width: 920px;
     }
     .params-dialog-row:not(:last-child) {
       margin-bottom: 10px;
@@ -768,14 +768,8 @@ export default {
       }
     }
     &-row {
-      .el-select {
-        width: 130px;
-      }
       &-div {
         margin-left: 24px;
-        input {
-          // height: 30px;
-        }
       }
       &-select {
         margin-bottom: 10px;
