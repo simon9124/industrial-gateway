@@ -477,7 +477,6 @@ export default {
   },
   data () {
     return {
-      /* form */
       formPass: {}, // 表单数据
       activeName: "first", // tabs选中的标签
       activeNames: ["1"], // 手风琴展开的标签
@@ -495,10 +494,7 @@ export default {
           registerAddr: "0",
           dataFormat: "0"
         }
-      ],
-      /* dialog */
-      dialogParamsVisible: false, // 其他参数 - 是否可见
-      dialogParamsTitle: "" // 其他参数 - 弹框名称
+      ]
     };
   },
   created () {

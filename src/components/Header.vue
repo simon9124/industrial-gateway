@@ -327,7 +327,7 @@
                :title="dialogCopyTitle"
                :visible.sync="dialogCopyVisible">
       <el-table ref="multipleTable"
-                :data="tableData"
+                :data="dialogCopyData"
                 tooltip-effect="dark"
                 style="width: 100%"
                 @selection-change="handleSelectionChange">
@@ -425,11 +425,9 @@ export default {
       /* dialog */
       dialogDisposeVisible: false, // 配置 - 是否可见
       dialogDisposeTitle: "", // 配置 - 弹框名称
-      dialogParamsVisible: false, // 其他参数 - 是否可见
-      dialogParamsTitle: "", // 其他参数 - 弹框名称
       dialogCopyTitle: "", // 复制 - 是否可见
       dialogCopyVisible: false, // 复制 - 弹框名称
-      tableData: [], // 复制 - 表格数据
+      dialogCopyData: [], // 复制 - 表格数据
       multipleSelection: [], // 复制 - 选中的数据
       /* 通道 */
       formPass: { // 表单数据
@@ -549,7 +547,7 @@ export default {
       });
       // console.log(passSelectList);
       // console.log(equipmentSelectList);
-      this.tableData = this.level === 1 ? passSelectList : equipmentSelectList;
+      this.dialogCopyData = this.level === 1 ? passSelectList : equipmentSelectList;
     },
     // 复制 - 获取选中的数据
     handleSelectionChange (val) {
