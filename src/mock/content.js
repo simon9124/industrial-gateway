@@ -196,7 +196,21 @@ const equipmentList = [
     multiRegister: true,
     correspondingValue: "FF00",
     subCorrespondingValue: "0000",
-    doubleByteCheck: true
+    doubleByteCheck: true,
+    otherParams: {
+      delayTime: 3000,
+      failedTryAgain: true,
+      failedTryTimes: 1,
+      faultDiagnosis: true,
+      continuousQueryFailed: 5,
+      noReceivedLongTime: 120,
+      faultDataProcess: "保持之前值，质量戳为GOOD",
+      faultScanProcess: "正常扫描",
+      queryPeriod: 30,
+      equipmentFactor: true,
+      factorR1: "1.000",
+      factorR2: "1.000"
+    }
   },
   {
     id: "1-1-2",
@@ -209,7 +223,21 @@ const equipmentList = [
     multiRegister: true,
     correspondingValue: "FF00",
     subCorrespondingValue: "0000",
-    doubleByteCheck: true
+    doubleByteCheck: true,
+    otherParams: {
+      delayTime: 3000,
+      failedTryAgain: true,
+      failedTryTimes: 1,
+      faultDiagnosis: false,
+      continuousQueryFailed: 5,
+      noReceivedLongTime: 120,
+      faultDataProcess: "保持之前值，质量戳为BAD",
+      faultScanProcess: "正常扫描",
+      queryPeriod: 30,
+      equipmentFactor: true,
+      factorR1: "1.000",
+      factorR2: "1.000"
+    }
   },
   {
     id: "1-2-1",
@@ -222,7 +250,21 @@ const equipmentList = [
     multiRegister: true,
     correspondingValue: "FF00",
     subCorrespondingValue: "0000",
-    doubleByteCheck: true
+    doubleByteCheck: true,
+    otherParams: {
+      delayTime: 3000,
+      failedTryAgain: false,
+      failedTryTimes: 1,
+      faultDiagnosis: true,
+      continuousQueryFailed: 5,
+      noReceivedLongTime: 120,
+      faultDataProcess: "保持之前值，质量戳为GOOD",
+      faultScanProcess: "正常扫描",
+      queryPeriod: 30,
+      equipmentFactor: false,
+      factorR1: "1.000",
+      factorR2: "1.000"
+    }
   },
   {
     id: "1-2-2",
@@ -235,7 +277,21 @@ const equipmentList = [
     multiRegister: true,
     correspondingValue: "FF00",
     subCorrespondingValue: "0000",
-    doubleByteCheck: true
+    doubleByteCheck: true,
+    otherParams: {
+      delayTime: 3000,
+      failedTryAgain: false,
+      failedTryTimes: 1,
+      faultDiagnosis: false,
+      continuousQueryFailed: 5,
+      noReceivedLongTime: 120,
+      faultDataProcess: "保持之前值，质量戳为GOOD",
+      faultScanProcess: "正常扫描",
+      queryPeriod: 30,
+      equipmentFactor: false,
+      factorR1: "1.000",
+      factorR2: "1.000"
+    }
   }
 ];
 
