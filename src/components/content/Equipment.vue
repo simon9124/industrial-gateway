@@ -25,7 +25,8 @@
                 <el-input v-model="formEquipment.equipmentDescribe"></el-input>
               </el-form-item>
             </el-col>
-            <el-button style="margin:0 0 20px 20px">其他参数</el-button>
+            <el-button style="margin:0 0 20px 20px"
+                       @click="setParams">其他参数</el-button>
           </el-row>
 
           <el-row>
@@ -115,24 +116,35 @@
       </el-tab-pane>
 
     </el-tabs>
+
+    <!-- dialog - 其他参数 · 设备 -->
+    <equipment-params ref="equipmentParams"
+                      :id="id"
+                      :form-equipment="formEquipment"></equipment-params>
+
   </div>
 </template>
 
 <script>
-import { equipmentList } from "@/mock/content.js"; // mockData
+import EquipmentParams from "@/components/dialog/equipmentParams"; // 组件：其他参数 - 通道
 
 export default {
+  components: { EquipmentParams },
   props: {
     // 被选择的id
     id: {
       type: String
+    },
+    // 设备列表
+    equipmentList: {
+      type: Array
     }
   },
   data () {
     return {
+      formEquipment: {}, // 表单数据
       activeName: "first", // tabs选中的标签
       activeNames: ["1", "2", "3"], // 手风琴展开的标签
-      formEquipment: {}, // 表单数据
       tableEquipment: [ // 表格数据
         {
           id: "1",
@@ -154,11 +166,16 @@ export default {
     this.getData();
   },
   methods: {
+    // 获取数据
     getData () {
-      equipmentList.forEach((equipment, i) => {
-        equipment.id === this.id && (this.formEquipment = equipmentList[i]);
+      this.equipmentList.forEach((equipment, i) => {
+        equipment.id === this.id && (this.formEquipment = this.equipmentList[i]);
       });
       this.activeName = "first"; // tab重置
+    },
+    // 点击按钮 - 其他参数 - 调用子组件事件
+    setParams () {
+      this.$refs.equipmentParams.setParams();
     }
   },
   watch: {

@@ -50,7 +50,8 @@
                 :data-list="dataList"
                 :check-list="checkList"></Pass>
           <Equipment v-if="level===3"
-                     :id="id"></Equipment>
+                     :id="id"
+                     :equipment-list="equipmentList"></Equipment>
         </el-container>
 
       </el-container>

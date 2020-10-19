@@ -57,7 +57,7 @@
             </el-form-item>
           </el-col>
           <el-button style="margin:0 0 20px 5px"
-                     @click="setParams">其他参数</el-button>
+                     @click="setParamsPass">其他参数</el-button>
         </el-row>
 
         <el-row :gutter="20">
@@ -235,7 +235,8 @@
               <el-input v-model="formEquipment.equipmentDescribe"></el-input>
             </el-form-item>
           </el-col>
-          <el-button style="margin:0 0 20px 5px">其他参数</el-button>
+          <el-button style="margin:0 0 20px 5px"
+                     @click="setParamsEquipment">其他参数</el-button>
         </el-row>
 
         <el-row>
@@ -315,6 +316,11 @@
                  :check-list="checkList"
                  :stop-list="stopList"></pass-params>
 
+    <!-- dialog - 其他参数 · 设备 -->
+    <equipment-params ref="equipmentParams"
+                      :id="id"
+                      :form-equipment="formEquipment"></equipment-params>
+
     <!-- dialog - 选择插件 -->
     <plugin-select ref="pluginSelect"
                    :id="id"
@@ -361,9 +367,10 @@
 <script>
 import PluginSelect from "@/components/dialog/pluginSelect"; // 组件：选择插件
 import PassParams from "@/components/dialog/passParams"; // 组件：其他参数 - 通道
+import EquipmentParams from "@/components/dialog/equipmentParams"; // 组件：其他参数 - 通道
 
 export default {
-  components: { PluginSelect, PassParams },
+  components: { PluginSelect, PassParams, EquipmentParams },
   props: {
     // 树数据
     treeData: {
@@ -437,16 +444,7 @@ export default {
       disposeActiveNames: ["1"], // 手风琴展开的标签
       /* 设备 */
       formEquipment: { // 表单数据
-        equipmentName: "D1",
-        equipmentDescribe: "设备1",
-        userParam: "",
-        MODBUSAdd: "1",
-        searchNum: 32,
-        singleRegister: true,
-        multiRegister: true,
-        correspondingValue: "FF00",
-        subCorrespondingValue: "0000",
-        doubleByteCheck: true
+        otherParams: {}
       },
       activeNames: ["1", "2", "3"] // 手风琴展开的标签
     };
@@ -458,57 +456,41 @@ export default {
   },
   methods: {
     // 新建 通道/设备
-    newBuild () {
+    newBuild (level) {
       this.dialogDisposeVisible = true;
       this.dialogDisposeTitle = `采集${this.level === 1 ? "通道" : "设备"}配置`;
-      this.formPass = {
-        passName: "C1",
-        passDescribe: "通道1",
-        plugin: {
-          name: "IND_MODBUS_TCP",
-          describe: "MODBUS TCP",
-          factory: "莫迪康",
-          classification: "通用标准",
-          path: "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\IND_MODBUS_RTU",
-          plugins: [
-            {
-              name: "BA_BACNET_IP.335x",
-              platform: "335x",
-              edition: "5.0.0.1",
-              lastModifiedDate: "2017-11-08 07:55:30"
-            },
-            {
-              name: "BA_BACNET_IP.dll",
-              platform: "dll",
-              edition: "5.0.0.1",
-              lastModifiedDate: "2019-02-19 03:45:30"
-            },
-            {
-              name: "BA_BACNET_IP.xt",
-              platform: "xt",
-              edition: "",
-              lastModifiedDate: "2020-02-22 08:47:32"
-            }
-          ]
-        },
-        passType: "串口",
-        sata: "COM01",
-        baudRate: "9600",
-        dataBits: "8",
-        checkBits: "无校验",
-        stopBits: "1",
-        ip: "192.168.0.253",
-        port: "50001",
-        otherParams: {
-          scanDelay: false,
-          delayTime: 100,
-          linkReset: false,
-          linkNoDataTime: 60,
-          faultDiagnosis: false,
-          faultNoDataTime: 60,
-          faultShooting: "1",
-          packetScanning: "1",
-          alternatePass: false,
+      // 重置表单数据
+      if (this.level === 1) {
+        this.formPass = {
+          passName: "C1",
+          passDescribe: "通道1",
+          plugin: {
+            name: "IND_MODBUS_TCP",
+            describe: "MODBUS TCP",
+            factory: "莫迪康",
+            classification: "通用标准",
+            path: "C:\\Users\\43577\\Desktop\\软件\\CESTC\\PluginIo\\IND_MODBUS_RTU",
+            plugins: [
+              {
+                name: "BA_BACNET_IP.335x",
+                platform: "335x",
+                edition: "5.0.0.1",
+                lastModifiedDate: "2017-11-08 07:55:30"
+              },
+              {
+                name: "BA_BACNET_IP.dll",
+                platform: "dll",
+                edition: "5.0.0.1",
+                lastModifiedDate: "2019-02-19 03:45:30"
+              },
+              {
+                name: "BA_BACNET_IP.xt",
+                platform: "xt",
+                edition: "",
+                lastModifiedDate: "2020-02-22 08:47:32"
+              }
+            ]
+          },
           passType: "串口",
           sata: "COM01",
           baudRate: "9600",
@@ -516,10 +498,56 @@ export default {
           checkBits: "无校验",
           stopBits: "1",
           ip: "192.168.0.253",
-          port: "50001"
-        },
-        delayTime: 10
-      };
+          port: "50001",
+          otherParams: {
+            scanDelay: false,
+            delayTime: 100,
+            linkReset: false,
+            linkNoDataTime: 60,
+            faultDiagnosis: false,
+            faultNoDataTime: 60,
+            faultShooting: "1",
+            packetScanning: "1",
+            alternatePass: false,
+            passType: "串口",
+            sata: "COM01",
+            baudRate: "9600",
+            dataBits: "8",
+            checkBits: "无校验",
+            stopBits: "1",
+            ip: "192.168.0.253",
+            port: "50001"
+          },
+          delayTime: 10
+        };
+      } else {
+        this.formEquipment = {
+          equipmentName: "D1",
+          equipmentDescribe: "设备1",
+          userParam: "",
+          MODBUSAdd: "1",
+          searchNum: 32,
+          singleRegister: true,
+          multiRegister: true,
+          correspondingValue: "FF00",
+          subCorrespondingValue: "0000",
+          doubleByteCheck: true,
+          otherParams: {
+            delayTime: 3000,
+            failedTryAgain: false,
+            failedTryTimes: 1,
+            faultDiagnosis: false,
+            continuousQueryFailed: 5,
+            noReceivedLongTime: 120,
+            faultDataProcess: "保持之前值，质量戳为GOOD",
+            faultScanProcess: "正常扫描",
+            queryPeriod: 30,
+            equipmentFactor: false,
+            factorR1: "1.000",
+            factorR2: "1.000"
+          }
+        };
+      }
     },
     // 回调：新增 通道/设备
     itemAdd () {
@@ -568,7 +596,7 @@ export default {
       this.$emit("item-delete", this.formPass);
     },
     // 点击按钮 - 其他参数[通道] - 调用子组件事件
-    setParams () {
+    setParamsPass () {
       this.$refs.passParams.setParams();
     },
     // 点击按钮 - 选择插件 - 调用子组件事件
@@ -581,6 +609,10 @@ export default {
       const { level } = param;
       level === 2 && (this.formPass.plugin = param);
       console.log(this.formPass);
+    },
+    // 点击按钮 - 其他参数[设备] - 调用子组件事件
+    setParamsEquipment () {
+      this.$refs.equipmentParams.setParams();
     }
   }
 };

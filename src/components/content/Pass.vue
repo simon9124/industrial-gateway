@@ -407,7 +407,7 @@
 
     </el-tabs>
 
-    <!-- dialog - 其他参数 -->
+    <!-- dialog - 其他参数 · 通道 -->
     <pass-params ref="passParams"
                  :id="id"
                  :form-pass="formPass"
