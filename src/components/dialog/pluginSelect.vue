@@ -1,5 +1,4 @@
 <template>
-  <!-- dialog - 选择插件 -->
   <el-dialog class="plugin-dialog"
              v-if="dialogVisible"
              :title="dialogTitle"
@@ -86,7 +85,7 @@
 
     <div slot="footer"
          class="dialog-footer">
-      <el-button @click="formPass.plugin=pluginOrg;dialogVisible = false">取 消</el-button>
+      <el-button @click="dialogVisible = false;formPass.plugin = pluginOrg;">取 消</el-button>
       <el-button type="primary"
                  @click="dialogVisible = false">确 定</el-button>
     </div>
