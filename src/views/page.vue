@@ -11,6 +11,11 @@
                 :tree-data="treeData"
                 :pass-list="passList"
                 :plugin-list="pluginList"
+                :pass-type-list="passTypeList"
+                :sata-list="sataList"
+                :baud-list="baudList"
+                :data-list="dataList"
+                :check-list="checkList"
                 :equipment-list="equipmentList"
                 @item-add="itemAdd"
                 @items-copy="itemsCopy"
@@ -38,7 +43,12 @@
           <Pass v-if="level===2"
                 :id="id"
                 :pass-list="passList"
-                :plugin-list="pluginList"></Pass>
+                :plugin-list="pluginList"
+                :pass-type-list="passTypeList"
+                :sata-list="sataList"
+                :baud-list="baudList"
+                :data-list="dataList"
+                :check-list="checkList"></Pass>
           <Equipment v-if="level===3"
                      :id="id"></Equipment>
         </el-container>
@@ -72,6 +82,12 @@ export default {
       passList: [], // 通道列表
       pluginList: [], // 插件列表
       equipmentList: [], // 设备列表
+      passTypeList: ["串口", "TCP客户端", "TCP服务端", "UDP", "虚拟端口"], // select - 通道类型
+      sataList: ["COM01", "COM02", "COM03"], // 串口
+      baudList: ["1200", "2400", "4800", "9600"], // 波特率
+      dataList: ["4", "5", "6", "7", "8"], // 数据位
+      checkList: ["无校验", "奇校验", "偶校验", "MARK校验", "SPACE校验"], // 校验位
+      stopList: ["1", "1.5", "2"], // 停止位
       /* tree */
       level: 1, // 被选择的树的层级
       id: null, // 被选择内容的id

@@ -408,15 +408,15 @@
     </el-tabs>
 
     <!-- dialog - 其他参数 -->
-    <other-params ref="otherParams"
-                  :id="id"
-                  :form-pass="formPass"
-                  :pass-type-list="passTypeList"
-                  :sata-list="sataList"
-                  :baud-list="baudList"
-                  :data-list="dataList"
-                  :check-list="checkList"
-                  :stop-list="stopList"></other-params>
+    <pass-params ref="passParams"
+                 :id="id"
+                 :form-pass="formPass"
+                 :pass-type-list="passTypeList"
+                 :sata-list="sataList"
+                 :baud-list="baudList"
+                 :data-list="dataList"
+                 :check-list="checkList"
+                 :stop-list="stopList"></pass-params>
 
     <!-- dialog - 选择插件 -->
     <plugin-select ref="pluginSelect"
@@ -431,10 +431,10 @@
 <script>
 import LeftTree from "@/components/Tree"; // 组件：左侧树
 import PluginSelect from "@/components/dialog/pluginSelect"; // 组件：选择插件
-import OtherParams from "@/components/dialog/otherParams"; // 组件：其他参数
+import PassParams from "@/components/dialog/passParams"; // 组件：其他参数 - 通道
 
 export default {
-  components: { LeftTree, PluginSelect, OtherParams },
+  components: { LeftTree, PluginSelect, PassParams },
   props: {
     // 左侧树被选择的id
     id: {
@@ -449,18 +449,36 @@ export default {
     pluginList: {
       type: Array,
       default: () => []
+    },
+    // 通道类型
+    passTypeList: {
+      type: Array
+    },
+    // 串口
+    sataList: {
+      type: Array
+    },
+    // 波特率
+    baudList: {
+      type: Array
+    },
+    // 数据位
+    dataList: {
+      type: Array
+    },
+    // 校验位
+    checkList: {
+      type: Array
+    },
+    // 停止位
+    stopList: {
+      type: Array
     }
   },
   data () {
     return {
       /* form */
       formPass: {}, // 表单数据
-      passTypeList: ["串口", "TCP客户端", "TCP服务端", "UDP", "虚拟端口"], // select - 通道类型
-      sataList: ["COM01", "COM02", "COM03"], // 串口
-      baudList: ["1200", "2400", "4800", "9600"], // 波特率
-      dataList: ["4", "5", "6", "7", "8"], // 数据位
-      checkList: ["无校验", "奇校验", "偶校验", "MARK校验", "SPACE校验"], // 校验位
-      stopList: ["1", "1.5", "2"], // 停止位
       activeName: "first", // tabs选中的标签
       activeNames: ["1"], // 手风琴展开的标签
       tableEquipment: [ // 表格数据
@@ -493,9 +511,9 @@ export default {
         pass.id === this.id && (this.formPass = this.passList[i]);
       });
     },
-    // 点击按钮 - 其他参数
+    // 点击按钮 - 其他参数 - 调用子组件事件
     setParams () {
-      this.$refs.otherParams.setParams();
+      this.$refs.passParams.setParams();
     },
     // 点击按钮 - 选择插件 - 调用子组件事件
     pluginSelect () {
