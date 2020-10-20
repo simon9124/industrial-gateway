@@ -90,4 +90,32 @@
       }
     }
   }
+
+  // table - 数据标签
+  .table-component {
+    .el-table {
+      .cell {
+        padding: 0 5px;
+
+        .el-button--mini {
+          padding: 7px 9px;
+        }
+      }
+    }
+
+    .el-dialog {
+      min-width: 800px;
+
+      &__body {
+        // padding: 20px 10px;
+      }
+
+      .el-form {
+
+        // &-item {
+        //   margin-bottom: 10px;
+        // }
+      }
+    }
+  }
 }
