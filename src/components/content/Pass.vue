@@ -355,54 +355,11 @@
         <span slot="label">
           <i class="el-icon-edit-outline"></i> 数据标签
         </span>
-        <el-table :data="tableEquipment"
-                  style="width:1421px"
-                  border>
-          <el-table-column prop="id"
-                           label="序号"
-                           width="100">
-          </el-table-column>
-          <el-table-column prop="name"
-                           label="名称(英文)"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="discribe"
-                           label="描述(中文)"
-                           width="180">
-          </el-table-column>
-          <el-table-column prop="dataType"
-                           label="数据类型"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="direction"
-                           label="读写方向"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="acquisitionCycle"
-                           label="采集周期(毫秒)"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="IOTag"
-                           label="IO标签链接"
-                           width="180">
-          </el-table-column>
-          <el-table-column prop="slaveStationID"
-                           label="从站ID"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="registerType"
-                           label="寄存器类型"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="registerAddr"
-                           label="寄存器地址"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="dataFormat"
-                           label="数据格式"
-                           width="120">
-          </el-table-column>
-        </el-table>
+
+        <!-- table - 数据标签 · 通道 -->
+        <pass-tags :id="id"
+                   :data-tags-org="formPass.dataTags"></pass-tags>
+
       </el-tab-pane>
 
     </el-tabs>
@@ -432,9 +389,10 @@
 import LeftTree from "@/components/Tree"; // 组件：左侧树
 import PluginSelect from "@/components/dialog/pluginSelect"; // 组件：选择插件
 import PassParams from "@/components/dialog/passParams"; // 组件：其他参数 - 通道
+import PassTags from "@/components/table/passTags"; // 组件：其他参数 - 通道
 
 export default {
-  components: { LeftTree, PluginSelect, PassParams },
+  components: { LeftTree, PluginSelect, PassParams, PassTags },
   props: {
     // 左侧树被选择的id
     id: {
@@ -479,22 +437,7 @@ export default {
     return {
       formPass: {}, // 表单数据
       activeName: "first", // tabs选中的标签
-      activeNames: ["1"], // 手风琴展开的标签
-      tableEquipment: [ // 表格数据
-        {
-          id: "1",
-          name: "C1.D1.Tag1",
-          discribe: "标签1",
-          dataType: "浮点",
-          direction: "只读",
-          acquisitionCycle: "1000",
-          IOTag: "io.C1.D1.Tag1",
-          slaveStationID: "1",
-          registerType: "2",
-          registerAddr: "0",
-          dataFormat: "0"
-        }
-      ]
+      activeNames: ["1"] // 手风琴展开的标签
     };
   },
   created () {
@@ -506,6 +449,7 @@ export default {
       this.passList.forEach((pass, i) => {
         pass.id === this.id && (this.formPass = this.passList[i]);
       });
+      this.activeName = "first"; // tab重置
     },
     // 点击按钮 - 其他参数 - 调用子组件事件
     setParams () {
@@ -526,6 +470,7 @@ export default {
   watch: {
     id (val) {
       this.getData();
+      console.log(this.formPass);
     }
   }
 };
