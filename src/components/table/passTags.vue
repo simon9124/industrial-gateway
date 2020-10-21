@@ -5,7 +5,8 @@
     <el-row style="margin-bottom:20px">
       <el-select v-model="dataTypeSelect"
                  placeholder="请选择"
-                 style="width:150px;margin-right:10px">
+                 style="width:150px;margin-right:10px"
+                 @change="refreshData">
         <el-option v-for="item in dataTypeList"
                    :key="item"
                    :label="item"
@@ -16,6 +17,10 @@
                  size="small"
                  plain
                  @click="insertTag">新增</el-button>
+      <el-button type="success"
+                 size="small"
+                 plain
+                 @click="loadTags">加载</el-button>
       <el-button type="danger"
                  size="small"
                  plain
@@ -27,7 +32,13 @@
                  @click="downloadTable">导出</el-button>
       <el-button type="info"
                  size="small"
-                 plain>加载</el-button>
+                 plain
+                 @click="uploadTable">导入</el-button>
+      <input ref="excel-upload-input"
+             class="excel-upload-input"
+             type="file"
+             accept=".xlsx, .xls"
+             @change="handleClick">
     </el-row>
 
     <!-- table -->
@@ -36,6 +47,7 @@
               current-row-key
               empty-text="暂无标签"
               @selection-change="handleSelectionChange">
+
       <el-table-column type="selection"
                        width="30">
       </el-table-column>
@@ -43,46 +55,17 @@
                        label="序号"
                        width="40">
       </el-table-column>
-      <el-table-column prop="name"
-                       label="名称（英文）"
-                       min-width="110">
+
+      <!-- 循环列 -->
+      <el-table-column v-for="(column, index) in dataColumns"
+                       :key="index"
+                       :prop="column.prop"
+                       :label="column.label"
+                       :width="column.width?column.width:''"
+                       :min-width="column.minWidth?column.minWidth:''">
       </el-table-column>
-      <el-table-column prop="discribe"
-                       label="描述（中文）"
-                       min-width="140">
-      </el-table-column>
-      <el-table-column prop="dataType"
-                       label="数据类型"
-                       min-width="70">
-      </el-table-column>
-      <el-table-column prop="direction"
-                       label="读写方向"
-                       min-width="70">
-      </el-table-column>
-      <el-table-column prop="acquisitionCycle"
-                       label="采集周期"
-                       min-width="70">
-      </el-table-column>
-      <el-table-column prop="IOTag"
-                       label="IO标签链接"
-                       min-width="140">
-      </el-table-column>
-      <el-table-column prop="slaveStationID"
-                       label="从站ID"
-                       min-width="55">
-      </el-table-column>
-      <el-table-column prop="registerType"
-                       label="寄存器类型"
-                       min-width="85">
-      </el-table-column>
-      <el-table-column prop="registerAddr"
-                       label="寄存器地址"
-                       min-width="85">
-      </el-table-column>
-      <el-table-column prop="dataFormat"
-                       label="数据格式"
-                       min-width="70">
-      </el-table-column>
+
+      <!-- 操作 -->
       <el-table-column label="操作"
                        min-width="160">
         <template slot-scope="scope">
@@ -113,6 +96,7 @@
                      @click="tagToggle(scope.row.index-1,'down')"></el-button>
         </template>
       </el-table-column>
+
     </el-table>
 
     <!-- dialog · 新增/修改 -->
@@ -139,7 +123,8 @@
               <el-input v-model="formData.discribe"></el-input>
             </el-form-item>
           </el-col>
-          <el-button style="margin:0 0 20px 10px">其他参数</el-button>
+          <el-button style="margin:0 0 20px 10px"
+                     @click="setParams">其他参数</el-button>
         </el-row>
 
         <el-row :gutter="0">
@@ -241,10 +226,39 @@
 
       <div slot="footer"
            class="dialog-footer">
-        <el-button @click="dialogVisible = false;formData = formDataOrg">取 消</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button @click="tagSubmit"
                    type="primary"
                    :loading="submitLoading">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- dialog · 其他参数 -->
+    <el-dialog title="其他参数 浮点"
+               :visible.sync="dialogVisibleParam">
+
+      <el-checkbox v-model="formData.ratioCalculation"
+                   style="margin-right:20px">系数计算</el-checkbox>
+      <div class="params-dialog-row-div">
+        &nbsp;倍率（a）
+        <el-input v-model="formData.magnification"
+                  style="width:100px"
+                  :disabled="!formData.ratioCalculation"></el-input>
+        &nbsp;基数（b）
+        <el-input v-model="formData.base"
+                  style="width:100px;margin-right:20px"
+                  :disabled="!formData.ratioCalculation"></el-input>
+        形如：y = ax + b
+      </div>
+
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="dialogVisibleParam = false;
+                           formData.ratioCalculation = otherParamsOrg.ratioCalculation;
+                           formData.magnification = otherParamsOrg.magnification;
+                           formData.base = otherParamsOrg.base;">取 消</el-button>
+        <el-button type="primary"
+                   @click="dialogVisibleParam = false">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -252,72 +266,34 @@
 </template>
 
 <script>
-import { parseTime } from "@/utils";
+import { parseTime } from "@/utils"; // functions
+import XLSX from "xlsx"; // plugin - excel
+import { passTagColumn, passTagTranslation } from "@/mock/tableColumn";
 
 export default {
+  props: {
+    // 左侧树被选择的id
+    id: {
+      type: String
+    },
+    // 表格数据 - 原始数据
+    dataTagsOrg: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
       /* table */
-      dataTags: [ // 表格数据
-        {
-          id: "1",
-          name: "C1.D1.Tag1",
-          discribe: "通道1 设备1 标签1",
-          dataType: "浮点",
-          direction: "只读",
-          acquisitionCycle: "1000",
-          IOTag: "io.C1.D1.Tag1",
-          slaveStationID: "1",
-          registerType: "2",
-          registerAddr: "0",
-          dataFormat: "0"
-        },
-        {
-          id: "2",
-          name: "C1.D1.Tag2",
-          discribe: "通道1 设备1 标签1",
-          dataType: "浮点",
-          direction: "只读",
-          acquisitionCycle: "1000",
-          IOTag: "io.C1.D1.Tag1",
-          slaveStationID: "1",
-          registerType: "2",
-          registerAddr: "0",
-          dataFormat: "0"
-        },
-        {
-          id: "3",
-          name: "C1.D1.Tag3",
-          discribe: "通道1 设备1 标签1",
-          dataType: "浮点",
-          direction: "只读",
-          acquisitionCycle: "1000",
-          IOTag: "io.C1.D1.Tag1",
-          slaveStationID: "1",
-          registerType: "2",
-          registerAddr: "0",
-          dataFormat: "0"
-        },
-        {
-          id: "4",
-          name: "C1.D1.Tag4",
-          discribe: "通道1 设备1 标签1",
-          dataType: "浮点",
-          direction: "只读",
-          acquisitionCycle: "1000",
-          IOTag: "io.C1.D1.Tag1",
-          slaveStationID: "1",
-          registerType: "2",
-          registerAddr: "0",
-          dataFormat: "0"
-        }
-      ],
+      dataTags: [], // 表格数据 - 要展示的数据
+      dataColumns: passTagColumn, // 表格列项
       dataTypeList: ["全部", "浮点", "整型", "布尔", "字符串", "二进制"], // select - 数据类型
-      directionList: ["只读", "只写", "读写"], // select - 读写方向
       dataTypeSelect: "全部", // 筛选 - 选中的数据类型
-      multipleSelection: [], // 选中的数据
+      multipleSelection: [], // 多选 - 选中的数据
       /* dialog */
       dialogVisible: false, // 是否显示
+      dialogVisibleParam: false, // 是否显示 - 其他参数
+      dialogType: "", // 类型：insert/edit
       dialogTitle: "", // dialog标题
       formData: { // 表单数据
         name: "",
@@ -334,6 +310,8 @@ export default {
         registerAddr: "0",
         dataFormat: "0"
       },
+      formDataOrg: {}, // 表单数据 - 行内原始
+      directionList: ["只读", "只写", "读写"], // select - 读写方向
       registerTypeList: [ // select列表 - 寄存器类型
         {
           label: "1号命令：读、写开关量",
@@ -378,7 +356,6 @@ export default {
           value: 5
         }
       ],
-      dialogType: "", // 类型：insert/edit
       /* loading */
       submitLoading: false, // loading - 提交按钮
       downloadLoading: false // loading - 导出
@@ -394,10 +371,18 @@ export default {
     },
     // 数据处理
     refreshData () {
+      /* 根据条件筛选 */
+      if (this.dataTypeSelect !== "全部") {
+        this.dataTags = this.dataTagsOrg.filter(tag =>
+          tag.dataType === this.dataTypeSelect
+        );
+      } else {
+        this.dataTags = this.dataTagsOrg;
+      }
       this.dataTags.map((tag, i) => {
         this.$set(tag, "index", i + 1); // 追加序列号，从1开始
       });
-      console.log(this.dataTags);
+      // console.log(this.dataTags);
     },
     // 新增
     insertTag () {
@@ -408,6 +393,10 @@ export default {
         this.dialogTitle = `数据服务标签-${this.dialogType === "insert" ? "新建" : "修改"}`;
       });
     },
+    // 加载
+    loadTags () {
+
+    },
     // 编辑
     editTag (row) {
       this.dialogVisible = true;
@@ -417,6 +406,17 @@ export default {
         this.formDataOrg = row;
         this.formData = JSON.parse(JSON.stringify(row)); // 深拷贝，取消时还原数据用
       });
+    },
+    // 其他参数
+    setParams () {
+      this.dialogVisibleParam = true;
+      this.otherParamsOrg = JSON.parse(JSON.stringify( // 深拷贝，取消时还原数据用
+        {
+          ratioCalculation: this.formData.ratioCalculation,
+          magnification: this.formData.magnification,
+          base: this.formData.base
+        }
+      ));
     },
     // 表单提交
     tagSubmit () {
@@ -438,7 +438,7 @@ export default {
               .toString(36)
               .substr(-10);
             this.dataTags.push(JSON.parse(JSON.stringify(formData)));
-            this.getData();
+            this.refreshData();
             this.submitLoading = false;
             this.dialogVisible = false;
           }
@@ -473,6 +473,7 @@ export default {
         this.dataTags.forEach((tag, i) => {
           tag.id === id && this.dataTags.splice(i, 1);
         });
+        this.refreshData();
       }).catch(() => { });
     },
     // 获取选中的数据
@@ -497,6 +498,7 @@ export default {
             this.dataTags[i].id === select.id && this.dataTags.splice(i, 1);
           });
         }
+        this.refreshData();
       }).catch(() => { });
     },
     // 工序重新排序
@@ -569,6 +571,7 @@ export default {
         this.downloadLoading = false;
       });
     },
+    // 导出数据处理
     formatJson (filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => {
         if (j === "timestamp") {
@@ -577,10 +580,102 @@ export default {
           return v[j];
         }
       }));
+    },
+    // 导入
+    uploadTable () {
+      this.$refs["excel-upload-input"].click();
+    },
+    // 导入 - 打开按钮
+    handleClick (e) {
+      const files = e.target.files;
+      const rawFile = files[0];
+      if (!rawFile) return;
+      this.upload(rawFile);
+    },
+    // 导入 - 事件
+    upload (rawFile) {
+      this.$refs["excel-upload-input"].value = null; // fix can't select the same excel
+      const before = this.beforeUpload(rawFile);
+      if (before) this.readerData(rawFile);
+    },
+    // 导入前的判断
+    beforeUpload (file) {
+      const isLt1M = file.size / 1024 / 1024 < 1;
+      if (isLt1M) {
+        return true;
+      }
+      this.$message({
+        message: "文件大小需小于1MB",
+        type: "warning"
+      });
+      return false;
+    },
+    // 读取文件数据
+    readerData (rawFile) {
+      this.loading = true;
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const data = e.target.result;
+          const workbook = XLSX.read(data, { type: "array" });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const header = this.getHeaderRow(worksheet);
+          const results = XLSX.utils.sheet_to_json(worksheet);
+          // console.log(header);
+          console.log(results);
+          this.generateData({ header, results });
+          this.loading = false;
+          resolve();
+        };
+        reader.readAsArrayBuffer(rawFile);
+      });
+    },
+    // 获取表头
+    getHeaderRow (sheet) {
+      const headers = [];
+      const range = XLSX.utils.decode_range(sheet["!ref"]);
+      let C;
+      const R = range.s.r;
+      /* start in the first row */
+      for (C = range.s.c; C <= range.e.c; ++C) { /* walk every column in the range */
+        const cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })];
+        /* find the cell in the first row */
+        let hdr = "UNKNOWN " + C; // <-- replace with your desired default
+        if (cell && cell.t) hdr = XLSX.utils.format_cell(cell);
+        headers.push(hdr);
+      }
+      return headers;
+    },
+    // 数据处理
+    generateData ({ header, results }) {
+      results.forEach(row => {
+        Object.keys(row).forEach(key => {
+          // console.log(key);
+          Object.keys(passTagTranslation).forEach(_key => {
+            if (key === passTagTranslation[_key]) {
+              this.$set(row, _key, row[key]);
+              this.$delete(row, key);
+            }
+          });
+        });
+      });
+      // console.log(results);
+      this.dataTagsOrg = results;
+      this.refreshData();
+    }
+  },
+  watch: {
+    id (val) {
+      this.getData();
     }
   }
 };
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.excel-upload-input {
+  display: none;
+  z-index: -9999;
+}
 </style>
