@@ -179,7 +179,73 @@ const passList = [
       ip: "192.168.0.253",
       port: "50001"
     },
-    delayTime: 10
+    delayTime: 10,
+    dataTags: [
+      {
+        id: "1",
+        name: "C1.D1.Tag1",
+        discribe: "通道1 设备1 标签1",
+        ratioCalculation: true,
+        magnification: "2.0000",
+        base: "0.0000",
+        dataType: "浮点",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        IOTag: "io.C1.D1.Tag1",
+        slaveStationID: "1",
+        registerType: "2",
+        registerAddr: "0",
+        dataFormat: "0"
+      },
+      {
+        id: "2",
+        name: "C1.D1.Tag2",
+        discribe: "通道1 设备1 标签1",
+        ratioCalculation: true,
+        magnification: "1.0000",
+        base: "0.0000",
+        dataType: "浮点",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        IOTag: "io.C1.D1.Tag1",
+        slaveStationID: "1",
+        registerType: "2",
+        registerAddr: "0",
+        dataFormat: "0"
+      },
+      {
+        id: "3",
+        name: "C1.D1.Tag3",
+        discribe: "通道1 设备1 标签1",
+        ratioCalculation: false,
+        magnification: "2.0000",
+        base: "0.0000",
+        dataType: "整型",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        IOTag: "io.C1.D1.Tag1",
+        slaveStationID: "1",
+        registerType: "2",
+        registerAddr: "0",
+        dataFormat: "0"
+      },
+      {
+        id: "4",
+        name: "C1.D1.Tag4",
+        discribe: "通道1 设备1 标签1",
+        ratioCalculation: false,
+        magnification: "1.0000",
+        base: "0.0000",
+        dataType: "字符串",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        IOTag: "io.C1.D1.Tag1",
+        slaveStationID: "1",
+        registerType: "2",
+        registerAddr: "0",
+        dataFormat: "0"
+      }
+    ]
   }
 ];
 
