@@ -128,11 +128,12 @@
         </el-row>
 
         <el-row :gutter="0">
-          <el-col :span="10">
+          <el-col :span="9">
             <el-form-item label="数据类型："
                           prop="dataType">
               <el-select v-model="formData.dataType"
-                         placeholder="请选择">
+                         placeholder="请选择"
+                         style="width:203px">
                 <el-option v-for="item in dataTypeList"
                            :key="item"
                            :label="item"
@@ -187,7 +188,8 @@
                           label="寄存器类型："
                           prop="registerType">
               <el-select v-model="formData.registerType"
-                         placeholder="请选择">
+                         placeholder="请选择"
+                         style="width:250px">
                 <el-option v-for="item in registerTypeList"
                            :key="item.value"
                            :label="item.label"
@@ -211,7 +213,8 @@
                           label="数据格式："
                           prop="dataFormat">
               <el-select v-model="formData.dataFormat"
-                         placeholder="请选择">
+                         placeholder="请选择"
+                         style="width:250px">
                 <el-option v-for="item in dataFormatList"
                            :key="item.value"
                            :label="item.label"
@@ -285,6 +288,7 @@ export default {
   data () {
     return {
       /* table */
+      // dataTagsOrg: [], // 表格数据 - 原始数据
       dataTags: [], // 表格数据 - 要展示的数据
       dataColumns: passTagColumn, // 表格列项
       dataTypeList: ["全部", "浮点", "整型", "布尔", "字符串", "二进制"], // select - 数据类型
@@ -306,9 +310,9 @@ export default {
         acquisitionCycle: "1000",
         IOTag: "io.C1.D1.Tag1",
         slaveStationID: "1",
-        registerType: "2",
+        registerType: 2,
         registerAddr: "0",
-        dataFormat: "0"
+        dataFormat: 0
       },
       formDataOrg: {}, // 表单数据 - 行内原始
       directionList: ["只读", "只写", "读写"], // select - 读写方向
@@ -623,7 +627,7 @@ export default {
           const header = this.getHeaderRow(worksheet);
           const results = XLSX.utils.sheet_to_json(worksheet);
           // console.log(header);
-          console.log(results);
+          // console.log(results);
           this.generateData({ header, results });
           this.loading = false;
           resolve();
@@ -649,6 +653,7 @@ export default {
     },
     // 数据处理
     generateData ({ header, results }) {
+      /* 1.将results的键替换成与原dataTags相同的英文 */
       results.forEach(row => {
         Object.keys(row).forEach(key => {
           // console.log(key);
@@ -661,7 +666,12 @@ export default {
         });
       });
       // console.log(results);
-      this.dataTagsOrg = results;
+      /* 2.清空dataTagsOrg */
+      this.dataTagsOrg.splice(0, this.dataTagsOrg.length);
+      /* 3.循环results，追加到dataTagsOrg */
+      results.forEach(row => {
+        this.dataTagsOrg.push(row);
+      });
       this.refreshData();
     }
   },

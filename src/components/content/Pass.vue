@@ -386,13 +386,12 @@
 </template>
 
 <script>
-import LeftTree from "@/components/Tree"; // 组件：左侧树
 import PluginSelect from "@/components/dialog/pluginSelect"; // 组件：选择插件
 import PassParams from "@/components/dialog/passParams"; // 组件：其他参数 - 通道
-import PassTags from "@/components/table/passTags"; // 组件：其他参数 - 通道
+import PassTags from "@/components/table/passTags"; // 组件：数据标签 - 通道
 
 export default {
-  components: { LeftTree, PluginSelect, PassParams, PassTags },
+  components: { PluginSelect, PassParams, PassTags },
   props: {
     // 左侧树被选择的id
     id: {
