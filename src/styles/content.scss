@@ -93,6 +93,11 @@
 
   // table - 数据标签
   .table-component {
+    .excel-upload-input {
+      display: none;
+      z-index: -9999;
+    }
+
     .el-table {
       .cell {
         padding: 0 5px;
