@@ -273,7 +273,7 @@
 <script>
 import { parseTime } from "@/utils"; // functions
 import XLSX from "xlsx"; // plugin - excel
-import { equipmentColumn, passTagTranslation } from "@/mock/tableColumn";
+import { equipmentTagColumn, equipmentTagHeader, tagTranslation } from "@/mock/tableColumn";
 
 export default {
   props: {
@@ -291,7 +291,7 @@ export default {
     return {
       /* table */
       dataTags: [], // 表格数据 - 要展示的数据
-      dataColumns: equipmentColumn, // 表格列项
+      dataColumns: equipmentTagColumn, // 表格列项
       dataTypeList: ["全部", "浮点", "整型", "布尔", "字符串", "二进制"], // select - 数据类型
       dataTypeSelect: "全部", // 筛选 - 选中的数据类型
       multipleSelection: [], // 多选 - 选中的数据
@@ -540,38 +540,14 @@ export default {
     downloadTable () {
       this.downloadLoading = true;
       import("@/vendor/Export2Excel").then(excel => {
-        const tHeader = [
-          "序号",
-          "名称（英文）",
-          "描述（中文）",
-          "数据类型",
-          "读写方向",
-          "采集周期",
-          "IO标签链接",
-          "从站ID",
-          "寄存器类型",
-          "寄存器地址",
-          "数据格式"
-        ];
-        const filterVal = [
-          "index",
-          "name",
-          "discribe",
-          "dataType",
-          "direction",
-          "acquisitionCycle",
-          "IOTag",
-          "slaveStationID",
-          "registerType",
-          "registerAddr",
-          "displacementDeviation"
-        ];
+        const tHeader = equipmentTagHeader.tHeader;
+        const filterVal = equipmentTagHeader.filterVal;
         const list = this.dataTags;
         const data = this.formatJson(filterVal, list);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "数据标签",
+          filename: "数据标签-设备",
           autoWidth: true,
           bookType: "xlsx"
         });
@@ -656,12 +632,13 @@ export default {
     },
     // 数据处理
     generateData ({ header, results }) {
+      console.log(results);
       /* 1.将results的键替换成与原dataTags相同的英文 */
       results.forEach(row => {
         Object.keys(row).forEach(key => {
           // console.log(key);
-          Object.keys(passTagTranslation).forEach(_key => {
-            if (key === passTagTranslation[_key]) {
+          Object.keys(tagTranslation).forEach(_key => {
+            if (key === tagTranslation[_key]) {
               this.$set(row, _key, row[key]);
               this.$delete(row, key);
             }
@@ -687,8 +664,4 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.excel-upload-input {
-  display: none;
-  z-index: -9999;
-}
 </style>

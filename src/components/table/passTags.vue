@@ -271,7 +271,7 @@
 <script>
 import { parseTime } from "@/utils"; // functions
 import XLSX from "xlsx"; // plugin - excel
-import { passTagColumn, passTagTranslation } from "@/mock/tableColumn";
+import { passTagColumn, passTagHeader, tagTranslation } from "@/mock/tableColumn";
 
 export default {
   props: {
@@ -537,38 +537,14 @@ export default {
     downloadTable () {
       this.downloadLoading = true;
       import("@/vendor/Export2Excel").then(excel => {
-        const tHeader = [
-          "序号",
-          "名称（英文）",
-          "描述（中文）",
-          "数据类型",
-          "读写方向",
-          "采集周期",
-          "IO标签链接",
-          "从站ID",
-          "寄存器类型",
-          "寄存器地址",
-          "数据格式"
-        ];
-        const filterVal = [
-          "index",
-          "name",
-          "discribe",
-          "dataType",
-          "direction",
-          "acquisitionCycle",
-          "IOTag",
-          "slaveStationID",
-          "registerType",
-          "registerAddr",
-          "dataFormat"
-        ];
+        const tHeader = passTagHeader.tHeader;
+        const filterVal = passTagHeader.filterVal;
         const list = this.dataTags;
         const data = this.formatJson(filterVal, list);
         excel.export_json_to_excel({
           header: tHeader,
           data,
-          filename: "数据标签",
+          filename: "数据标签-通道",
           autoWidth: true,
           bookType: "xlsx"
         });
@@ -657,8 +633,8 @@ export default {
       results.forEach(row => {
         Object.keys(row).forEach(key => {
           // console.log(key);
-          Object.keys(passTagTranslation).forEach(_key => {
-            if (key === passTagTranslation[_key]) {
+          Object.keys(tagTranslation).forEach(_key => {
+            if (key === tagTranslation[_key]) {
               this.$set(row, _key, row[key]);
               this.$delete(row, key);
             }
@@ -684,8 +660,4 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.excel-upload-input {
-  display: none;
-  z-index: -9999;
-}
 </style>
