@@ -52,6 +52,55 @@ const passTagColumn = [
   }
 ];
 
+// 表格列项 - 设备
+const equipmentColumn = [
+  {
+    prop: "name",
+    label: "名称（英文）",
+    minWidth: 110
+  },
+  {
+    prop: "discribe",
+    label: "描述（中文）",
+    minWidth: 140
+  },
+  {
+    prop: "dataType",
+    label: "数据类型",
+    minWidth: 70
+  },
+  {
+    prop: "direction",
+    label: "读写方向",
+    minWidth: 70
+  },
+  {
+    prop: "acquisitionCycle",
+    label: "采集周期",
+    minWidth: 70
+  },
+  {
+    prop: "registerType",
+    label: "寄存器类型",
+    minWidth: 85
+  },
+  {
+    prop: "registerAddr",
+    label: "寄存器地址",
+    minWidth: 85
+  },
+  {
+    prop: "analyticalMethod",
+    label: "解析方式",
+    minWidth: 70
+  },
+  {
+    prop: "displacementDeviation",
+    label: "位移偏量",
+    minWidth: 70
+  }
+];
+
 // 表头中英文对照 - 通道
 const passTagTranslation = {
   index: "序号",
@@ -67,4 +116,4 @@ const passTagTranslation = {
   dataFormat: "数据格式"
 };
 
-export { passTagColumn, passTagTranslation };
+export { passTagColumn, equipmentColumn, passTagTranslation };

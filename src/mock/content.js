@@ -193,9 +193,9 @@ const passList = [
         acquisitionCycle: "1000",
         IOTag: "io.C1.D1.Tag1",
         slaveStationID: "1",
-        registerType: "2",
+        registerType: 2,
         registerAddr: "0",
-        dataFormat: "0"
+        dataFormat: 0
       },
       {
         id: "2",
@@ -209,9 +209,9 @@ const passList = [
         acquisitionCycle: "1000",
         IOTag: "io.C1.D1.Tag1",
         slaveStationID: "1",
-        registerType: "2",
+        registerType: 2,
         registerAddr: "0",
-        dataFormat: "0"
+        dataFormat: 0
       },
       {
         id: "3",
@@ -225,9 +225,9 @@ const passList = [
         acquisitionCycle: "1000",
         IOTag: "io.C1.D1.Tag1",
         slaveStationID: "1",
-        registerType: "2",
+        registerType: 2,
         registerAddr: "0",
-        dataFormat: "0"
+        dataFormat: 0
       },
       {
         id: "4",
@@ -241,9 +241,9 @@ const passList = [
         acquisitionCycle: "1000",
         IOTag: "io.C1.D1.Tag1",
         slaveStationID: "1",
-        registerType: "2",
+        registerType: 2,
         registerAddr: "0",
-        dataFormat: "0"
+        dataFormat: 0
       }
     ]
   }
@@ -276,7 +276,45 @@ const equipmentList = [
       equipmentFactor: true,
       factorR1: "1.000",
       factorR2: "1.000"
-    }
+    },
+    dataTags: [
+      {
+        id: "1",
+        name: "C1.D1.Tag1",
+        discribe: "通道1 设备1 标签1",
+        otherParams: {
+          ratioCalculation: true,
+          magnification: "2.0000",
+          base: "0.0000"
+        },
+        dataType: "浮点",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        registerType: 0,
+        registerAddr: "0",
+        analyticalMethod: 1,
+        displacementDeviation: "0",
+        useBCD: true
+      },
+      {
+        id: "2",
+        name: "C1.D1.Tag2",
+        discribe: "通道1 设备1 标签1",
+        otherParams: {
+          ratioCalculation: true,
+          magnification: "2.0000",
+          base: "0.0000"
+        },
+        dataType: "整型",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        registerType: 2,
+        registerAddr: "0",
+        analyticalMethod: 3,
+        displacementDeviation: "0",
+        useBCD: false
+      }
+    ]
   },
   {
     id: "1-1-2",
@@ -303,7 +341,45 @@ const equipmentList = [
       equipmentFactor: true,
       factorR1: "1.000",
       factorR2: "1.000"
-    }
+    },
+    dataTags: [
+      {
+        id: "1",
+        name: "C1.D2.Tag1",
+        discribe: "通道1 设备1 标签1",
+        otherParams: {
+          ratioCalculation: true,
+          magnification: "2.0000",
+          base: "0.0000"
+        },
+        dataType: "布尔",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        registerType: 0,
+        registerAddr: "0",
+        analyticalMethod: 2,
+        displacementDeviation: "0",
+        useBCD: false
+      },
+      {
+        id: "2",
+        name: "C1.D2.Tag2",
+        discribe: "通道1 设备1 标签1",
+        otherParams: {
+          ratioCalculation: true,
+          magnification: "2.0000",
+          base: "0.0000"
+        },
+        dataType: "字符串",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        registerType: 3,
+        registerAddr: "0",
+        analyticalMethod: 3,
+        displacementDeviation: "0",
+        useBCD: false
+      }
+    ]
   },
   {
     id: "1-2-1",
@@ -330,7 +406,45 @@ const equipmentList = [
       equipmentFactor: false,
       factorR1: "1.000",
       factorR2: "1.000"
-    }
+    },
+    dataTags: [
+      {
+        id: "1",
+        name: "C2.D3.Tag1",
+        discribe: "通道1 设备1 标签1",
+        otherParams: {
+          ratioCalculation: true,
+          magnification: "2.0000",
+          base: "0.0000"
+        },
+        dataType: "整型",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        registerType: 1,
+        registerAddr: "0",
+        analyticalMethod: 2,
+        displacementDeviation: "0",
+        useBCD: false
+      },
+      {
+        id: "2",
+        name: "C2.D3.Tag2",
+        discribe: "通道1 设备1 标签1",
+        otherParams: {
+          ratioCalculation: true,
+          magnification: "2.0000",
+          base: "0.0000"
+        },
+        dataType: "整型",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        registerType: 0,
+        registerAddr: "0",
+        analyticalMethod: 0,
+        displacementDeviation: "0",
+        useBCD: false
+      }
+    ]
   },
   {
     id: "1-2-2",
@@ -357,7 +471,45 @@ const equipmentList = [
       equipmentFactor: false,
       factorR1: "1.000",
       factorR2: "1.000"
-    }
+    },
+    dataTags: [
+      {
+        id: "1",
+        name: "C2.D4.Tag1",
+        discribe: "通道1 设备1 标签1",
+        otherParams: {
+          ratioCalculation: true,
+          magnification: "2.0000",
+          base: "0.0000"
+        },
+        dataType: "整型",
+        direction: "只读",
+        acquisitionCycle: "1000",
+        registerType: 0,
+        registerAddr: "0",
+        analyticalMethod: 3,
+        displacementDeviation: "0",
+        useBCD: false
+      },
+      {
+        id: "2",
+        name: "C2.D4.Tag2",
+        discribe: "通道1 设备1 标签1",
+        otherParams: {
+          ratioCalculation: true,
+          magnification: "2.0000",
+          base: "0.0000"
+        },
+        dataType: "二进制",
+        direction: "只写",
+        acquisitionCycle: "2000",
+        registerType: 1,
+        registerAddr: "0",
+        analyticalMethod: 5,
+        displacementDeviation: "0",
+        useBCD: false
+      }
+    ]
   }
 ];
 
