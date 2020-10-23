@@ -65,54 +65,11 @@
         <span slot="label">
           <i class="el-icon-edit-outline"></i> 数据标签
         </span>
-        <el-table :data="tableEquipment"
-                  style="width:1361px"
-                  border>
-          <el-table-column prop="id"
-                           label="序号"
-                           width="100">
-          </el-table-column>
-          <el-table-column prop="name"
-                           label="名称(英文)"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="discribe"
-                           label="描述(中文)"
-                           width="180">
-          </el-table-column>
-          <el-table-column prop="dataType"
-                           label="数据类型"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="direction"
-                           label="读写方向"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="acquisitionCycle"
-                           label="采集周期(毫秒)"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="registerType"
-                           label="寄存器类型序号"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="registerAddr"
-                           label="寄存器地址"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="analytical"
-                           label="解析方式"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="deviation"
-                           label="位偏移量"
-                           width="120">
-          </el-table-column>
-          <el-table-column prop="BCD"
-                           label="按BCD解析"
-                           width="120">
-          </el-table-column>
-        </el-table>
+
+        <!-- table - 数据标签 · 通道 -->
+        <equipment-tags :id="id"
+                        :data-tags-org="formEquipment.dataTags"></equipment-tags>
+
       </el-tab-pane>
 
     </el-tabs>
@@ -127,9 +84,10 @@
 
 <script>
 import EquipmentParams from "@/components/dialog/equipmentParams"; // 组件：其他参数 - 通道
+import EquipmentTags from "@/components/table/equipmentTags"; // 组件：数据标签 - 设备
 
 export default {
-  components: { EquipmentParams },
+  components: { EquipmentParams, EquipmentTags },
   props: {
     // 被选择的id
     id: {
@@ -144,22 +102,7 @@ export default {
     return {
       formEquipment: {}, // 表单数据
       activeName: "first", // tabs选中的标签
-      activeNames: ["1", "2", "3"], // 手风琴展开的标签
-      tableEquipment: [ // 表格数据
-        {
-          id: "1",
-          name: "Tag1",
-          discribe: "标签1",
-          dataType: "浮点",
-          direction: "只读",
-          acquisitionCycle: "1000",
-          registerType: "0",
-          registerAddr: "0",
-          analytical: "-1",
-          deviation: "0",
-          BCD: "0"
-        }
-      ]
+      activeNames: ["1", "2", "3"] // 手风琴展开的标签
     };
   },
   created () {
