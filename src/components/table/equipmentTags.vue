@@ -239,33 +239,8 @@
     </el-dialog>
 
     <!-- dialog · 其他参数 -->
-    <!-- <el-dialog title="其他参数 浮点"
-               :visible.sync="dialogVisibleParam">
-
-      <el-checkbox v-model="formData.ratioCalculation"
-                   style="margin-right:20px">系数计算</el-checkbox>
-      <div class="params-dialog-row-div">
-        &nbsp;倍率（a）
-        <el-input v-model="formData.magnification"
-                  style="width:100px"
-                  :disabled="!formData.ratioCalculation"></el-input>
-        &nbsp;基数（b）
-        <el-input v-model="formData.base"
-                  style="width:100px;margin-right:20px"
-                  :disabled="!formData.ratioCalculation"></el-input>
-        形如：y = ax + b
-      </div>
-
-      <div slot="footer"
-           class="dialog-footer">
-        <el-button @click="dialogVisibleParam = false;
-                           formData.ratioCalculation = otherParamsOrg.ratioCalculation;
-                           formData.magnification = otherParamsOrg.magnification;
-                           formData.base = otherParamsOrg.base;">取 消</el-button>
-        <el-button type="primary"
-                   @click="dialogVisibleParam = false">确 定</el-button>
-      </div>
-    </el-dialog> -->
+    <equipment-tag-params ref="equipmentTagParams"
+                          :form-data="formData"></equipment-tag-params>
 
   </div>
 </template>
@@ -273,9 +248,16 @@
 <script>
 import { parseTime } from "@/utils"; // functions
 import XLSX from "xlsx"; // plugin - excel
-import { equipmentTagColumn, equipmentTagHeader, tagTranslation } from "@/mock/tableColumn";
+import EquipmentTagParams from "@/components/dialog/equipmentTagParams"; // 组件：其他参数 - 设备数据标签
+/* mockData */
+import {
+  equipmentTagColumn, // 表格列项 - 设备
+  equipmentTagHeader, // 导出的表头 - 设备
+  tagTranslation // 表头中英文对照
+} from "@/mock/tableColumn";
 
 export default {
+  components: { EquipmentTagParams },
   props: {
     // 左侧树被选择的id
     id: {
@@ -304,9 +286,34 @@ export default {
         name: "",
         discribe: "",
         otherParams: {
+          takeAbsoluteValue: false,
+          absoluteValue: "",
+          calculation: "不参与计算",
           ratioCalculation: true,
           magnification: "2.0000",
-          base: "0.0000"
+          base: "0.0000",
+          reverseCoefficient: false,
+          rangeConversion: false,
+          maxRange: 10,
+          maxGather: 4096,
+          minRange: 0,
+          minGather: 0,
+          dataFilter: false,
+          maxData: 100,
+          minData: 0,
+          dataRadio: "小于最小值取最小值，大于最大值取最大值",
+          advancedOperation: false,
+          param1: "",
+          param2: "",
+          code: 0,
+          cache: false,
+          alert: false,
+          maxLimit: "100.0",
+          upperLimit: "80.0",
+          lowerLimit: "20.0",
+          minLimit: "0.0",
+          alarmDelay: "3",
+          alarmLevel: "3"
         },
         dataType: "整型",
         direction: "只读",
@@ -397,7 +404,7 @@ export default {
       this.dialogType = "insert";
       this.$nextTick(() => {
         this.$refs.dialogForm.resetFields();
-        this.dialogTitle = `数据服务标签-${this.dialogType === "insert" ? "新建" : "修改"}`;
+        this.dialogTitle = `IO数据标签-${this.dialogType === "insert" ? "新建" : "修改"}`;
       });
     },
     // 加载
@@ -409,21 +416,14 @@ export default {
       this.dialogVisible = true;
       this.dialogType = "edit";
       this.$nextTick(() => {
-        this.dialogTitle = `数据服务标签-${this.dialogType === "insert" ? "新建" : "修改"}`;
+        this.dialogTitle = `IO数据标签-${this.dialogType === "insert" ? "新建" : "修改"}`;
         this.formDataOrg = row;
         this.formData = JSON.parse(JSON.stringify(row)); // 深拷贝，取消时还原数据用
       });
     },
-    // 其他参数
+    // 其他参数 - 调用子组件事件
     setParams () {
-      this.dialogVisibleParam = true;
-      this.otherParamsOrg = JSON.parse(JSON.stringify( // 深拷贝，取消时还原数据用
-        {
-          ratioCalculation: this.formData.ratioCalculation,
-          magnification: this.formData.magnification,
-          base: this.formData.base
-        }
-      ));
+      this.$refs.equipmentTagParams.setParams();
     },
     // 表单提交
     tagSubmit () {
