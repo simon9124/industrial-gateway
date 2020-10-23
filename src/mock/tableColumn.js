@@ -161,7 +161,7 @@ const equipmentTagHeader = {
   ]
 };
 
-// 表头中英文对照 - 通道
+// 表头中英文对照
 const tagTranslation = {
   index: "序号",
   name: "名称（英文）",
