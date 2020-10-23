@@ -299,7 +299,7 @@ const equipmentList = [
       {
         id: "2",
         name: "C1.D1.Tag2",
-        discribe: "通道1 设备1 标签1",
+        discribe: "通道1 设备1 标签2",
         otherParams: {
           ratioCalculation: true,
           magnification: "2.0000",
@@ -346,7 +346,7 @@ const equipmentList = [
       {
         id: "1",
         name: "C1.D2.Tag1",
-        discribe: "通道1 设备1 标签1",
+        discribe: "通道1 设备2 标签1",
         otherParams: {
           ratioCalculation: true,
           magnification: "2.0000",
@@ -364,7 +364,7 @@ const equipmentList = [
       {
         id: "2",
         name: "C1.D2.Tag2",
-        discribe: "通道1 设备1 标签1",
+        discribe: "通道1 设备2 标签2",
         otherParams: {
           ratioCalculation: true,
           magnification: "2.0000",
@@ -411,7 +411,7 @@ const equipmentList = [
       {
         id: "1",
         name: "C2.D3.Tag1",
-        discribe: "通道1 设备1 标签1",
+        discribe: "通道2 设备3 标签1",
         otherParams: {
           ratioCalculation: true,
           magnification: "2.0000",
@@ -429,7 +429,7 @@ const equipmentList = [
       {
         id: "2",
         name: "C2.D3.Tag2",
-        discribe: "通道1 设备1 标签1",
+        discribe: "通道2 设备3 标签2",
         otherParams: {
           ratioCalculation: true,
           magnification: "2.0000",
@@ -476,7 +476,7 @@ const equipmentList = [
       {
         id: "1",
         name: "C2.D4.Tag1",
-        discribe: "通道1 设备1 标签1",
+        discribe: "通道2 设备4 标签1",
         otherParams: {
           ratioCalculation: true,
           magnification: "2.0000",
@@ -494,7 +494,7 @@ const equipmentList = [
       {
         id: "2",
         name: "C2.D4.Tag2",
-        discribe: "通道1 设备1 标签1",
+        discribe: "通道2 设备4 标签2",
         otherParams: {
           ratioCalculation: true,
           magnification: "2.0000",

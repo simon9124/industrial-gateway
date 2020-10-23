@@ -53,7 +53,7 @@ const passTagColumn = [
 ];
 
 // 表格列项 - 设备
-const equipmentColumn = [
+const equipmentTagColumn = [
   {
     prop: "name",
     label: "名称（英文）",
@@ -101,8 +101,68 @@ const equipmentColumn = [
   }
 ];
 
+// 导出的表头 - 通道
+const passTagHeader = {
+  tHeader: [
+    "序号",
+    "名称（英文）",
+    "描述（中文）",
+    "数据类型",
+    "读写方向",
+    "采集周期",
+    "IO标签链接",
+    "从站ID",
+    "寄存器类型",
+    "寄存器地址",
+    "数据格式"
+  ],
+  filterVal: [
+    "index",
+    "name",
+    "discribe",
+    "dataType",
+    "direction",
+    "acquisitionCycle",
+    "IOTag",
+    "slaveStationID",
+    "registerType",
+    "registerAddr",
+    "dataFormat"
+  ]
+};
+
+// 导出的表头 - 设备
+const equipmentTagHeader = {
+  tHeader: [
+    "序号",
+    "名称（英文）",
+    "描述（中文）",
+    "数据类型",
+    "读写方向",
+    "采集周期",
+    "寄存器类型",
+    "寄存器地址",
+    "解析方式",
+    "位移偏量",
+    "按BCD"
+  ],
+  filterVal: [
+    "index",
+    "name",
+    "discribe",
+    "dataType",
+    "direction",
+    "acquisitionCycle",
+    "registerType",
+    "registerAddr",
+    "analyticalMethod",
+    "displacementDeviation",
+    "useBCD"
+  ]
+};
+
 // 表头中英文对照 - 通道
-const passTagTranslation = {
+const tagTranslation = {
   index: "序号",
   name: "名称（英文）",
   discribe: "描述（中文）",
@@ -113,7 +173,16 @@ const passTagTranslation = {
   slaveStationID: "从站ID",
   registerType: "寄存器类型",
   registerAddr: "寄存器地址",
-  dataFormat: "数据格式"
+  dataFormat: "数据格式",
+  analyticalMethod: "解析方式",
+  displacementDeviation: "位移偏量",
+  useBCD: "按BCD"
 };
 
-export { passTagColumn, equipmentColumn, passTagTranslation };
+export {
+  passTagColumn,
+  equipmentTagColumn,
+  passTagHeader,
+  equipmentTagHeader,
+  tagTranslation
+};
