@@ -188,8 +188,8 @@ export default {
   methods: {
     // 其他参数
     setParams () {
+      // console.log(this.formData);
       this.dialogVisible = true;
-      console.log(this.formData);
       this.dialogTitle = `数据标签其他参数 ${this.formData.dataType}`;
       this.paramsOrg = JSON.parse(JSON.stringify(this.formData.otherParams)); // 深拷贝，取消时还原数据用
     }

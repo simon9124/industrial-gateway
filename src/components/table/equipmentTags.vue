@@ -289,7 +289,7 @@ export default {
           takeAbsoluteValue: false,
           absoluteValue: "",
           calculation: "不参与计算",
-          ratioCalculation: true,
+          ratioCalculation: false,
           magnification: "2.0000",
           base: "0.0000",
           reverseCoefficient: false,
@@ -301,8 +301,8 @@ export default {
           dataFilter: false,
           maxData: 100,
           minData: 0,
-          dataRadio: "小于最小值取最小值，大于最大值取最大值",
-          advancedOperation: false,
+          dataRadio: "1",
+          advancedOperation: "无计算",
           param1: "",
           param2: "",
           code: 0,
@@ -632,7 +632,6 @@ export default {
     },
     // 数据处理
     generateData ({ header, results }) {
-      console.log(results);
       /* 1.将results的键替换成与原dataTags相同的英文 */
       results.forEach(row => {
         Object.keys(row).forEach(key => {
@@ -645,11 +644,12 @@ export default {
           });
         });
       });
-      // console.log(results);
+      console.log(results);
       /* 2.清空dataTagsOrg */
       this.dataTagsOrg.splice(0, this.dataTagsOrg.length);
       /* 3.循环results，追加到dataTagsOrg */
       results.forEach(row => {
+        this.$set(row, "otherParams", {});
         this.dataTagsOrg.push(row);
       });
       this.refreshData();
