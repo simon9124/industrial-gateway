@@ -198,6 +198,13 @@ export default {
               });
             });
           });
+          /* 重设树，选中顶部 "采集服务" */
+          this.$nextTick(() => {
+            this.level = 1;
+            this.id = "1";
+            this.$set(treeData[0], "selected", true);
+          });
+          // console.log(treeData);
           // console.log(equipmentList);
         }).catch(() => { });
       }
