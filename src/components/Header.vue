@@ -620,6 +620,21 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .header /deep/ {
+  .el-dialog__body {
+    padding: 10px 20px;
+  }
+  .el-collapse {
+    &-item__header {
+      font-weight: bold;
+    }
+
+    &-item__content {
+      padding-bottom: 10px;
+    }
+    .collapse-content {
+      margin-bottom: 10px;
+    }
+  }
   // 配置dialog
   .dispose-dialog {
     .el-dialog {
@@ -628,11 +643,6 @@ export default {
         .el-form-item {
           margin-bottom: 0;
         }
-      }
-    }
-    .el-collapse {
-      .collapse-content {
-        margin-bottom: 10px;
       }
     }
   }
@@ -661,19 +671,12 @@ export default {
     .el-dialog {
       max-width: 700px;
       min-width: 500px;
-      &__body {
-        padding: 10px 20px;
-      }
     }
   }
   // 插件dialog
   .plugin-dialog {
     .el-dialog {
       min-width: 1000px;
-
-      &__body {
-        padding: 10px 20px;
-      }
 
       .el-form {
         margin: 10px 20px;
