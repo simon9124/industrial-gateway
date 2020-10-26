@@ -38,12 +38,41 @@
   .el-collapse {
     &-item__header {
       font-weight: bold;
-      height: 36px;
-      line-height: 36px;
+      // height: 36px;
+      // line-height: 36px;
     }
 
     &-item__content {
       padding-bottom: 10px;
+    }
+
+    .collapse-content {
+      margin-bottom: 10px;
+    }
+  }
+
+  .el-dialog {
+    &__body {
+      padding: 10px 20px;
+    }
+  }
+
+  // 其他参数 - all
+  .params-dialog-row {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    &-div {
+      margin-left: 24px;
+    }
+
+    &-select {
+      margin-bottom: 10px;
+    }
+
+    .el-checkbox {
+      margin-bottom: 10px;
     }
   }
 
@@ -52,34 +81,12 @@
     .el-dialog {
       min-width: 920px;
     }
-
-    .params-dialog-row:not(:last-child) {
-      margin-bottom: 10px;
-
-      .el-checkbox {
-        margin-bottom: 10px;
-      }
-    }
-
-    &-row {
-      &-div {
-        margin-left: 24px;
-      }
-
-      &-select {
-        margin-bottom: 10px;
-      }
-    }
   }
 
   // dialog - 插件
   .plugin-dialog {
     .el-dialog {
       min-width: 1000px;
-
-      &__body {
-        padding: 10px 20px;
-      }
 
       .el-form {
         margin: 10px 20px;
@@ -109,7 +116,6 @@
     }
 
     .el-dialog {
-      // min-width: 800px;
       width: 800px;
     }
   }
