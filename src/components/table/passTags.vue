@@ -172,7 +172,8 @@
               <el-input v-model="formData.IOTag"></el-input>
             </el-form-item>
           </el-col>
-          <el-button style="margin:0 0 20px 10px">选择标签</el-button>
+          <el-button style="margin:0 0 20px 10px"
+                     @click="tagSelect">选择标签</el-button>
         </el-row>
 
         <el-row :gutter="0">
@@ -265,6 +266,13 @@
       </div>
     </el-dialog>
 
+    <!-- dialog - 选择插件 -->
+    <tag-select ref="tagSelect"
+                :id="id"
+                :tree-data="treeData"
+                :form-data="formData"
+                @tag-click="tagClick"></tag-select>
+
   </div>
 </template>
 
@@ -272,9 +280,16 @@
 import { parseTime } from "@/utils"; // functions
 import XLSX from "xlsx"; // plugin - excel
 import { passTagColumn, passTagHeader, tagTranslation } from "@/mock/tableColumn";
+import TagSelect from "@/components/dialog/tagSelect"; // 组件：选择标签
 
 export default {
+  components: { TagSelect },
   props: {
+    // 树数据 - 传递给tagSelect子组件选择标签用
+    treeData: {
+      type: Array,
+      default: () => []
+    },
     // 左侧树被选择的id
     id: {
       type: String
@@ -421,6 +436,17 @@ export default {
           base: this.formData.base
         }
       ));
+    },
+    // 点击按钮 - 选择标签 - 调用子组件事件
+    tagSelect () {
+      this.$refs.tagSelect.tagSelect();
+    },
+    // 点击树节点 - 插件
+    tagClick (param) {
+      console.log(param);
+      // const { level } = param;
+      // level === 2 && (this.formPass.plugin = param);
+      // console.log(this.formPass);
     },
     // 表单提交
     tagSubmit () {
