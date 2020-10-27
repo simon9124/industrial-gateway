@@ -42,6 +42,7 @@
           <Group v-if="level===1"></Group>
           <Pass v-if="level===2"
                 :id="id"
+                :tree-data="treeData"
                 :pass-list="passList"
                 :plugin-list="pluginList"
                 :pass-type-list="passTypeList"

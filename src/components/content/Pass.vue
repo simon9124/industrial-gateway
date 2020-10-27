@@ -358,6 +358,7 @@
 
         <!-- table - 数据标签 · 通道 -->
         <pass-tags :id="id"
+                   :tree-data="treeData"
                    :data-tags-org="formPass.dataTags"></pass-tags>
 
       </el-tab-pane>
@@ -393,6 +394,11 @@ import PassTags from "@/components/table/passTags"; // 组件：数据标签 - �
 export default {
   components: { PluginSelect, PassParams, PassTags },
   props: {
+    // 树数据 - 传递给tagSelect子组件选择标签用
+    treeData: {
+      type: Array,
+      default: () => []
+    },
     // 左侧树被选择的id
     id: {
       type: String
