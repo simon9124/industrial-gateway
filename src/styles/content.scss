@@ -98,6 +98,21 @@
     }
   }
 
+  // dialog - 标签字典
+  .tag-select-dialog {
+    .el-dialog {
+      width: 800px;
+
+      .el-form {
+        margin: 10px 20px;
+
+        &-item {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+
   // table - 数据标签
   .table-component {
     .excel-upload-input {
