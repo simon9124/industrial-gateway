@@ -193,7 +193,7 @@ const passList = [
         acquisitionCycle: "1000",
         IOTag: "io.C1.D1.Tag1",
         IOTagParentId: "1-1-1",
-        IOTagSelectIndex: 4,
+        IOTagSelectId: "1-1-1-1",
         slaveStationID: "1",
         registerType: 2,
         registerAddr: "0",
@@ -211,7 +211,7 @@ const passList = [
         acquisitionCycle: "1000",
         IOTag: "at.C1._io_status",
         IOTagParentId: "1-1",
-        IOTagSelectIndex: 2,
+        IOTagSelectId: 2,
         slaveStationID: "1",
         registerType: 2,
         registerAddr: "0",
@@ -229,7 +229,7 @@ const passList = [
         acquisitionCycle: "1000",
         IOTag: "io.C2.D3.Tag2",
         IOTagParentId: "1-2-1",
-        IOTagSelectIndex: 5,
+        IOTagSelectId: "1-2-1-1",
         slaveStationID: "1",
         registerType: 2,
         registerAddr: "0",
@@ -247,7 +247,7 @@ const passList = [
         acquisitionCycle: "1000",
         IOTag: "at._kernal_version",
         IOTagParentId: "1",
-        IOTagSelectIndex: 0,
+        IOTagSelectId: 0,
         slaveStationID: "1",
         registerType: 2,
         registerAddr: "0",
@@ -287,7 +287,7 @@ const equipmentList = [
     },
     dataTags: [
       {
-        id: "1",
+        id: "1-1-1-1",
         name: "Tag1",
         describe: "标签1",
         otherParams: {
@@ -330,7 +330,7 @@ const equipmentList = [
         useBCD: true
       },
       {
-        id: "2",
+        id: "1-1-1-2",
         name: "Tag2",
         describe: "标签2",
         otherParams: {
@@ -402,7 +402,7 @@ const equipmentList = [
     },
     dataTags: [
       {
-        id: "1",
+        id: "1-1-2-1",
         name: "Tag1",
         describe: "标签1",
         otherParams: {
@@ -445,7 +445,7 @@ const equipmentList = [
         useBCD: false
       },
       {
-        id: "2",
+        id: "1-1-2-2",
         name: "Tag2",
         describe: "标签2",
         otherParams: {
@@ -517,7 +517,7 @@ const equipmentList = [
     },
     dataTags: [
       {
-        id: "1",
+        id: "1-2-1-1",
         name: "Tag1",
         describe: "标签1",
         otherParams: {
@@ -560,7 +560,7 @@ const equipmentList = [
         useBCD: false
       },
       {
-        id: "2",
+        id: "1-2-1-2",
         name: "Tag2",
         describe: "标签2",
         otherParams: {
@@ -632,7 +632,7 @@ const equipmentList = [
     },
     dataTags: [
       {
-        id: "1",
+        id: "1-2-2-1",
         name: "Tag1",
         describe: "标签1",
         otherParams: {
@@ -675,7 +675,7 @@ const equipmentList = [
         useBCD: false
       },
       {
-        id: "2",
+        id: "1-2-2-2",
         name: "Tag2",
         describe: "标签2",
         otherParams: {
