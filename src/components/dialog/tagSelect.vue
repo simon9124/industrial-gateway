@@ -27,7 +27,7 @@
           </el-form-item>
           <el-form-item label-width="55px"
                         label="描述：">
-            {{formData.describe}}
+            {{tagDescribe}}
           </el-form-item>
 
           <el-table ref="tagListTable"
@@ -72,7 +72,7 @@
       <el-button @click="dialogVisible = false;
                          formData.IOTag = IOTagOrg;
                          formData.IOTagParentId = IOTagParentIdOrg;
-                         formData.IOTagSelectIndex = IOTagSelectIndexOrg">取 消</el-button>
+                         formData.IOTagSelectId = IOTagSelectIdOrg">取 消</el-button>
       <el-button type="primary"
                  @click="dialogVisible = false">确 定</el-button>
     </div>
@@ -108,6 +108,10 @@ export default {
     equipmentList: {
       type: Array,
       default: () => []
+    },
+    // 描述
+    tagDescribe: {
+      type: String
     }
   },
   data () {
@@ -125,7 +129,7 @@ export default {
       /* 深拷贝，取消时还原数据用 */
       this.IOTagOrg = JSON.parse(JSON.stringify(this.formData.IOTag));
       this.IOTagParentIdOrg = JSON.parse(JSON.stringify(this.formData.IOTagParentId));
-      this.IOTagSelectIndexOrg = JSON.parse(JSON.stringify(this.formData.IOTagSelectIndex));
+      this.IOTagSelectIdOrg = JSON.parse(JSON.stringify(this.formData.IOTagSelectId));
     },
     // 处理原树数据，刷新左侧树和其对应内容
     getTagTreeData () {
@@ -142,7 +146,7 @@ export default {
               direction: "读写",
               source: "IO属性",
               parentId: group.id,
-              index: 0
+              id: "0"
             },
             {
               name: "_cpu",
@@ -151,7 +155,7 @@ export default {
               direction: "只读",
               source: "IO属性",
               parentId: group.id,
-              index: 1
+              id: "1"
             },
             {
               name: "_mem_total",
@@ -160,7 +164,7 @@ export default {
               direction: "只读",
               source: "IO属性",
               parentId: group.id,
-              index: 2
+              id: "2"
             }
           ];
         } else if (group.id === "2") {
@@ -181,7 +185,7 @@ export default {
                   passName: _pass.passName,
                   passDescribe: _pass.passDescribe,
                   parentId: pass.id,
-                  index: 0
+                  id: "0"
                 },
                 {
                   name: "_rev_byte",
@@ -192,7 +196,7 @@ export default {
                   passName: _pass.passName,
                   passDescribe: _pass.passDescribe,
                   parentId: pass.id,
-                  index: 1
+                  id: "1"
                 },
                 {
                   name: "_io_status",
@@ -203,7 +207,7 @@ export default {
                   passName: _pass.passName,
                   passDescribe: _pass.passDescribe,
                   parentId: pass.id,
-                  index: 2
+                  id: "2"
                 }
               ];
               /* equipment */
@@ -222,7 +226,7 @@ export default {
                         equpimentName: _equipment.equipmentName,
                         equipmentDescribe: _equipment.equipmentDescribe,
                         parentId: equpiment.id,
-                        index: 0
+                        id: "0"
                       },
                       {
                         name: "_rev_package",
@@ -235,7 +239,7 @@ export default {
                         equpimentName: _equipment.equipmentName,
                         equipmentDescribe: _equipment.equipmentDescribe,
                         parentId: equpiment.id,
-                        index: 1
+                        id: "1"
                       },
                       {
                         name: "_success_rate",
@@ -248,7 +252,7 @@ export default {
                         equpimentName: _equipment.equipmentName,
                         equipmentDescribe: _equipment.equipmentDescribe,
                         parentId: equpiment.id,
-                        index: 2
+                        id: "2"
                       },
                       {
                         name: "_io_status",
@@ -261,7 +265,7 @@ export default {
                         equpimentName: _equipment.equipmentName,
                         equipmentDescribe: _equipment.equipmentDescribe,
                         parentId: equpiment.id,
-                        index: 3
+                        id: "3"
                       }
                     ];
                     _equipment.dataTags.forEach(tag => {
@@ -272,9 +276,11 @@ export default {
                         direction: tag.direction,
                         source: "IO采集",
                         passName: _pass.passName,
+                        passDescribe: _pass.passDescribe,
                         equpimentName: _equipment.equipmentName,
+                        equipmentDescribe: _equipment.equipmentDescribe,
                         parentId: equpiment.id,
-                        index: equpiment.tagSelectList.length
+                        id: tag.id
                       });
                     });
                   }
@@ -301,14 +307,16 @@ export default {
         item.selected = true; // 左侧选中
         this.tableData = item.tagSelectList; // 渲染table
         this.$nextTick(() => { // 选中table行
-          this.$refs.tagListTable.setCurrentRow(this.tableData[this.formData.IOTagSelectIndex]);
+          this.tableData.forEach((row, i) => {
+            row.id === this.formData.IOTagSelectId && this.$refs.tagListTable.setCurrentRow(this.tableData[i]);
+          });
         });
       }
     }
   },
   watch: {
     dialogVisible (val) {
-      // console.log(this.formData);
+      console.log(this.formData);
       val === true && this.tagTreeData.forEach(group => {
         this.visibleSelect(group);
         group.children.forEach(pass => {

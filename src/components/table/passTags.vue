@@ -271,6 +271,7 @@
     <!-- dialog - 选择插件 -->
     <tag-select ref="tagSelect"
                 :id="id"
+                :tag-describe="tagDescribe"
                 :tree-data="treeData"
                 :form-data="formData"
                 :pass-list="passList"
@@ -337,6 +338,8 @@ export default {
         direction: "只读",
         acquisitionCycle: "1000",
         IOTag: "io.C1.D1.Tag1",
+        IOTagParentId: "1-1-1",
+        IOTagSelectId: 4,
         slaveStationID: "1",
         registerType: 2,
         registerAddr: "0",
@@ -392,7 +395,7 @@ export default {
       submitLoading: false, // loading - 提交按钮
       downloadLoading: false, // loading - 导出
       /* props */
-      tagDiscribe: ""
+      tagDescribe: ""
     };
   },
   created () {
@@ -463,7 +466,9 @@ export default {
         this.formData.IOTag =
           `${param.source === "IO属性" ? "at." : "io."}${param.passName ? param.passName + "." : ""}${param.equpimentName ? param.equpimentName + "." : ""}${param.name}`;
         this.formData.IOTagParentId = param.parentId;
-        this.formData.IOTagSelectIndex = param.index;
+        this.formData.IOTagSelectId = param.id;
+        this.tagDescribe =
+          `${param.passDescribe ? param.passDescribe + " " : ""}${param.equipmentDescribe ? param.equipmentDescribe + " " : ""}${param.describe}`;
       }
     },
     // 表单提交
