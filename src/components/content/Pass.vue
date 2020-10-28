@@ -359,6 +359,8 @@
         <!-- table - 数据标签 · 通道 -->
         <pass-tags :id="id"
                    :tree-data="treeData"
+                   :pass-list="passList"
+                   :equipment-list="equipmentList"
                    :data-tags-org="formPass.dataTags"></pass-tags>
 
       </el-tab-pane>
@@ -396,6 +398,11 @@ export default {
   props: {
     // 树数据 - 传递给tagSelect子组件选择标签用
     treeData: {
+      type: Array,
+      default: () => []
+    },
+    // 设备列表 - 传递给tagSelect子组件选择标签用
+    equipmentList: {
       type: Array,
       default: () => []
     },

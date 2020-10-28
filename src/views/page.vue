@@ -44,6 +44,7 @@
                 :id="id"
                 :tree-data="treeData"
                 :pass-list="passList"
+                :equipment-list="equipmentList"
                 :plugin-list="pluginList"
                 :pass-type-list="passTypeList"
                 :sata-list="sataList"
