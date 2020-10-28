@@ -192,6 +192,8 @@ const passList = [
         direction: "只读",
         acquisitionCycle: "1000",
         IOTag: "io.C1.D1.Tag1",
+        IOTagParentId: "1-1-1",
+        IOTagSelectIndex: 4,
         slaveStationID: "1",
         registerType: 2,
         registerAddr: "0",
@@ -207,7 +209,9 @@ const passList = [
         dataType: "浮点",
         direction: "只读",
         acquisitionCycle: "1000",
-        IOTag: "io.C1.D1.Tag1",
+        IOTag: "at.C1._io_status",
+        IOTagParentId: "1-1",
+        IOTagSelectIndex: 2,
         slaveStationID: "1",
         registerType: 2,
         registerAddr: "0",
@@ -223,7 +227,9 @@ const passList = [
         dataType: "整型",
         direction: "只读",
         acquisitionCycle: "1000",
-        IOTag: "io.C1.D1.Tag1",
+        IOTag: "io.C2.D3.Tag2",
+        IOTagParentId: "1-2-1",
+        IOTagSelectIndex: 5,
         slaveStationID: "1",
         registerType: 2,
         registerAddr: "0",
@@ -239,7 +245,9 @@ const passList = [
         dataType: "字符串",
         direction: "只读",
         acquisitionCycle: "1000",
-        IOTag: "io.C1.D1.Tag1",
+        IOTag: "at._kernal_version",
+        IOTagParentId: "1",
+        IOTagSelectIndex: 0,
         slaveStationID: "1",
         registerType: 2,
         registerAddr: "0",
@@ -280,8 +288,8 @@ const equipmentList = [
     dataTags: [
       {
         id: "1",
-        name: "C1.D1.Tag1",
-        discribe: "通道1 设备1 标签1",
+        name: "Tag1",
+        discribe: "标签1",
         otherParams: {
           takeAbsoluteValue: true,
           absoluteValue: "",
@@ -323,8 +331,8 @@ const equipmentList = [
       },
       {
         id: "2",
-        name: "C1.D1.Tag2",
-        discribe: "通道1 设备1 标签2",
+        name: "Tag2",
+        discribe: "标签2",
         otherParams: {
           takeAbsoluteValue: false,
           absoluteValue: "",
@@ -395,8 +403,8 @@ const equipmentList = [
     dataTags: [
       {
         id: "1",
-        name: "C1.D2.Tag1",
-        discribe: "通道1 设备2 标签1",
+        name: "Tag1",
+        discribe: "标签1",
         otherParams: {
           takeAbsoluteValue: true,
           absoluteValue: "",
@@ -438,8 +446,8 @@ const equipmentList = [
       },
       {
         id: "2",
-        name: "C1.D2.Tag2",
-        discribe: "通道1 设备2 标签2",
+        name: "Tag2",
+        discribe: "标签2",
         otherParams: {
           takeAbsoluteValue: false,
           absoluteValue: "",
@@ -510,8 +518,8 @@ const equipmentList = [
     dataTags: [
       {
         id: "1",
-        name: "C2.D3.Tag1",
-        discribe: "通道2 设备3 标签1",
+        name: "Tag1",
+        discribe: "标签1",
         otherParams: {
           takeAbsoluteValue: true,
           absoluteValue: "",
@@ -553,8 +561,8 @@ const equipmentList = [
       },
       {
         id: "2",
-        name: "C2.D3.Tag2",
-        discribe: "通道2 设备3 标签2",
+        name: "Tag2",
+        discribe: "标签2",
         otherParams: {
           takeAbsoluteValue: false,
           absoluteValue: "",
@@ -625,8 +633,8 @@ const equipmentList = [
     dataTags: [
       {
         id: "1",
-        name: "C2.D4.Tag1",
-        discribe: "通道2 设备4 标签1",
+        name: "Tag1",
+        discribe: "标签1",
         otherParams: {
           takeAbsoluteValue: true,
           absoluteValue: "",
@@ -668,8 +676,8 @@ const equipmentList = [
       },
       {
         id: "2",
-        name: "C2.D4.Tag2",
-        discribe: "通道2 设备4 标签2",
+        name: "Tag2",
+        discribe: "标签2",
         otherParams: {
           takeAbsoluteValue: false,
           absoluteValue: "",

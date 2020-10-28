@@ -28,7 +28,7 @@ const passTagColumn = [
   {
     prop: "IOTag",
     label: "IO标签链接",
-    minWidth: 140
+    minWidth: 170
   },
   {
     prop: "slaveStationID",
