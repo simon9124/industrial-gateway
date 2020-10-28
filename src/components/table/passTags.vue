@@ -165,11 +165,13 @@
               <el-input v-model="formData.acquisitionCycle"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="9">
+          <el-col :span="10">
             <el-form-item label-width="100px"
                           label="IO标签链接："
                           prop="IOTag">
-              <el-input v-model="formData.IOTag"></el-input>
+              <el-input v-model="formData.IOTag"
+                        style="width:fit-content"
+                        disabled></el-input>
             </el-form-item>
           </el-col>
           <el-button style="margin:0 0 20px 10px"
@@ -271,6 +273,8 @@
                 :id="id"
                 :tree-data="treeData"
                 :form-data="formData"
+                :pass-list="passList"
+                :equipment-list="equipmentList"
                 @tag-click="tagClick"></tag-select>
 
   </div>
@@ -287,6 +291,16 @@ export default {
   props: {
     // 树数据 - 传递给tagSelect子组件选择标签用
     treeData: {
+      type: Array,
+      default: () => []
+    },
+    // 通道列表 - 传递给tagSelect子组件选择标签用
+    passList: {
+      type: Array,
+      default: () => []
+    },
+    // 设备列表 - 传递给tagSelect子组件选择标签用
+    equipmentList: {
       type: Array,
       default: () => []
     },
@@ -444,9 +458,12 @@ export default {
     // 点击树节点 - 插件
     tagClick (param) {
       console.log(param);
-      // const { level } = param;
-      // level === 2 && (this.formPass.plugin = param);
-      // console.log(this.formPass);
+      if (param) {
+        this.formData.IOTag =
+          `${param.source === "IO属性" ? "at." : "io."}${param.passName ? param.passName + "." : ""}${param.equpimentName ? param.equpimentName + "." : ""}${param.name}`;
+        this.formData.IOTagParentId = param.parentId;
+        this.formData.IOTagSelectIndex = param.index;
+      }
     },
     // 表单提交
     tagSubmit () {
