@@ -184,7 +184,7 @@ const passList = [
       {
         id: "1",
         name: "C1.D1.Tag1",
-        discribe: "通道1 设备1 标签1",
+        describe: "通道1 设备1 标签1",
         ratioCalculation: true,
         magnification: "2.0000",
         base: "0.0000",
@@ -202,7 +202,7 @@ const passList = [
       {
         id: "2",
         name: "C1.D1.Tag2",
-        discribe: "通道1 设备1 标签1",
+        describe: "通道1 设备1 标签1",
         ratioCalculation: true,
         magnification: "1.0000",
         base: "0.0000",
@@ -220,7 +220,7 @@ const passList = [
       {
         id: "3",
         name: "C1.D1.Tag3",
-        discribe: "通道1 设备1 标签1",
+        describe: "通道1 设备1 标签1",
         ratioCalculation: false,
         magnification: "2.0000",
         base: "0.0000",
@@ -238,7 +238,7 @@ const passList = [
       {
         id: "4",
         name: "C1.D1.Tag4",
-        discribe: "通道1 设备1 标签1",
+        describe: "通道1 设备1 标签1",
         ratioCalculation: false,
         magnification: "1.0000",
         base: "0.0000",
@@ -289,7 +289,7 @@ const equipmentList = [
       {
         id: "1",
         name: "Tag1",
-        discribe: "标签1",
+        describe: "标签1",
         otherParams: {
           takeAbsoluteValue: true,
           absoluteValue: "",
@@ -332,7 +332,7 @@ const equipmentList = [
       {
         id: "2",
         name: "Tag2",
-        discribe: "标签2",
+        describe: "标签2",
         otherParams: {
           takeAbsoluteValue: false,
           absoluteValue: "",
@@ -404,7 +404,7 @@ const equipmentList = [
       {
         id: "1",
         name: "Tag1",
-        discribe: "标签1",
+        describe: "标签1",
         otherParams: {
           takeAbsoluteValue: true,
           absoluteValue: "",
@@ -447,7 +447,7 @@ const equipmentList = [
       {
         id: "2",
         name: "Tag2",
-        discribe: "标签2",
+        describe: "标签2",
         otherParams: {
           takeAbsoluteValue: false,
           absoluteValue: "",
@@ -519,7 +519,7 @@ const equipmentList = [
       {
         id: "1",
         name: "Tag1",
-        discribe: "标签1",
+        describe: "标签1",
         otherParams: {
           takeAbsoluteValue: true,
           absoluteValue: "",
@@ -562,7 +562,7 @@ const equipmentList = [
       {
         id: "2",
         name: "Tag2",
-        discribe: "标签2",
+        describe: "标签2",
         otherParams: {
           takeAbsoluteValue: false,
           absoluteValue: "",
@@ -634,7 +634,7 @@ const equipmentList = [
       {
         id: "1",
         name: "Tag1",
-        discribe: "标签1",
+        describe: "标签1",
         otherParams: {
           takeAbsoluteValue: true,
           absoluteValue: "",
@@ -677,7 +677,7 @@ const equipmentList = [
       {
         id: "2",
         name: "Tag2",
-        discribe: "标签2",
+        describe: "标签2",
         otherParams: {
           takeAbsoluteValue: false,
           absoluteValue: "",

@@ -127,8 +127,8 @@
           <el-col :span="9">
             <el-form-item label-width="55px"
                           label="描述："
-                          prop="discribe">
-              <el-input v-model="formData.discribe"></el-input>
+                          prop="describe">
+              <el-input v-model="formData.describe"></el-input>
             </el-form-item>
           </el-col>
           <el-button style="margin:0 0 20px 10px"
@@ -284,7 +284,7 @@ export default {
       dialogTitle: "", // dialog标题
       formData: { // 表单数据
         name: "",
-        discribe: "",
+        describe: "",
         otherParams: {
           takeAbsoluteValue: false,
           absoluteValue: "",

@@ -6,7 +6,7 @@ const passTagColumn = [
     minWidth: 110
   },
   {
-    prop: "discribe",
+    prop: "describe",
     label: "描述（中文）",
     minWidth: 140
   },
@@ -60,7 +60,7 @@ const equipmentTagColumn = [
     minWidth: 110
   },
   {
-    prop: "discribe",
+    prop: "describe",
     label: "描述（中文）",
     minWidth: 140
   },
@@ -119,7 +119,7 @@ const passTagHeader = {
   filterVal: [
     "index",
     "name",
-    "discribe",
+    "describe",
     "dataType",
     "direction",
     "acquisitionCycle",
@@ -149,7 +149,7 @@ const equipmentTagHeader = {
   filterVal: [
     "index",
     "name",
-    "discribe",
+    "describe",
     "dataType",
     "direction",
     "acquisitionCycle",
@@ -165,7 +165,7 @@ const equipmentTagHeader = {
 const tagTranslation = {
   index: "序号",
   name: "名称（英文）",
-  discribe: "描述（中文）",
+  describe: "描述（中文）",
   dataType: "数据类型",
   direction: "读写方向",
   acquisitionCycle: "采集周期",

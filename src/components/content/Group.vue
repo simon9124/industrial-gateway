@@ -59,7 +59,7 @@
                        label="名称(英文)"
                        width="180">
       </el-table-column>
-      <el-table-column prop="discribe"
+      <el-table-column prop="describe"
                        label="描述(中文)"
                        width="180">
       </el-table-column>
@@ -86,21 +86,21 @@ export default {
           id: "1",
           number: "通道[01]",
           name: "C1",
-          discribe: "通道1",
+          describe: "通道1",
           params: "IND_MODBUS_RTU;串口,0,7,4,0,0;",
           children: [
             {
               id: "1-1",
               number: "设备[01]",
               name: "D1",
-              discribe: "设备1",
+              describe: "设备1",
               params: "temp=;address=1,max_len=32,write6=YES,write16=YES,he=FF00,,fen=0000,crc=YES"
             },
             {
               id: "1-2",
               number: "设备[02]",
               name: "D2",
-              discribe: "设备2",
+              describe: "设备2",
               params: "temp=;address=1,max_len=32,write6=YES,write16=YES,he=FF00,,fen=0000,crc=YES"
             }
           ]
@@ -109,7 +109,7 @@ export default {
           id: "2",
           number: "通道[01]",
           name: "C1",
-          discribe: "通道1",
+          describe: "通道1",
           params: "IND_MODBUS_TCP;UDP,192.168.0.253,50001,,,;delay=10"
         }
       ]

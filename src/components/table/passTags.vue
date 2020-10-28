@@ -119,8 +119,8 @@
           <el-col :span="9">
             <el-form-item label-width="55px"
                           label="描述："
-                          prop="discribe">
-              <el-input v-model="formData.discribe"></el-input>
+                          prop="describe">
+              <el-input v-model="formData.describe"></el-input>
             </el-form-item>
           </el-col>
           <el-button style="margin:0 0 20px 10px"
@@ -317,7 +317,6 @@ export default {
   data () {
     return {
       /* table */
-      // dataTagsOrg: [], // 表格数据 - 原始数据
       dataTags: [], // 表格数据 - 要展示的数据
       dataColumns: passTagColumn, // 表格列项
       dataTypeList: ["全部", "浮点", "整型", "布尔", "字符串", "二进制"], // select - 数据类型
@@ -330,7 +329,7 @@ export default {
       dialogTitle: "", // dialog标题
       formData: { // 表单数据
         name: "",
-        discribe: "",
+        describe: "",
         ratioCalculation: false,
         magnification: "1.0000",
         base: "0.0000",
@@ -391,7 +390,9 @@ export default {
       ],
       /* loading */
       submitLoading: false, // loading - 提交按钮
-      downloadLoading: false // loading - 导出
+      downloadLoading: false, // loading - 导出
+      /* props */
+      tagDiscribe: ""
     };
   },
   created () {

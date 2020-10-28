@@ -27,7 +27,7 @@
           </el-form-item>
           <el-form-item label-width="55px"
                         label="描述：">
-            {{formData.discribe}}
+            {{formData.describe}}
           </el-form-item>
 
           <el-table ref="tagListTable"
@@ -44,7 +44,7 @@
                              label="名称"
                              width="110">
             </el-table-column>
-            <el-table-column prop="discribe"
+            <el-table-column prop="describe"
                              label="描述"
                              width="140">
             </el-table-column>
@@ -130,7 +130,6 @@ export default {
     // 处理原树数据，刷新左侧树和其对应内容
     getTagTreeData () {
       this.tagTreeData = JSON.parse(JSON.stringify(this.treeData));
-      // console.log(this.tagTreeData);
       /* group */
       this.tagTreeData.forEach(group => {
         if (group.id === "1") {
@@ -138,7 +137,7 @@ export default {
           group.tagSelectList = [
             {
               name: "_kernal_version",
-              discribe: "应用程序内核版本",
+              describe: "应用程序内核版本",
               dataType: "整型",
               direction: "读写",
               source: "IO属性",
@@ -147,7 +146,7 @@ export default {
             },
             {
               name: "_cpu",
-              discribe: "CPU负荷",
+              describe: "CPU负荷",
               dataType: "整型",
               direction: "只读",
               source: "IO属性",
@@ -156,7 +155,7 @@ export default {
             },
             {
               name: "_mem_total",
-              discribe: "内存总数(k)",
+              describe: "内存总数(k)",
               dataType: "整型",
               direction: "只读",
               source: "IO属性",
@@ -175,31 +174,34 @@ export default {
               pass.tagSelectList = [
                 {
                   name: "_send_byte",
-                  discribe: "发送字节数(BYTE)",
+                  describe: "发送字节数(BYTE)",
                   dataType: "整型",
                   direction: "只读",
                   source: "IO属性",
                   passName: _pass.passName,
+                  passDescribe: _pass.passDescribe,
                   parentId: pass.id,
                   index: 0
                 },
                 {
                   name: "_rev_byte",
-                  discribe: "接收字节数(BYTE)",
+                  describe: "接收字节数(BYTE)",
                   dataType: "整型",
                   direction: "只读",
                   source: "IO属性",
                   passName: _pass.passName,
+                  passDescribe: _pass.passDescribe,
                   parentId: pass.id,
                   index: 1
                 },
                 {
                   name: "_io_status",
-                  discribe: "通道状态",
+                  describe: "通道状态",
                   dataType: "整型",
                   direction: "只读",
                   source: "IO属性",
                   passName: _pass.passName,
+                  passDescribe: _pass.passDescribe,
                   parentId: pass.id,
                   index: 2
                 }
@@ -211,45 +213,53 @@ export default {
                     equpiment.tagSelectList = [
                       {
                         name: "_send_package",
-                        discribe: "发送帧个数",
+                        describe: "发送帧个数",
                         dataType: "整型",
                         direction: "只读",
                         source: "IO属性",
                         passName: _pass.passName,
+                        passDescribe: _pass.passDescribe,
                         equpimentName: _equipment.equipmentName,
+                        equipmentDescribe: _equipment.equipmentDescribe,
                         parentId: equpiment.id,
                         index: 0
                       },
                       {
                         name: "_rev_package",
-                        discribe: "接收帧个数",
+                        describe: "接收帧个数",
                         dataType: "整型",
                         direction: "只读",
                         source: "IO属性",
                         passName: _pass.passName,
+                        passDescribe: _pass.passDescribe,
                         equpimentName: _equipment.equipmentName,
+                        equipmentDescribe: _equipment.equipmentDescribe,
                         parentId: equpiment.id,
                         index: 1
                       },
                       {
                         name: "_success_rate",
-                        discribe: "通信成功率",
+                        describe: "通信成功率",
                         dataType: "浮点",
                         direction: "只读",
                         source: "IO属性",
                         passName: _pass.passName,
+                        passDescribe: _pass.passDescribe,
                         equpimentName: _equipment.equipmentName,
+                        equipmentDescribe: _equipment.equipmentDescribe,
                         parentId: equpiment.id,
                         index: 2
                       },
                       {
                         name: "_io_status",
-                        discribe: "设备状态",
+                        describe: "设备状态",
                         dataType: "布尔",
                         direction: "只读",
                         source: "IO属性",
                         passName: _pass.passName,
+                        passDescribe: _pass.passDescribe,
                         equpimentName: _equipment.equipmentName,
+                        equipmentDescribe: _equipment.equipmentDescribe,
                         parentId: equpiment.id,
                         index: 3
                       }
@@ -257,7 +267,7 @@ export default {
                     _equipment.dataTags.forEach(tag => {
                       equpiment.tagSelectList.push({
                         name: tag.name,
-                        discribe: tag.discribe,
+                        describe: tag.describe,
                         dataType: tag.dataType,
                         direction: tag.direction,
                         source: "IO采集",
@@ -274,6 +284,7 @@ export default {
           });
         });
       });
+      // console.log(this.tagTreeData);
     },
     // 点击树节点：更新表格
     itemClick (param) {
