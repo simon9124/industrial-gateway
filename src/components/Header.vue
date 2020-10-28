@@ -518,7 +518,8 @@ export default {
             ip: "192.168.0.253",
             port: "50001"
           },
-          delayTime: 10
+          delayTime: 10,
+          dataTags: []
         };
       } else {
         this.formEquipment = {
@@ -545,7 +546,8 @@ export default {
             equipmentFactor: false,
             factorR1: "1.000",
             factorR2: "1.000"
-          }
+          },
+          dataTags: []
         };
       }
     },
