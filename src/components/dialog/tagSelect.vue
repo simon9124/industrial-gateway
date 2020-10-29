@@ -128,8 +128,10 @@ export default {
       this.getTagTreeData();
       /* 深拷贝，取消时还原数据用 */
       this.IOTagOrg = JSON.parse(JSON.stringify(this.formData.IOTag));
-      this.IOTagParentIdOrg = JSON.parse(JSON.stringify(this.formData.IOTagParentId));
-      this.IOTagSelectIdOrg = JSON.parse(JSON.stringify(this.formData.IOTagSelectId));
+      this.IOTagParentIdOrg =
+        this.formData.IOTagParentId ? JSON.parse(JSON.stringify(this.formData.IOTagParentId)) : "";
+      this.IOTagSelectIdOrg =
+        this.formData.IOTagSelectId ? JSON.parse(JSON.stringify(this.formData.IOTagSelectId)) : "";
     },
     // 处理原树数据，刷新左侧树和其对应内容
     getTagTreeData () {
@@ -316,7 +318,7 @@ export default {
   },
   watch: {
     dialogVisible (val) {
-      console.log(this.formData);
+      // console.log(this.formData);
       val === true && this.tagTreeData.forEach(group => {
         this.visibleSelect(group);
         group.children.forEach(pass => {
