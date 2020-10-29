@@ -3,12 +3,12 @@ const passTagColumn = [
   {
     prop: "name",
     label: "名称（英文）",
-    minWidth: 110
+    minWidth: 120
   },
   {
     prop: "describe",
     label: "描述（中文）",
-    minWidth: 140
+    minWidth: 160
   },
   {
     prop: "dataType",

@@ -148,7 +148,25 @@ export default {
       const tagListTemporary = [];
       this.multipleSelection.forEach(row => {
         row.dataTags.forEach(tag => {
-          tagListTemporary.push({
+          this.filterForm.equipmentStatusTag && tagListTemporary.push({ // 设备状态标签
+            id: Math.random().toString(36).substr(-10),
+            name: `${row.passName}.${row.equipmentName}._io_status`,
+            describe: `${this.filterForm.passDescribe ? row.passDescribe + " " : ""}${this.filterForm.equipmentDescribe ? row.equipmentDescribe + " " : ""}设备状态`,
+            ratioCalculation: false,
+            magnification: "2.0000",
+            base: "0.0000",
+            dataType: "布尔",
+            direction: tag.direction,
+            acquisitionCycle: tag.acquisitionCycle,
+            IOTag: `at.${row.passName}.${row.equipmentName}._io_status`,
+            IOTagParentId: row.id,
+            IOTagSelectId: "3",
+            slaveStationID: "1",
+            registerType: 0,
+            registerAddr: "0",
+            dataFormat: 0
+          });
+          tagListTemporary.push({ // 设备标签
             id: Math.random().toString(36).substr(-10),
             name: `${row.passName}.${row.equipmentName}.${tag.name}`,
             describe: `${this.filterForm.passDescribe ? row.passDescribe + " " : ""}${this.filterForm.equipmentDescribe ? row.equipmentDescribe + " " : ""}${tag.describe}`,
