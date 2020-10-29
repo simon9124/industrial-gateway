@@ -268,7 +268,7 @@
       </div>
     </el-dialog>
 
-    <!-- dialog - 选择插件 -->
+    <!-- dialog - 选择标签 -->
     <tag-select ref="tagSelect"
                 :id="id"
                 :tag-describe="tagDescribe"
@@ -278,6 +278,13 @@
                 :equipment-list="equipmentList"
                 @tag-click="tagClick"></tag-select>
 
+    <!-- dialog - 加载标签 -->
+    <tag-load ref="tagLoad"
+              :tree-data="treeData"
+              :data-tags="dataTags"
+              :pass-list="passList"
+              :equipment-list="equipmentList"></tag-load>
+
   </div>
 </template>
 
@@ -286,9 +293,10 @@ import { parseTime } from "@/utils"; // functions
 import XLSX from "xlsx"; // plugin - excel
 import { passTagColumn, passTagHeader, tagTranslation } from "@/mock/tableColumn";
 import TagSelect from "@/components/dialog/tagSelect"; // 组件：选择标签
+import TagLoad from "@/components/dialog/tagLoad"; // 组件：选择标签
 
 export default {
-  components: { TagSelect },
+  components: { TagSelect, TagLoad },
   props: {
     // 树数据 - 传递给tagSelect子组件选择标签用
     treeData: {
@@ -430,9 +438,9 @@ export default {
         this.dialogTitle = `数据服务标签-${this.dialogType === "insert" ? "新建" : "修改"}`;
       });
     },
-    // 加载
+    // 点击按钮 - 加载标签 - 调用子组件事件
     loadTags () {
-
+      this.$refs.tagLoad.tagLoad();
     },
     // 编辑
     editTag (row) {
