@@ -219,8 +219,8 @@ const passList = [
       },
       {
         id: "3",
-        name: "C1.D1.Tag3",
-        describe: "通道1 设备1 标签1",
+        name: "C1.D2.Tag1",
+        describe: "通道1 设备2 标签1",
         ratioCalculation: false,
         magnification: "2.0000",
         base: "0.0000",
@@ -237,8 +237,8 @@ const passList = [
       },
       {
         id: "4",
-        name: "C1.D1.Tag4",
-        describe: "通道1 设备1 标签1",
+        name: "C1.D2.Tag2",
+        describe: "通道1 设备2 标签2",
         ratioCalculation: false,
         magnification: "1.0000",
         base: "0.0000",
