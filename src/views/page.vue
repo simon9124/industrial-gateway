@@ -102,7 +102,7 @@ export default {
   created () {
     const screenHeight = document.documentElement.clientHeight;
     // console.log(screenHeight);
-    this.contentHeight = (screenHeight - 8 * 2 - 73) + "px";
+    this.contentHeight = (screenHeight - 8 * 2 - 74) + "px";
     this.getTreeData();
   },
   methods: {

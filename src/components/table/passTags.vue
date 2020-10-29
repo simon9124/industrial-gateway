@@ -46,6 +46,7 @@
               border
               current-row-key
               empty-text="暂无标签"
+              :max-height="tableMaxHeight"
               @selection-change="handleSelectionChange">
 
       <el-table-column type="selection"
@@ -403,10 +404,14 @@ export default {
       submitLoading: false, // loading - 提交按钮
       downloadLoading: false, // loading - 导出
       /* props */
-      tagDescribe: ""
+      tagDescribe: "",
+      /* 动态高度 */
+      tableMaxHeight: 0 // 流体表格最大高度
     };
   },
   created () {
+    const screenHeight = document.documentElement.clientHeight;
+    this.tableMaxHeight = screenHeight - 73 - 20 * 2 - (40 + 15) - (40 + 20) - 40;
     this.getData();
   },
   methods: {
