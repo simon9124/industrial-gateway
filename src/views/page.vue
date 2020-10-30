@@ -115,15 +115,13 @@ export default {
     // 获取数据
     getTreeData () {
       this.factoryData = factoryData;
-      // console.log(this.factoryData);
       this.factoryData[0].children.forEach(group => {
         group.children.forEach(factory => {
           factory.selected && (this.treeData = factory.treeData);
         });
       });
-      // this.treeData = treeData;
-      this.passList = passList;
       this.pluginList = pluginList;
+      this.passList = passList;
       this.equipmentList = equipmentList;
     },
     // 点击树节点
