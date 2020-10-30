@@ -9,6 +9,7 @@
                 :level="level"
                 :id="id"
                 :tree-data="treeData"
+                :factory-data="factoryData"
                 :pass-list="passList"
                 :plugin-list="pluginList"
                 :pass-type-list="passTypeList"
@@ -19,7 +20,8 @@
                 :equipment-list="equipmentList"
                 @item-add="itemAdd"
                 @items-copy="itemsCopy"
-                @item-delete="itemHandle('del')"></Header>
+                @item-delete="itemHandle('del')"
+                @factory-select="factorySelect"></Header>
       </el-header>
 
       <!-- 中 · 内容 -->
@@ -69,7 +71,10 @@ import Group from "@/components/content/Group"; // 组件：右侧内容 - 组
 import Pass from "@/components/content/Pass"; // 组件：右侧内容 - 通道
 import Equipment from "@/components/content/Equipment"; // 组件：右侧内容 - 通道
 /* mockData */
-import { treeData } from "@/mock/tree.js"; // mockData - 服务导航
+import {
+  // treeData, // mockData - 服务导航
+  factoryData
+} from "@/mock/tree.js";
 import { pluginList } from "@/mock/plugin.js"; // mockData - 插件列表
 import {
   passList, // mockData - 通道列表
@@ -82,6 +87,7 @@ export default {
     return {
       /* data */
       treeData: [], // 树数据
+      factoryData: [], // 工程数据
       passList: [], // 通道列表
       pluginList: [], // 插件列表
       equipmentList: [], // 设备列表
@@ -108,7 +114,14 @@ export default {
   methods: {
     // 获取数据
     getTreeData () {
-      this.treeData = treeData;
+      this.factoryData = factoryData;
+      // console.log(this.factoryData);
+      this.factoryData[0].children.forEach(group => {
+        group.children.forEach(factory => {
+          factory.selected && (this.treeData = factory.treeData);
+        });
+      });
+      // this.treeData = treeData;
       this.passList = passList;
       this.pluginList = pluginList;
       this.equipmentList = equipmentList;
@@ -124,7 +137,7 @@ export default {
     itemHandle (type) {
       this.handleType = type;
       if (this.handleType === "up" || this.handleType === "down") { // 上移 / 下移
-        treeData.forEach((service, i) => {
+        this.treeData.forEach((service, i) => {
           if (this.handleType === "up") { // 上移 -> 循环service.children
             service.children.forEach((pass, _i) => {
               if (this.level === 2 && pass.id === this.id) { // 通道
@@ -133,6 +146,8 @@ export default {
                   return false;
                 }
                 this.toggleExchange(service.children, _i, "up");
+                pass.selected = false; // 取消当前选择的通道
+                this.refreshSelect(); // 重设树，选中顶部 "采集服务"
               }
               if (this.level === 3) { // 设备 -> 循环pass.children
                 pass.children.forEach((equipment, __i) => {
@@ -142,6 +157,8 @@ export default {
                       return false;
                     }
                     this.toggleExchange(pass.children, __i, "up");
+                    equipment.selected = false; // 取消当前选择的设备
+                    this.refreshSelect(); // 重设树，选中顶部 "采集服务"
                   }
                 });
               }
@@ -155,6 +172,8 @@ export default {
                   return false;
                 }
                 this.toggleExchange(service.children, _i, "down");
+                service.children[_i + 1].selected = false; // 取消当前选择的通道
+                this.refreshSelect(); // 重设树，选中顶部 "采集服务"
               }
               if (this.level === 3) { // 设备 -> 逆循环service.children[_i].children
                 for (let __i = service.children[_i].children.length - 1; __i >= 0; __i--) {
@@ -164,6 +183,8 @@ export default {
                       return false;
                     }
                     this.toggleExchange(service.children[_i].children, __i, "down");
+                    service.children[_i].children[__i + 1].selected = false; // 取消当前选择的设备
+                    this.refreshSelect(); // 重设树，选中顶部 "采集服务"
                   }
                 }
               }
@@ -175,7 +196,7 @@ export default {
         this.$confirm(`将删除采集${this.level === 2 ? "通道" : "设备"}, 是否继续?`, "提示", {
           type: "warning"
         }).then(() => {
-          treeData.forEach(service => {
+          this.treeData.forEach(service => {
             service.children.forEach((pass, i) => {
               /* 删除通道 */
               if (this.level === 2 && this.id === pass.id) {
@@ -200,13 +221,8 @@ export default {
               });
             });
           });
-          /* 重设树，选中顶部 "采集服务" */
-          this.$nextTick(() => {
-            this.level = 1;
-            this.id = "1";
-            this.$set(treeData[0], "selected", true);
-          });
-          // console.log(treeData);
+          this.refreshSelect(); // 重设树，选中顶部 "采集服务"
+          // console.log(this.treeData);
           // console.log(equipmentList);
         }).catch(() => { });
       }
@@ -216,6 +232,14 @@ export default {
       if (this.handleType === "copy") { // 复制
         this.$refs.header.copyItems();
       }
+    },
+    // 封装：上移、下移、删除后，重新选中顶部 "采集服务"
+    refreshSelect () {
+      this.$nextTick(() => {
+        this.level = 1;
+        this.id = "1";
+        this.$set(this.treeData[0], "selected", true);
+      });
     },
     // 封装：上移/下移，已经到最底层的message错误提示信息
     moveEnd (msg) {
@@ -238,7 +262,7 @@ export default {
     // 新增
     itemAdd (formData) {
       console.log(formData);
-      treeData.forEach(service => {
+      this.treeData.forEach(service => {
         /* 新增通道 */
         if (this.level === 1 && service.id === this.id) {
           formData.id = this.id + Math.random().toString(36).substr(-10); // 随机生成id
@@ -270,14 +294,14 @@ export default {
           }
         });
       });
-      // console.log(treeData);
+      // console.log(this.treeData);
       // console.log(passList);
       // console.log(equipmentList);
     },
     // 复制
     itemsCopy (multipleSelection) {
       // console.log(multipleSelection);
-      treeData.forEach(service => {
+      this.treeData.forEach(service => {
         /* 复制通道 */
         if (this.level === 1 && service.id === this.id) {
           multipleSelection.forEach(selection => {
@@ -315,9 +339,14 @@ export default {
           }
         });
       });
-      // console.log(treeData);
+      // console.log(this.treeData);
       // console.log(passList);
       // console.log(equipmentList);
+    },
+    // 点击树节点 - 选择工程
+    factorySelect (param) {
+      // console.log(param);
+      this.treeData = param;
     }
   }
 };

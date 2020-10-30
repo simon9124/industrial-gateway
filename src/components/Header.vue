@@ -16,7 +16,8 @@
                  type="success">本地运行</el-button>
       <el-button size="small"
                  icon="el-icon-suitcase"
-                 type="success">工程管理</el-button>
+                 type="success"
+                 @click="factoryManage">工程管理</el-button>
       <el-button size="small"
                  icon="el-icon-data-board"
                  type="success">远程监视</el-button>
@@ -328,7 +329,7 @@
                    :plugin-list="pluginList"
                    @plugin-click="pluginClick"></plugin-select>
 
-    <!-- dialog · 复制 -->
+    <!-- dialog - 复制 -->
     <el-dialog class="copy-dialog"
                :title="dialogCopyTitle"
                :visible.sync="dialogCopyVisible">
@@ -361,6 +362,11 @@
       </div>
     </el-dialog>
 
+    <!-- dialog - 工程管理 -->
+    <factory-manage ref="factoryManage"
+                    :factory-data="factoryData"
+                    @factory-select="factorySelect"></factory-manage>
+
   </div>
 </template>
 
@@ -368,12 +374,17 @@
 import PluginSelect from "@/components/dialog/pluginSelect"; // 组件：选择插件
 import PassParams from "@/components/dialog/passParams"; // 组件：其他参数 - 通道
 import EquipmentParams from "@/components/dialog/equipmentParams"; // 组件：其他参数 - 通道
+import FactoryManage from "@/components/dialog/factoryManage"; // 组件：工程管理
 
 export default {
-  components: { PluginSelect, PassParams, EquipmentParams },
+  components: { PluginSelect, PassParams, EquipmentParams, FactoryManage },
   props: {
     // 树数据
     treeData: {
+      type: Array
+    },
+    // 工程数据
+    factoryData: {
       type: Array
     },
     // 树节点的操作方式：add / delete / up / down
@@ -615,6 +626,14 @@ export default {
     // 点击按钮 - 其他参数[设备] - 调用子组件事件
     setParamsEquipment () {
       this.$refs.equipmentParams.setParams();
+    },
+    // 点击按钮 - 工程管理 - 调用子组件事件
+    factoryManage () {
+      this.$refs.factoryManage.factoryManage();
+    },
+    // 回调：工程管理选择工程
+    factorySelect (param) {
+      this.$emit("factory-select", param);
     }
   }
 };
@@ -686,6 +705,16 @@ export default {
         &-item {
           margin-bottom: 10px;
         }
+      }
+    }
+  }
+  // 工程管理dialog
+  .factory-manage {
+    .el-dialog {
+      width: 300px;
+      min-height: 500px;
+      .btns {
+        margin-bottom: 20px;
       }
     }
   }
