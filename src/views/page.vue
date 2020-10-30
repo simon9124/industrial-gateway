@@ -201,21 +201,21 @@ export default {
               /* 删除通道 */
               if (this.level === 2 && this.id === pass.id) {
                 pass.children.forEach((equipment, _i) => { // 从设备列表删除 - 通道下面的设备
-                  equipmentList.forEach((_equipment, __i) => {
-                    equipment.id === _equipment.id && equipmentList.splice(__i, 1);
+                  this.equipmentList.forEach((_equipment, __i) => {
+                    equipment.id === _equipment.id && this.equipmentList.splice(__i, 1);
                   });
                 });
                 service.children.splice(i, 1); // 从树中删除
-                passList.forEach((_pass, _i) => { // 从通道列表删除
-                  _pass.id === pass.id && passList.splice(_i, 1);
+                this.passList.forEach((_pass, _i) => { // 从通道列表删除
+                  _pass.id === pass.id && this.passList.splice(_i, 1);
                 });
               }
               /* 删除设备 */
               this.level === 3 && pass.children.forEach((equipment, _i) => {
                 if (this.id === equipment.id) {
                   pass.children.splice(_i, 1); // 从树中删除
-                  equipmentList.forEach((_equipment, __i) => { // 从通道列表删除
-                    _equipment.id === equipment.id && equipmentList.splice(__i, 1);
+                  this.equipmentList.forEach((_equipment, __i) => { // 从通道列表删除
+                    _equipment.id === equipment.id && this.equipmentList.splice(__i, 1);
                   });
                 }
               });
@@ -223,7 +223,7 @@ export default {
           });
           this.refreshSelect(); // 重设树，选中顶部 "采集服务"
           // console.log(this.treeData);
-          // console.log(equipmentList);
+          // console.log(this.equipmentList);
         }).catch(() => { });
       }
       if (this.handleType === "add") { // 新增
@@ -276,7 +276,7 @@ export default {
             opened: true // 父节点须设置opened为true，否则子节点首次新增时打不开
           };
           service.children.push(obj); // 新增到树
-          passList.push(formData); // 新增到通道列表
+          this.passList.push(formData); // 新增到通道列表
         }
         /* 新增设备 */
         this.level === 2 && service.children.forEach(pass => {
@@ -290,13 +290,13 @@ export default {
               selected: false
             };
             pass.children.push(obj); // 新增到树
-            equipmentList.push(formData); // 新增到设备列表
+            this.equipmentList.push(formData); // 新增到设备列表
           }
         });
       });
       // console.log(this.treeData);
-      // console.log(passList);
-      // console.log(equipmentList);
+      // console.log(this.passList);
+      // console.log(this.equipmentList);
     },
     // 复制
     itemsCopy (multipleSelection) {
@@ -317,7 +317,7 @@ export default {
               opened: true // 父节点须设置opened为true，否则子节点首次新增时打不开
             };
             service.children.push(obj); // 在树里复制
-            passList.push(selectionCopy); // 在通道列表复制
+            this.passList.push(selectionCopy); // 在通道列表复制
           });
         }
         /* 复制设备 */
@@ -334,14 +334,14 @@ export default {
                 selected: false
               };
               pass.children.push(obj); // 在树里复制
-              equipmentList.push(selectionCopy); // 在设备列表复制
+              this.equipmentList.push(selectionCopy); // 在设备列表复制
             });
           }
         });
       });
       // console.log(this.treeData);
-      // console.log(passList);
-      // console.log(equipmentList);
+      // console.log(this.passList);
+      // console.log(this.equipmentList);
     },
     // 点击树节点 - 选择工程
     factorySelect (param) {
