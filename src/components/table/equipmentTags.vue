@@ -248,6 +248,7 @@
 
 <script>
 import { parseTime } from "@/utils"; // functions
+import { arraySort } from "@/utils/dataHanding";// function - 对象数组根据key排序
 import XLSX from "xlsx"; // plugin - excel
 import EquipmentTagParams from "@/components/dialog/equipmentTagParams"; // 组件：其他参数 - 设备数据标签
 /* mockData */
@@ -398,6 +399,7 @@ export default {
       } else {
         this.dataTags = this.dataTagsOrg;
       }
+      this.dataTags.sort(arraySort("name", "asc")); // 重排序
       this.dataTags.map((tag, i) => {
         this.$set(tag, "index", i + 1); // 追加序列号，从1开始
       });
