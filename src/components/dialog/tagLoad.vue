@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { arraySort } from "@/utils/dataHanding";// 对象数组根据key排序
 
 export default {
   props: {
@@ -147,61 +148,68 @@ export default {
       /* 1.新建标签列表，根据多选数据放入临时标签列表 */
       const tagListTemporary = [];
       this.multipleSelection.forEach(row => {
+        this.filterForm.equipmentStatusTag && tagListTemporary.push({ // 设备状态标签 - 只添加一个：_io_status
+          id: Math.random().toString(36).substr(-10),
+          name: `${row.passName}.${row.equipmentName}._io_status`,
+          describe: `${this.filterForm.passDescribe ? row.passDescribe + " " : ""}${this.filterForm.equipmentDescribe ? row.equipmentDescribe + " " : ""}设备状态`,
+          ratioCalculation: false,
+          magnification: "2.0000",
+          base: "0.0000",
+          dataType: "布尔",
+          direction: "只读",
+          acquisitionCycle: "1000",
+          IOTag: `at.${row.passName}.${row.equipmentName}._io_status`,
+          IOTagParentId: row.id,
+          IOTagSelectId: "3",
+          slaveStationID: "1",
+          registerType: 0,
+          registerAddr: "0",
+          dataFormat: 0
+        });
         row.dataTags.forEach(tag => {
-          this.filterForm.equipmentStatusTag && tagListTemporary.push({ // 设备状态标签
-            id: Math.random().toString(36).substr(-10),
-            name: `${row.passName}.${row.equipmentName}._io_status`,
-            describe: `${this.filterForm.passDescribe ? row.passDescribe + " " : ""}${this.filterForm.equipmentDescribe ? row.equipmentDescribe + " " : ""}设备状态`,
-            ratioCalculation: false,
-            magnification: "2.0000",
-            base: "0.0000",
-            dataType: "布尔",
-            direction: tag.direction,
-            acquisitionCycle: tag.acquisitionCycle,
-            IOTag: `at.${row.passName}.${row.equipmentName}._io_status`,
-            IOTagParentId: row.id,
-            IOTagSelectId: "3",
-            slaveStationID: "1",
-            registerType: 0,
-            registerAddr: "0",
-            dataFormat: 0
-          });
-          tagListTemporary.push({ // 设备标签
-            id: Math.random().toString(36).substr(-10),
-            name: `${row.passName}.${row.equipmentName}.${tag.name}`,
-            describe: `${this.filterForm.passDescribe ? row.passDescribe + " " : ""}${this.filterForm.equipmentDescribe ? row.equipmentDescribe + " " : ""}${tag.describe}`,
-            ratioCalculation: false,
-            magnification: "2.0000",
-            base: "0.0000",
-            dataType: tag.dataType,
-            direction: tag.direction,
-            acquisitionCycle: tag.acquisitionCycle,
-            IOTag: `io.${row.passName}.${row.equipmentName}.${tag.name}`,
-            IOTagParentId: row.id,
-            IOTagSelectId: tag.id,
-            slaveStationID: "1",
-            registerType: 0,
-            registerAddr: "0",
-            dataFormat: 0
-          });
+          // console.log(tag);
+          if (
+            (this.filterForm.floatingPoint && tag.dataType === "浮点") ||
+            (this.filterForm.parseInt && tag.dataType === "整型") ||
+            (this.filterForm.boolean && tag.dataType === "布尔") ||
+            (this.filterForm.string && tag.dataType === "字符串") ||
+            (this.filterForm.binary && tag.dataType === "二进制")
+          ) {
+            tagListTemporary.push({ // 设备标签 - 有几个添加几个
+              id: Math.random().toString(36).substr(-10),
+              name: `${row.passName}.${row.equipmentName}.${tag.name}`,
+              describe: `${this.filterForm.passDescribe ? row.passDescribe + " " : ""}${this.filterForm.equipmentDescribe ? row.equipmentDescribe + " " : ""}${tag.describe}`,
+              ratioCalculation: false,
+              magnification: "2.0000",
+              base: "0.0000",
+              dataType: tag.dataType,
+              direction: tag.direction,
+              acquisitionCycle: tag.acquisitionCycle,
+              IOTag: `io.${row.passName}.${row.equipmentName}.${tag.name}`,
+              IOTagParentId: row.id,
+              IOTagSelectId: tag.id,
+              slaveStationID: "1",
+              registerType: 0,
+              registerAddr: "0",
+              dataFormat: 0
+            });
+          }
         });
       });
       // console.log(this.dataTags);
 
       /* 2.临时标签列表vs原标签列表，根据name筛选出需要添加的标签 */
       // console.log(tagListTemporary);
-      const addTags =
-        tagListTemporary.filter(tag => {
-          return !this.dataTags.some(
-            _tag => _tag.name === tag.name
-          );
-        });
+      const addTags = tagListTemporary.filter(tag => {
+        return !this.dataTags.some(_tag => _tag.name === tag.name);
+      });
       // console.log(addTags);
 
       /* 3.将需要添加的标签追加到原标签列表 */
       addTags.forEach(tag => {
         this.dataTags.push(tag);
       });
+      this.dataTags.sort(arraySort("name", "asc")); // 重排序
       this.dataTags.map((tag, i) => {
         this.$set(tag, "index", i + 1); // 追加序列号，从1开始
       });
