@@ -291,6 +291,7 @@
 
 <script>
 import { parseTime } from "@/utils"; // functions
+import { arraySort } from "@/utils/dataHanding";// function - 对象数组根据key排序
 import XLSX from "xlsx"; // plugin - excel
 import { passTagColumn, passTagHeader, tagTranslation } from "@/mock/tableColumn";
 import TagSelect from "@/components/dialog/tagSelect"; // 组件：选择标签
@@ -429,6 +430,7 @@ export default {
       } else {
         this.dataTags = this.dataTagsOrg;
       }
+      this.dataTags.sort(arraySort("name", "asc")); // 重排序
       this.dataTags.map((tag, i) => {
         this.$set(tag, "index", i + 1); // 追加序列号，从1开始
       });
