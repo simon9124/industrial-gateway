@@ -392,7 +392,7 @@ export default {
       type: String,
       default: ""
     },
-    // 被选择的树的层级
+    // 被选择的树的层级 - 服务导航
     level: {
       type: Number,
       default: 3
@@ -711,11 +711,17 @@ export default {
   // 工程管理dialog
   .factory-manage {
     .el-dialog {
-      width: 300px;
+      width: 320px;
       min-height: 500px;
       .btns {
         margin-bottom: 20px;
       }
+    }
+  }
+  // 工程增/删dialog
+  .factory-operate {
+    .el-dialog {
+      width: 400px;
     }
   }
 }
