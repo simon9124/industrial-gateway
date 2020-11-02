@@ -82,6 +82,7 @@ const treeTempleteData = [
     id: "2",
     level: 1,
     opened: true,
+    selected: false, // 未被选中的父节点需设置selected为false，否则该节点切换时会有bug
     children: []
   }
 ];

@@ -58,7 +58,8 @@ const passList = [
       ip: "192.168.0.253",
       port: "50001"
     },
-    delayTime: 10
+    delayTime: 10,
+    idFactory: "factory-1"
   },
   {
     id: "1-2",
@@ -118,7 +119,8 @@ const passList = [
       ip: "192.168.0.253",
       port: "50001"
     },
-    delayTime: 10
+    delayTime: 10,
+    idFactory: "factory-1"
   },
   {
     id: "2-1",
@@ -253,7 +255,8 @@ const passList = [
         registerAddr: "0",
         dataFormat: 0
       }
-    ]
+    ],
+    idFactory: "factory-1"
   }
 ];
 
@@ -372,7 +375,8 @@ const equipmentList = [
         displacementDeviation: "0",
         useBCD: false
       }
-    ]
+    ],
+    idFactory: "factory-1"
   },
   {
     id: "1-1-2",
@@ -487,7 +491,8 @@ const equipmentList = [
         displacementDeviation: "0",
         useBCD: false
       }
-    ]
+    ],
+    idFactory: "factory-1"
   },
   {
     id: "1-2-1",
@@ -602,7 +607,8 @@ const equipmentList = [
         displacementDeviation: "0",
         useBCD: false
       }
-    ]
+    ],
+    idFactory: "factory-1"
   },
   {
     id: "1-2-2",
@@ -717,7 +723,8 @@ const equipmentList = [
         displacementDeviation: "0",
         useBCD: false
       }
-    ]
+    ],
+    idFactory: "factory-1"
   }
 ];
 
