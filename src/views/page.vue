@@ -98,9 +98,11 @@ export default {
       checkList: ["无校验", "奇校验", "偶校验", "MARK校验", "SPACE校验"], // 校验位
       stopList: ["1", "1.5", "2"], // 停止位
       /* tree */
-      level: 1, // 被选择的树的层级
-      id: null, // 被选择内容的id
+      level: 1, // 被选择的树的层级 - 服务导航
+      id: null, // 被选择内容的id - 服务导航
       handleType: "", // 树节点的操作方式
+      levelFactory: 1, // 被选择的树的层级 - 工程管理
+      idFactory: "factory-1", // 被选择内容的id - 工程管理
       /* 动态高度 */
       contentHeight: "0px" // 中部内容
     };
@@ -123,6 +125,12 @@ export default {
       this.pluginList = pluginList;
       this.passList = passList;
       this.equipmentList = equipmentList;
+      this.refreshData();
+    },
+    // 筛选数据
+    refreshData () {
+      this.passList = this.passList.filter(pass => pass.idFactory === this.idFactory);
+      this.equipmentList = this.equipmentList.filter(equipment => equipment.idFactory === this.idFactory);
     },
     // 点击树节点
     itemClick (param) {
@@ -271,7 +279,8 @@ export default {
             level: 2,
             children: [],
             selected: false,
-            opened: true // 父节点须设置opened为true，否则子节点首次新增时打不开
+            opened: true, // 父节点须设置opened为true，否则子节点首次新增时打不开
+            idFactory: this.idFactory // 携带工程id
           };
           service.children.push(obj); // 新增到树
           this.passList.push(formData); // 新增到通道列表
@@ -285,7 +294,8 @@ export default {
               icon: "fa fa-edit",
               id: formData.id,
               level: 3,
-              selected: false
+              selected: false,
+              idFactory: this.idFactory // 携带工程id
             };
             pass.children.push(obj); // 新增到树
             this.equipmentList.push(formData); // 新增到设备列表
@@ -344,7 +354,11 @@ export default {
     // 点击树节点 - 选择工程
     factorySelect (param) {
       // console.log(param);
-      this.treeData = param;
+      const { level, id } = param;
+      this.levelFactory = level;
+      this.idFactory = id;
+      this.levelFactory === 3 && (this.treeData = param.treeData);
+      this.refreshData();
     }
   }
 };
