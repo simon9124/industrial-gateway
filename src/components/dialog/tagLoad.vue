@@ -216,20 +216,6 @@ export default {
 
       this.dialogVisible = false;
     }
-  },
-  watch: {
-    dialogVisible (val) {
-      // console.log(this.formData);
-      // val === true && this.tagTreeData.forEach(group => {
-      //   this.visibleSelect(group);
-      //   group.children.forEach(pass => {
-      //     this.visibleSelect(pass);
-      //     pass.children.forEach(equipment => {
-      //       this.visibleSelect(equipment);
-      //     });
-      //   });
-      // });
-    }
   }
 };
 </script>
