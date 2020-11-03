@@ -125,7 +125,7 @@ const factoryData = [
       {
         text: "工程组2",
         describe: "第二工程组",
-        creatTime: "2020-08-22 18:25:20",
+        creatTime: "2020-08-25 18:25:20",
         icon: "fa fa-laptop",
         id: "group-2",
         level: 2,
@@ -135,4 +135,4 @@ const factoryData = [
   }
 ];
 
-export { factoryData };
+export { factoryData, treeTempleteData };
