@@ -8,6 +8,7 @@
                 :handleType="handleType"
                 :level="level"
                 :id="id"
+                :id-factory="idFactory"
                 :tree-data="treeData"
                 :factory-data="factoryData"
                 :pass-list="passList"
@@ -354,9 +355,21 @@ export default {
     factorySelect (param) {
       // console.log(param);
       const { level, id } = param;
-      this.idFactory = id;
-      level === 3 && (this.treeData = param.treeData);
-      this.refreshData();
+      if (level === 3) {
+        this.idFactory = id;
+        this.treeData = param.treeData;
+        this.treeData.forEach(group => { // 取消所有选中
+          group.selected = false;
+          group.children.forEach(pass => {
+            pass.selected = false;
+            pass.children.forEach(equipment => {
+              equipment.selected = false;
+            });
+          });
+        });
+        this.refreshSelect(); // 重设树，选中顶部 "采集服务"
+        this.refreshData();
+      }
     }
   }
 };
