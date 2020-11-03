@@ -364,6 +364,7 @@
 
     <!-- dialog - 工程管理 -->
     <factory-manage ref="factoryManage"
+                    :id-factory="idFactory"
                     :factory-data="factoryData"
                     @factory-select="factorySelect"></factory-manage>
 
@@ -397,8 +398,12 @@ export default {
       type: Number,
       default: 3
     },
-    // 被选择的id
+    // 被选择的id - 服务导航
     id: {
+      type: String
+    },
+    // 被选择的id - 工程
+    idFactory: {
       type: String
     },
     // 通道列表
