@@ -97,9 +97,9 @@ export default {
       type: Array,
       default: () => []
     },
-    // 当前通道数据
-    formPass: {
-      type: Object
+    // 被选择的id - 工程
+    idFactory: {
+      type: String
     }
   },
   data () {
@@ -133,9 +133,21 @@ export default {
     // 工程管理
     factoryManage () {
       this.dialogVisible = true;
+      this.getSelectedFactory(this.idFactory);
     },
     // 获取被选择的工程
-    getSelectedFactory () { },
+    getSelectedFactory (idOperate) {
+      // console.log(idOperate);
+      this.factoryData[0].selected = false; // 取消顶部选择
+      this.factoryData[0].children.forEach(group => {
+        group.selected = false; // 取消选中全部工程组
+        group.children.forEach(factory => {
+          factory.selected = false; // 取消选中全部工程
+          factory.id === idOperate && (factory.selected = true); // 选中当前工程
+          this.formFactoryOrg = factory;
+        });
+      });
+    },
     // 点击树节点
     itemClick (param) {
       // console.log(param);
@@ -193,8 +205,6 @@ export default {
               this.id === group.id && group.children.push(formData);
             });
           }
-          /* 3.重新选中当前的工程 */
-
           this.submitLoading = false;
           this.dialogManageVisible = false;
           break;
@@ -213,6 +223,16 @@ export default {
           this.dialogManageVisible = false;
           break;
       }
+      this.getSelectedFactory("root"); // 实际取消所有选中
+      this.refreshSelect();
+    },
+    // 封装：重新选中顶部 "工程组列表"
+    refreshSelect () {
+      this.$nextTick(() => {
+        this.level = 1;
+        this.id = "root";
+        this.$set(this.factoryData[0], "selected", true);
+      });
     },
     // 删除
     itemDelete () { }
