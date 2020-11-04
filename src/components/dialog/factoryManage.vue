@@ -144,6 +144,7 @@ export default {
         group.children.forEach(factory => {
           factory.selected = false; // 取消选中全部工程
           factory.id === idOperate && (factory.selected = true); // 选中当前工程
+          this.level = 3;
           this.formFactoryOrg = factory;
         });
       });
