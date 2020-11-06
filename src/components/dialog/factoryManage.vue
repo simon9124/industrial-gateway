@@ -100,6 +100,14 @@ export default {
     // 被选择的id - 工程
     idFactory: {
       type: String
+    },
+    // 通道列表
+    passList: {
+      type: Array
+    },
+    // 设备列表
+    equipmentList: {
+      type: Array
     }
   },
   data () {
@@ -139,12 +147,14 @@ export default {
     getSelectedFactory (idOperate) {
       // console.log(idOperate);
       this.factoryData[0].selected = false; // 取消顶部选择
+      idOperate === null && this.refreshSelect(); // 无工程时选中顶部“工程组列表”
       this.factoryData[0].children.forEach(group => {
         group.selected = false; // 取消选中全部工程组
         group.children.forEach(factory => {
           factory.selected = false; // 取消选中全部工程
           factory.id === idOperate && (factory.selected = true); // 选中当前工程
           this.level = 3;
+          this.id = idOperate;
           this.formFactoryOrg = factory;
         });
       });
@@ -236,7 +246,56 @@ export default {
       });
     },
     // 删除
-    itemDelete () { }
+    itemDelete () {
+      this.$confirm(`将删除该${this.level === 2 ? "工程组" : "工程"}, 是否继续?`, "提示", {
+        type: "warning"
+      }).then(() => {
+        this.factoryData[0].children.forEach((group, i) => {
+          /* 删除工程组 */
+          this.level === 2 && this.id === group.id && this.factoryData[0].children.splice(i, 1);
+          /* 删除工程 */
+          this.level === 3 && group.children.forEach((factory, _i) => {
+            this.id === factory.id && group.children.splice(_i, 1);
+          });
+          /* 删除(工程组下的)工程对应的通道和设备 */
+        });
+        // console.log(this.factoryData);
+        if (
+          this.factoryData[0].children.length === 0 || // 没有一个工程组
+          this.factoryData[0].children.every(group => // 有工程组，但所有工程组都没有工程
+            group && group.children.length === 0
+          )
+        ) {
+          /* 没有工程 -> treeData为空 */
+          this.$emit("factory-select", { // 向父组件传递事件及参数，id设置为null，树数据为空
+            level: 3,
+            id: null,
+            treeData: []
+          });
+          this.refreshSelect(); // 重设树，选中顶部 "工程组列表"
+        } else if (
+          this.factoryData[0].children.some(group => // 有工程组，且至少有1个工程组下面有工程
+            group && group.children.length !== 0
+          )
+        ) {
+          /* 还有工程 -> 选中首个工程 */
+          var bool = true;
+          this.factoryData[0].children.forEach((group, i) => {
+            if (bool && group && group.children.length !== 0) {
+              this.level = 3;
+              this.id = group.children[0].id;
+              this.$set(group.children[0], "selected", true); // 选中第一个工程
+              this.$emit("factory-select", { // 向父组件传递事件及参数，id设置为null，树数据为空
+                level: 3,
+                id: group.children[0].id,
+                treeData: group.children[0].treeData
+              });
+              bool = false;
+            }
+          });
+        }
+      }).catch(() => { });
+    }
   }
 };
 </script>
