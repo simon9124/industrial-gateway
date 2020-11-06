@@ -32,12 +32,15 @@
         <el-aside class="left-panel"
                   :style="{height:contentHeight}">
           <div class="left-panel-title">服务导航</div>
-          <left-tree class="left-panel-tree"
+          <left-tree v-if="treeData.length!==0"
+                     class="left-panel-tree"
                      :data="treeData"
                      :id="id"
                      @item-click="itemClick"
                      @item-handle="itemHandle">
           </left-tree>
+          <div v-else
+               class="left-panel-tree">未选中工程</div>
         </el-aside>
 
         <!--右 · 表-->
@@ -358,16 +361,18 @@ export default {
       if (level === 3) {
         this.idFactory = id;
         this.treeData = param.treeData;
-        this.treeData.forEach(group => { // 取消所有选中
-          group.selected = false;
-          group.children.forEach(pass => {
-            pass.selected = false;
-            pass.children.forEach(equipment => {
-              equipment.selected = false;
+        if (this.treeData.length !== 0) { // 若树数据不为空
+          this.treeData.forEach(group => { // 取消所有选中
+            group.selected = false;
+            group.children.forEach(pass => {
+              pass.selected = false;
+              pass.children.forEach(equipment => {
+                equipment.selected = false;
+              });
             });
           });
-        });
-        this.refreshSelect(); // 重设树，选中顶部 "采集服务"
+          this.refreshSelect(); // 重设树，选中顶部 "采集服务"
+        }
         this.refreshData();
       }
     }
