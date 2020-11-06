@@ -366,6 +366,8 @@
     <factory-manage ref="factoryManage"
                     :id-factory="idFactory"
                     :factory-data="factoryData"
+                    :pass-list="passList"
+                    :equipment-list="equipmentList"
                     @factory-select="factorySelect"></factory-manage>
 
   </div>
