@@ -110,7 +110,8 @@ const factoryData = [
             id: "factory-1",
             selected: true,
             level: 3,
-            treeData: treeData
+            treeData: treeData,
+            parentId: "group-1"
           },
           {
             text: "采集器工程2",
@@ -118,7 +119,8 @@ const factoryData = [
             icon: "fa fa-edit",
             id: "factory-2",
             level: 3,
-            treeData: treeTempleteData
+            treeData: treeTempleteData,
+            parentId: "group-1"
           }
         ]
       },
