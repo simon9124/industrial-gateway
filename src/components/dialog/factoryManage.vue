@@ -212,6 +212,7 @@ export default {
             this.factoryData[0].children.push(formData);
           } else { // 新增工程
             formData.treeData = JSON.parse(JSON.stringify(treeTempleteData));
+            formData.parentId = this.id;
             this.factoryData[0].children.forEach((group, i) => {
               this.id === group.id && group.children.push(formData);
             });
@@ -288,6 +289,7 @@ export default {
               this.$emit("factory-select", { // 向父组件传递事件及参数，id设置为null，树数据为空
                 level: 3,
                 id: group.children[0].id,
+                parentId: group.children[0].parentId,
                 treeData: group.children[0].treeData
               });
               bool = false;
