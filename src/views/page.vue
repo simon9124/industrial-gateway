@@ -45,7 +45,12 @@
 
         <!--右 · 表-->
         <el-container class="right-panel is-vertical">
-          <Group v-if="level===1"></Group>
+          <Group v-if="level===1"
+                 ref="group"
+                 :factory-data="factoryData"
+                 :service-data="serviceData"
+                 :pass-list="passList"
+                 :equipment-list="equipmentList"></Group>
           <Pass v-if="level===2"
                 :id="id"
                 :tree-data="treeData"
@@ -92,6 +97,7 @@ export default {
       passList: [], // 通道列表
       pluginList: [], // 插件列表
       equipmentList: [], // 设备列表
+      serviceData: {}, // 当前服务数据
       passTypeList: ["串口", "TCP客户端", "TCP服务端", "UDP", "虚拟端口"], // select - 通道类型
       sataList: ["COM01", "COM02", "COM03"], // 串口
       baudList: ["1200", "2400", "4800", "9600"], // 波特率
@@ -119,7 +125,10 @@ export default {
       this.factoryData = factoryData;
       this.factoryData[0].children.forEach(group => {
         group.children.forEach(factory => {
-          factory.selected && (this.treeData = factory.treeData);
+          if (factory.selected) {
+            this.serviceData = factory;
+            this.treeData = factory.treeData;
+          }
         });
       });
       this.pluginList = pluginList;
@@ -308,6 +317,9 @@ export default {
         });
       });
       // console.log(this.treeData);
+      this.$refs.group && this.$nextTick(() => {
+        this.$refs.group.getServiceData();
+      });
     },
     // 复制
     itemsCopy (multipleSelection) {
@@ -359,6 +371,10 @@ export default {
       // console.log(param);
       const { level, id } = param;
       if (level === 3) {
+        this.serviceData = param;
+        this.$nextTick(() => {
+          this.$refs.group.getServiceData();
+        });
         this.idFactory = id;
         this.treeData = param.treeData;
         if (this.treeData.length !== 0) { // 若树数据不为空
