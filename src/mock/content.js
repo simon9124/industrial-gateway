@@ -31,7 +31,7 @@ const passList = [
         }
       ]
     },
-    passType: "串口",
+    passType: "TCP客户端",
     sata: "COM01",
     baudRate: "9600",
     dataBits: "8",
@@ -39,6 +39,7 @@ const passList = [
     stopBits: "1",
     ip: "192.168.0.253",
     port: "50001",
+    bindingIp: "192.168.200.161",
     otherParams: {
       scanDelay: true,
       delayTime: 100,
@@ -93,13 +94,14 @@ const passList = [
       ]
     },
     passType: "虚拟端口",
-    sata: null,
-    baudRate: null,
-    dataBits: null,
-    checkBits: null,
-    stopBits: null,
-    ip: null,
-    port: null,
+    sata: "COM01",
+    baudRate: "9600",
+    dataBits: "8",
+    checkBits: "无校验",
+    stopBits: "1",
+    ip: "192.168.0.253",
+    port: "50001",
+    bindingIp: "192.168.200.161",
     otherParams: {
       scanDelay: true,
       delayTime: 100,
@@ -162,6 +164,7 @@ const passList = [
     stopBits: "1",
     ip: "192.168.0.253",
     port: "50001",
+    bindingIp: "192.168.200.161",
     otherParams: {
       scanDelay: false,
       delayTime: 100,
