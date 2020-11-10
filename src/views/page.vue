@@ -47,10 +47,17 @@
         <el-container class="right-panel is-vertical">
           <Group v-if="level===1"
                  ref="group"
+                 :service-id="serviceId"
                  :factory-data="factoryData"
                  :service-data="serviceData"
                  :pass-list="passList"
-                 :equipment-list="equipmentList"></Group>
+                 :equipment-list="equipmentList"
+                 :pass-type-list="passTypeList"
+                 :sata-list="sataList"
+                 :baud-list="baudList"
+                 :data-list="dataList"
+                 :check-list="checkList"
+                 :stop-list="stopList"></Group>
           <Pass v-if="level===2"
                 :id="id"
                 :tree-data="treeData"
@@ -61,7 +68,8 @@
                 :sata-list="sataList"
                 :baud-list="baudList"
                 :data-list="dataList"
-                :check-list="checkList"></Pass>
+                :check-list="checkList"
+                :stop-list="stopList"></Pass>
           <Equipment v-if="level===3"
                      :id="id"
                      :equipment-list="equipmentList"></Equipment>
@@ -98,6 +106,7 @@ export default {
       pluginList: [], // 插件列表
       equipmentList: [], // 设备列表
       serviceData: {}, // 当前服务数据
+      serviceId: "", // 当前服务的id
       passTypeList: ["串口", "TCP客户端", "TCP服务端", "UDP", "虚拟端口"], // select - 通道类型
       sataList: ["COM01", "COM02", "COM03"], // 串口
       baudList: ["1200", "2400", "4800", "9600"], // 波特率
@@ -127,6 +136,7 @@ export default {
         group.children.forEach(factory => {
           if (factory.selected) {
             this.serviceData = factory;
+            this.serviceId = this.serviceData.id;
             this.treeData = factory.treeData;
           }
         });
@@ -318,7 +328,7 @@ export default {
       });
       // console.log(this.treeData);
       this.$refs.group && this.$nextTick(() => {
-        this.$refs.group.getServiceData();
+        this.$refs.group.getServiceData(); // 更新服务table
       });
     },
     // 复制
@@ -372,9 +382,7 @@ export default {
       const { level, id } = param;
       if (level === 3) {
         this.serviceData = param;
-        this.$nextTick(() => {
-          this.$refs.group.getServiceData();
-        });
+        this.serviceId = this.serviceData.id;
         this.idFactory = id;
         this.treeData = param.treeData;
         if (this.treeData.length !== 0) { // 若树数据不为空
