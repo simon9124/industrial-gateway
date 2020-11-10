@@ -162,7 +162,8 @@
           </el-form-item>
         </el-col>
         <el-button v-if="formPass.passType==='TCP客户端'"
-                   style="margin-left:20px">需要绑定本地IP</el-button>
+                   style="margin-left:20px"
+                   @click="bindingIP">需要绑定本地IP</el-button>
       </el-row>
 
     </el-form>
@@ -335,7 +336,8 @@
               </el-form-item>
             </el-col>
             <el-button v-if="formPass.passType==='TCP客户端'"
-                       style="margin-left:20px">需要绑定本地IP</el-button>
+                       style="margin-left:20px"
+                       @click="bindingIP">需要绑定本地IP</el-button>
             <el-button v-if="formPass.passType==='TCP服务端'"
                        style="margin-left:20px">允许客户端接入列表</el-button>
           </el-row>
@@ -384,6 +386,12 @@
                    :form-pass="formPass"
                    :plugin-list="pluginList"
                    @plugin-click="pluginClick"></plugin-select>
+
+    <!-- dialog - 需绑定本地IP -->
+    <el-dialog title="IP地址框"
+               :visible.sync="bindingIPVisible">
+
+    </el-dialog>
 
   </div>
 </template>
@@ -449,7 +457,9 @@ export default {
     return {
       formPass: {}, // 表单数据
       activeName: "first", // tabs选中的标签
-      activeNames: ["1"] // 手风琴展开的标签
+      activeNames: ["1"], // 手风琴展开的标签
+      /* dialog */
+      bindingIPVisible: false // IP地址框 - 显示与否
     };
   },
   created () {
@@ -477,6 +487,10 @@ export default {
       const { level } = param;
       level === 2 && (this.formPass.plugin = param);
       console.log(this.formPass);
+    },
+    // 点击按钮 - 需绑定本地IP
+    bindingIP () {
+      this.bindingIPVisible = true;
     }
   },
   watch: {
