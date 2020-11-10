@@ -482,7 +482,7 @@ export default {
   watch: {
     id (val) {
       this.getData();
-      console.log(this.formPass);
+      // console.log(this.formPass);
     }
   }
 };
