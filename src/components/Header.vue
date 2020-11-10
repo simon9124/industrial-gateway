@@ -517,6 +517,7 @@ export default {
           stopBits: "1",
           ip: "192.168.0.253",
           port: "50001",
+          bindingIp: "192.168.200.161",
           otherParams: {
             scanDelay: false,
             delayTime: 100,
