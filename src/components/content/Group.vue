@@ -55,22 +55,37 @@
               :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
               :max-height="tableMaxHeight">
       <el-table-column label="序号"
-                       min-width="140">
+                       min-width="100">
         <template slot-scope="scope">
           {{scope.row.isPass?'通道':'设备'}}[{{scope.row.index}}]
         </template>
       </el-table-column>
       <el-table-column prop="name"
                        label="名称(英文)"
-                       min-width="140">
+                       min-width="120">
       </el-table-column>
       <el-table-column prop="describe"
                        label="描述(中文)"
-                       min-width="180">
+                       min-width="160">
       </el-table-column>
-      <el-table-column prop="params"
-                       label="参数"
-                       min-width="480">
+      <el-table-column label="参数"
+                       min-width="520">
+        <template slot-scope="scope">
+          <!-- 通道 -->
+          <div v-if="scope.row.isPass">
+            {{scope.row.params.pluginName}};
+            {{scope.row.params.passType}},
+            {{scope.row.params.passType==='串口'?scope.row.params.sata:scope.row.params.ip}},
+            {{scope.row.params.passType==='串口'?scope.row.params.baudRate:scope.row.params.port}},
+            {{scope.row.params.passType==='串口'?scope.row.params.dataBits:scope.row.params.bindingIp}},
+            {{scope.row.params.passType==='串口'?scope.row.params.checkBits:''}},
+            {{scope.row.params.passType==='串口'?scope.row.params.stopBits:''}};
+          </div>
+          <!-- 设备 -->
+          <div v-else>
+            temp=;
+          </div>
+        </template>
       </el-table-column>
     </el-table>
 
@@ -93,6 +108,10 @@ export default {
       type: Object,
       default: () => { }
     },
+    // 当前服务id
+    serviceId: {
+      type: String
+    },
     // 通道列表
     passList: {
       type: Array,
@@ -102,6 +121,30 @@ export default {
     equipmentList: {
       type: Array,
       default: () => []
+    },
+    // 通道类型
+    passTypeList: {
+      type: Array
+    },
+    // 串口
+    sataList: {
+      type: Array
+    },
+    // 波特率
+    baudList: {
+      type: Array
+    },
+    // 数据位
+    dataList: {
+      type: Array
+    },
+    // 校验位
+    checkList: {
+      type: Array
+    },
+    // 停止位
+    stopList: {
+      type: Array
     }
   },
   data () {
@@ -181,8 +224,22 @@ export default {
                   /* pass */
                   this.passList.forEach(_pass => {
                     if (pass.id === _pass.id) {
+                      // console.log(pass);
+                      // console.log(_pass);
                       pass.name = _pass.passName;
                       pass.describe = _pass.passDescribe;
+                      pass.params = {
+                        pluginName: _pass.plugin.name,
+                        passType: _pass.passType,
+                        sata: this.sataList.findIndex(val => val === _pass.sata),
+                        baudRate: this.baudList.findIndex(val => val === _pass.baudRate),
+                        dataBits: this.dataList.findIndex(val => val === _pass.dataBits),
+                        checkBits: this.checkList.findIndex(val => val === _pass.checkBits),
+                        stopBits: this.stopList.findIndex(val => val === _pass.stopBits),
+                        ip: _pass.ip,
+                        port: _pass.port,
+                        bindingIp: _pass.bindingIp
+                      };
                     }
                   });
                   pass.index = (++passNum).toString();
@@ -203,11 +260,16 @@ export default {
                 });
               });
               this.tableGroup = factoryCopy.treeData[0].children.concat(factoryCopy.treeData[1].children);
-              console.log(this.tableGroup);
+              // console.log(this.tableGroup);
             }
           });
         }
       });
+    }
+  },
+  watch: {
+    serviceId (val) {
+      this.getServiceData();
     }
   }
 };
