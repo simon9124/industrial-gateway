@@ -388,8 +388,24 @@
                    @plugin-click="pluginClick"></plugin-select>
 
     <!-- dialog - 需绑定本地IP -->
-    <el-dialog title="IP地址框"
+    <el-dialog class="bind-dialog"
+               title="IP地址框"
                :visible.sync="bindingIPVisible">
+      <el-row>
+        本地IP：
+        <el-input v-model="formPass.bindingIp"
+                  style="width:300px"></el-input>
+      </el-row>
+      <el-row style="margin-top:20px">
+        注：本地IP，主要用来网卡绑定，以方便使用固定路由，为空的话，系统自己匹配路由。
+      </el-row>
+
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="bindingIPVisible = false;formPass.bindingIp = bindingIpOrg">取 消</el-button>
+        <el-button @click="bindingIPVisible = false"
+                   type="primary">确 定</el-button>
+      </div>
 
     </el-dialog>
 
@@ -491,6 +507,7 @@ export default {
     // 点击按钮 - 需绑定本地IP
     bindingIP () {
       this.bindingIPVisible = true;
+      this.bindingIpOrg = JSON.parse(JSON.stringify(this.formPass.bindingIp)); // 深拷贝，取消时还原数据用
     }
   },
   watch: {

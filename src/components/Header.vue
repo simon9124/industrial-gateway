@@ -12,24 +12,21 @@
                  :disabled="level===1"
                  @click="itemDelete">删除</el-button>
       <el-button size="small"
-                 icon="el-icon-caret-right"
-                 type="success">本地运行</el-button>
+                 icon="el-icon-caret-right">本地运行</el-button>
       <el-button size="small"
                  icon="el-icon-suitcase"
-                 type="success"
                  @click="factoryManage">工程管理</el-button>
       <el-button size="small"
-                 icon="el-icon-data-board"
-                 type="success">远程监视</el-button>
+                 icon="el-icon-data-board">远程监视</el-button>
       <el-button size="small"
                  icon="el-icon-download"
                  type="info">上传下载</el-button>
       <el-button size="small"
                  icon="el-icon-check"
-                 type="primary">保存</el-button>
-      <el-button size="small"
+                 type="success">保存</el-button>
+      <!-- <el-button size="small"
                  icon="el-icon-refresh"
-                 type="warning">更新</el-button>
+                 type="warning">更新</el-button> -->
     </div>
 
     <!-- dialog - 配置 -->
@@ -200,7 +197,8 @@
             </el-form-item>
           </el-col>
           <el-button v-if="formPass.passType==='TCP客户端'"
-                     style="margin-left:20px">需要绑定本地IP</el-button>
+                     style="margin-left:20px"
+                     @click="bindingIP">需要绑定本地IP</el-button>
         </el-row>
 
         <el-collapse v-if="id&&id.slice(0,1)==='2'"
@@ -370,6 +368,28 @@
                     :equipment-list="equipmentList"
                     @factory-select="factorySelect"></factory-manage>
 
+    <!-- dialog - 需绑定本地IP -->
+    <el-dialog class="bind-dialog"
+               title="IP地址框"
+               :visible.sync="bindingIPVisible">
+      <el-row>
+        本地IP：
+        <el-input v-model="formPass.bindingIp"
+                  style="width:300px"></el-input>
+      </el-row>
+      <el-row style="margin-top:20px">
+        注：本地IP，主要用来网卡绑定，以方便使用固定路由，为空的话，系统自己匹配路由。
+      </el-row>
+
+      <div slot="footer"
+           class="dialog-footer">
+        <el-button @click="bindingIPVisible = false;formPass.bindingIp = bindingIpOrg">取 消</el-button>
+        <el-button @click="bindingIPVisible = false"
+                   type="primary">确 定</el-button>
+      </div>
+
+    </el-dialog>
+
   </div>
 </template>
 
@@ -454,6 +474,7 @@ export default {
       dialogCopyVisible: false, // 复制 - 弹框名称
       dialogCopyData: [], // 复制 - 表格数据
       multipleSelection: [], // 复制 - 选中的数据
+      bindingIPVisible: false, // IP地址框 - 是否可见
       /* 通道 */
       formPass: { // 表单数据
         otherParams: {},
@@ -642,6 +663,11 @@ export default {
     // 回调：工程管理选择工程
     factorySelect (param) {
       this.$emit("factory-select", param);
+    },
+    // 点击按钮 - 需绑定本地IP
+    bindingIP () {
+      this.bindingIPVisible = true;
+      this.bindingIpOrg = JSON.parse(JSON.stringify(this.formPass.bindingIp)); // 深拷贝，取消时还原数据用
     }
   }
 };
@@ -730,6 +756,12 @@ export default {
   .factory-operate {
     .el-dialog {
       width: 400px;
+    }
+  }
+  // dialog - 绑定本地ip
+  .bind-dialog {
+    .el-dialog {
+      width: 450px;
     }
   }
 }
