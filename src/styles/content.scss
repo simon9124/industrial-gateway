@@ -117,6 +117,13 @@
     }
   }
 
+  // dialog - 绑定本地ip
+  .bind-dialog {
+    .el-dialog {
+      width: 450px;
+    }
+  }
+
   // table - 数据标签
   .table-component {
     .excel-upload-input {
