@@ -31,7 +31,7 @@
 
   .el-table {
     &__expand-icon {
-      display: none;
+      display: none !important;
     }
 
     &__placeholder {
