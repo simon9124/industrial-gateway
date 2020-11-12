@@ -40,7 +40,8 @@
           </el-row>
 
         </el-form>
-        <el-collapse v-model="activeNames">
+        <el-collapse v-model="activeNames"
+                     accordion>
           <el-collapse-item title="基本参数"
                             name="1">
             <div>MODBUS设备地址：{{formEquipment.MODBUSAdd}}</div>
@@ -102,7 +103,7 @@ export default {
     return {
       formEquipment: {}, // 表单数据
       activeName: "first", // tabs选中的标签
-      activeNames: ["1", "2", "3"] // 手风琴展开的标签
+      activeNames: ["1"] // 手风琴展开的标签
     };
   },
   created () {

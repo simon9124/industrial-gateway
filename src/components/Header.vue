@@ -248,7 +248,8 @@
           </el-col>
         </el-row>
 
-        <el-collapse v-model="activeNames">
+        <el-collapse v-model="activeNames"
+                     accordion>
           <el-collapse-item title="基本参数"
                             name="1">
             <div class="collapse-content">MODBUS设备地址：
@@ -485,7 +486,7 @@ export default {
       formEquipment: { // 表单数据
         otherParams: {}
       },
-      activeNames: ["1", "2", "3"] // 手风琴展开的标签
+      activeNames: ["1"] // 手风琴展开的标签
     };
   },
   watch: {
@@ -704,7 +705,7 @@ export default {
   // 参数dialog
   .params-dialog {
     .el-dialog {
-      min-width: 920px;
+      min-width: 1000px;
     }
     .params-dialog-row:not(:last-child) {
       margin-bottom: 10px;
