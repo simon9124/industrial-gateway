@@ -90,6 +90,11 @@ import EquipmentTags from "@/components/table/equipmentTags"; // 组件：数据
 export default {
   components: { EquipmentParams, EquipmentTags },
   props: {
+    // 树数据
+    treeData: {
+      type: Array,
+      default: () => []
+    },
     // 被选择的id
     id: {
       type: String
@@ -113,13 +118,34 @@ export default {
     // 获取数据
     getData () {
       this.equipmentList.forEach((equipment, i) => {
-        equipment.id === this.id && (this.formEquipment = this.equipmentList[i]);
+        equipment.id === this.id &&
+          (this.formEquipment = JSON.parse(JSON.stringify(this.equipmentList[i])));
       });
       this.activeName = "first"; // tab重置
     },
     // 点击按钮 - 其他参数 - 调用子组件事件
     setParams () {
       this.$refs.equipmentParams.setParams();
+    },
+    // 保存设备
+    equipmentSubmit () {
+      this.equipmentList.forEach((equipment, i) => { // 更新设备列表
+        equipment.id === this.id &&
+          this.$set(this.equipmentList, i, this.formEquipment);
+      });
+      this.treeData[0].children.forEach(pass => { // 更新树
+        pass.children.forEach((equipment, i) => {
+          equipment.id === this.id &&
+            this.$set(equipment, "text",
+              `${this.formEquipment.equipmentName}[${this.formEquipment.equipmentDescribe}]`
+            );
+        });
+      });
+      this.$message({
+        message: "保存成功",
+        type: "success",
+        duration: "1000"
+      });
     }
   },
   watch: {

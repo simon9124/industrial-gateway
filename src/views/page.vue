@@ -22,6 +22,7 @@
                 @item-add="itemAdd"
                 @items-copy="itemsCopy"
                 @item-delete="itemHandle('del')"
+                @item-submit="itemSubmit"
                 @factory-select="factorySelect"></Header>
       </el-header>
 
@@ -59,6 +60,7 @@
                  :check-list="checkList"
                  :stop-list="stopList"></Group>
           <Pass v-if="level===2"
+                ref="pass"
                 :id="id"
                 :tree-data="treeData"
                 :pass-list="passList"
@@ -71,7 +73,9 @@
                 :check-list="checkList"
                 :stop-list="stopList"></Pass>
           <Equipment v-if="level===3"
+                     ref="equipment"
                      :id="id"
+                     :tree-data="treeData"
                      :equipment-list="equipmentList"></Equipment>
         </el-container>
 
@@ -399,6 +403,11 @@ export default {
         }
         this.refreshData();
       }
+    },
+    // 保存
+    itemSubmit (level) {
+      level === 2 && this.$refs.pass.passSubmit();
+      level === 3 && this.$refs.equipment.equipmentSubmit();
     }
   }
 };

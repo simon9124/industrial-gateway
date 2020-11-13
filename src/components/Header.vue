@@ -23,7 +23,9 @@
                  type="info">上传下载</el-button>
       <el-button size="small"
                  icon="el-icon-check"
-                 type="success">保存</el-button>
+                 type="success"
+                 :disabled="level===1"
+                 @click="itemSubmit">保存</el-button>
       <!-- <el-button size="small"
                  icon="el-icon-refresh"
                  type="warning">更新</el-button> -->
@@ -669,6 +671,10 @@ export default {
     bindingIP () {
       this.bindingIPVisible = true;
       this.bindingIpOrg = JSON.parse(JSON.stringify(this.formPass.bindingIp)); // 深拷贝，取消时还原数据用
+    },
+    // 回调 - 保存
+    itemSubmit () {
+      this.$emit("item-submit", this.level);
     }
   }
 };

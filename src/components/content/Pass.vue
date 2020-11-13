@@ -485,7 +485,8 @@ export default {
     // 获取数据
     getData () {
       this.passList.forEach((pass, i) => {
-        pass.id === this.id && (this.formPass = this.passList[i]);
+        pass.id === this.id &&
+          (this.formPass = JSON.parse(JSON.stringify(this.passList[i])));
       });
       this.activeName = "first"; // tab重置
     },
@@ -502,12 +503,32 @@ export default {
       // console.log(param);
       const { level } = param;
       level === 2 && (this.formPass.plugin = param);
-      console.log(this.formPass);
+      // console.log(this.formPass);
     },
     // 点击按钮 - 需绑定本地IP
     bindingIP () {
       this.bindingIPVisible = true;
       this.bindingIpOrg = JSON.parse(JSON.stringify(this.formPass.bindingIp)); // 深拷贝，取消时还原数据用
+    },
+    // 保存通道
+    passSubmit () {
+      this.passList.forEach((pass, i) => { // 更新通道列表
+        pass.id === this.id &&
+          this.$set(this.passList, i, this.formPass);
+      });
+      this.treeData.forEach(service => { // 更新树
+        service.children.forEach((pass, i) => {
+          pass.id === this.id &&
+            this.$set(pass, "text",
+              `${this.formPass.passName}[${this.formPass.passDescribe}]`
+            );
+        });
+      });
+      this.$message({
+        message: "保存成功",
+        type: "success",
+        duration: "1000"
+      });
     }
   },
   watch: {
