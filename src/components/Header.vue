@@ -371,6 +371,8 @@
                     :equipment-list="equipmentList"
                     @factory-select="factorySelect"></factory-manage>
 
+    <!-- dialog - 远程监视 -->
+
     <!-- dialog - 需绑定本地IP -->
     <el-dialog class="bind-dialog"
                title="IP地址框"
