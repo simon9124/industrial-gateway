@@ -17,7 +17,8 @@
                  icon="el-icon-suitcase"
                  @click="factoryManage">工程管理</el-button>
       <el-button size="small"
-                 icon="el-icon-data-board">远程监视</el-button>
+                 icon="el-icon-data-board"
+                 @click="remoteMonitor">远程监视</el-button>
       <el-button size="small"
                  icon="el-icon-download"
                  type="info">上传下载</el-button>
@@ -372,6 +373,8 @@
                     @factory-select="factorySelect"></factory-manage>
 
     <!-- dialog - 远程监视 -->
+    <remote-monitor ref="remoteMonitor"
+                    :tree-data="treeData"></remote-monitor>
 
     <!-- dialog - 需绑定本地IP -->
     <el-dialog class="bind-dialog"
@@ -403,9 +406,10 @@ import PluginSelect from "@/components/dialog/pluginSelect"; // 组件：选择�
 import PassParams from "@/components/dialog/passParams"; // 组件：其他参数 - 通道
 import EquipmentParams from "@/components/dialog/equipmentParams"; // 组件：其他参数 - 通道
 import FactoryManage from "@/components/dialog/factoryManage"; // 组件：工程管理
+import RemoteMonitor from "@/components/dialog/remoteMonitor"; // 组件：远程监视
 
 export default {
-  components: { PluginSelect, PassParams, EquipmentParams, FactoryManage },
+  components: { PluginSelect, PassParams, EquipmentParams, FactoryManage, RemoteMonitor },
   props: {
     // 树数据
     treeData: {
@@ -669,6 +673,10 @@ export default {
     factorySelect (param) {
       this.$emit("factory-select", param);
     },
+    // 点击按钮 - 远程监视 - 调用子组件事件
+    remoteMonitor () {
+      this.$refs.remoteMonitor.ipSelect();
+    },
     // 点击按钮 - 需绑定本地IP
     bindingIP () {
       this.bindingIPVisible = true;
@@ -765,6 +773,21 @@ export default {
   .factory-operate {
     .el-dialog {
       width: 400px;
+    }
+  }
+  // ip选择dialog
+  .ip-select {
+    .el-dialog {
+      min-width: 1000px;
+      min-height: 500px;
+      // .btns {
+      //   margin-bottom: 20px;
+      // }
+      .el-table {
+        tr {
+          cursor: pointer;
+        }
+      }
     }
   }
   // dialog - 绑定本地ip
