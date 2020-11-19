@@ -374,6 +374,8 @@
 
     <!-- dialog - 远程监视 -->
     <remote-monitor ref="remoteMonitor"
+                    :id-factory="idFactory"
+                    :factory-data="factoryData"
                     :tree-data="treeData"></remote-monitor>
 
     <!-- dialog - 需绑定本地IP -->
@@ -786,6 +788,23 @@ export default {
       .el-table {
         tr {
           cursor: pointer;
+        }
+      }
+    }
+  }
+  // 监视dialog
+  .monitor-dialog {
+    .el-dialog {
+      width: 80%;
+      min-width: 1200px;
+      .el-form {
+        margin: 10px 20px;
+
+        .el-table {
+          min-height: 500px;
+          .cell {
+            padding: 0 5px;
+          }
         }
       }
     }
