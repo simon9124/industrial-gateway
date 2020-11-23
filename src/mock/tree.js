@@ -106,6 +106,7 @@ const factoryData = [
           {
             text: "采集器工程1",
             describe: "第一工程",
+            creatTime: "2020-06-20 18:25:20",
             icon: "fa fa-edit",
             id: "factory-1",
             selected: true,
@@ -116,6 +117,7 @@ const factoryData = [
           {
             text: "采集器工程2",
             describe: "第二工程",
+            creatTime: "2020-06-20 18:25:20",
             icon: "fa fa-edit",
             id: "factory-2",
             level: 3,

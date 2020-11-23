@@ -1,5 +1,21 @@
 import { parseTime } from "@/utils"; // function - 格式化时间
 
+// IP列表
+const IPList = [
+  {
+    address: "172.15.19.109",
+    system: "",
+    productName: "",
+    factoryDescribe: "",
+    kernelEdition: "",
+    faultTimes: 0,
+    createTime: "",
+    status: "离线",
+    id: "1"
+  }
+];
+
+// 表格数据 - 系统
 const systemDic = [
   {
     name: "_kernal_version",
@@ -147,6 +163,7 @@ const systemDic = [
   }
 ];
 
+// 表格数据 - 通道
 const passDic = [
   {
     name: "_scan_count",
@@ -220,6 +237,7 @@ const passDic = [
   }
 ];
 
+// 表格数据 - 设备
 const equipmentDic = [
   {
     name: "_send_package",
@@ -247,4 +265,4 @@ const equipmentDic = [
   }
 ];
 
-export { systemDic, passDic, equipmentDic };
+export { IPList, systemDic, passDic, equipmentDic };
