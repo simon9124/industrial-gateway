@@ -124,13 +124,14 @@ export default {
       formGroup: {
         text: "",
         describe: "",
-        creatTime: ""
+        creatTime: parseTime(new Date())
       }, // 表单数据
       formGroupOrg: {}, // 表单数据 - 原始
       /* 工程 */
       formFactory: { // 表单数据
         text: "",
-        describe: ""
+        describe: "",
+        creatTime: parseTime(new Date())
       },
       formFactoryOrg: {}, // 表单数据 - 原始
       /* loading */
@@ -178,7 +179,6 @@ export default {
       this.$nextTick(() => {
         this.level === 1 && this.$refs.formGroup.resetFields();
         this.level === 2 && this.$refs.formFactory.resetFields();
-        this.formGroup.creatTime = parseTime(new Date());
       });
     },
     // 修改
