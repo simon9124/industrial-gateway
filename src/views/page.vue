@@ -142,6 +142,7 @@ export default {
             this.serviceData = factory;
             this.serviceId = this.serviceData.id;
             this.treeData = factory.treeData;
+            this.id = this.treeData[0].id;
           }
         });
       });
@@ -269,7 +270,7 @@ export default {
     refreshSelect () {
       this.$nextTick(() => {
         this.level = 1;
-        this.id = "1";
+        this.id = this.treeData[0].id;
         this.$set(this.treeData[0], "selected", true);
       });
     },
