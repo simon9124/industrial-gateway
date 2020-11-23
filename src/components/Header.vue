@@ -12,7 +12,8 @@
                  :disabled="level===1"
                  @click="itemDelete">删除</el-button>
       <el-button size="small"
-                 icon="el-icon-caret-right">本地运行</el-button>
+                 icon="el-icon-caret-right"
+                 @click="localOperate">本地运行</el-button>
       <el-button size="small"
                  icon="el-icon-suitcase"
                  @click="factoryManage">工程管理</el-button>
@@ -647,6 +648,14 @@ export default {
     // 回调：删除 通道/设备
     itemDelete () {
       this.$emit("item-delete", this.formPass);
+    },
+    // 点击按钮 - 本地运行 - 调用子组件事件
+    localOperate () {
+      this.$confirm("执行该操作，WINDOWS系统下会运行采集程序，确定运行吗？", "提示", {
+        type: "warning"
+      }).then(() => {
+        this.$refs.remoteMonitor.localOperate();
+      }).catch(() => { });
     },
     // 点击按钮 - 其他参数[通道] - 调用子组件事件
     setParamsPass () {
