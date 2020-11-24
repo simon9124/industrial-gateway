@@ -10,7 +10,8 @@
       <el-row style="margin-bottom:20px">
         <el-button type="warning"
                    size="small"
-                   plain>搜索设备</el-button>
+                   plain
+                   @click="searchEquipment">搜索设备</el-button>
         <el-button type="primary"
                    size="small"
                    plain
@@ -21,7 +22,8 @@
                    @click="deleteIPs">删除</el-button>
         <el-button type="success"
                    size="small"
-                   plain>更新状态</el-button>
+                   plain
+                   @click="updateStatus">更新状态</el-button>
       </el-row>
 
       <el-table :data="IPList"
@@ -32,9 +34,15 @@
         <el-table-column type="selection"
                          width="30">
         </el-table-column>
+        <el-table-column label=""
+                         width="30">
+          <template slot-scope="scope">
+            <i :class="scope.row.operate?'el-icon-check':'el-icon-close'"></i>
+          </template>
+        </el-table-column>
         <el-table-column type="index"
                          label="序号"
-                         min-width="55">
+                         width="50">
         </el-table-column>
         <el-table-column prop="address"
                          label="IP地址"
@@ -201,7 +209,8 @@ export default {
   },
   data () {
     return {
-      operate: false, // 是否已运行
+      operate: false, // 是否已“本地运行”
+      ipOperate: false, // 当前IP地址是否已运行
       /* ip */
       dialogVisibleIP: false, // 是否可见 - ip选择
       dialogVisibleIPInsert: false, // 是否可见 - ip维护
@@ -215,7 +224,8 @@ export default {
         kernelEdition: "",
         faultTimes: null,
         createTime: "",
-        status: "离线"
+        status: "离线",
+        operate: false
       },
       /* monitor */
       dialogVisibleMonitor: false, // 是否可见 - 监视左数右表
@@ -230,31 +240,18 @@ export default {
     };
   },
   created () {
-    this.getTreeData();
     const screenHeight = document.documentElement.clientHeight;
     this.tableMaxHeight = screenHeight - 54 - 10 * 2 - 10 * 2 - screenHeight * 0.20;
   },
   methods: {
-    // 渲染左侧树
-    getTreeData () {
-      const treeData = JSON.parse(JSON.stringify(this.treeData)); // 深拷贝
-      this.monitorTree = [
-        {
-          text: "系统",
-          icon: "fa fa-folder",
-          id: "root",
-          level: 0,
-          selected: true,
-          opened: true,
-          children: this.operate ? treeData : treeTempleteData
-        }
-      ];
-      this.handleRecursion(this.monitorTree); // 左侧树数据递归处理
-    },
     // ip选择框 - 弹出
     ipSelect () {
       this.dialogVisibleIP = true;
       this.IPList = IPList;
+      this.refreshIPTable(); // ip表格数据处理
+    },
+    // ip选择框 - 表格数据处理
+    refreshIPTable () {
       if (this.operate) {
         this.$set(this.IPList[0], "system", "windows");
         this.$set(this.IPList[0], "productName", "本地运行");
@@ -269,6 +266,7 @@ export default {
           });
         });
         this.$set(this.IPList[0], "status", "在线");
+        this.$set(this.IPList[0], "operate", true);
       }
     },
     // ip选择框 - 获取选中的数据
@@ -321,21 +319,65 @@ export default {
     localOperate () {
       this.operate = true;
     },
+    // ip选择框 - 搜索设备
+    searchEquipment () {
+      this.refreshIPTable(); // ip表格数据处理
+    },
+    // ip选择框 - 更新状态
+    updateStatus () {
+      this.refreshIPTable(); // ip表格数据处理
+    },
     // 监视数据框 - 弹出
     remoteMonitor (row) {
-      // console.log(row);
       this.handle = 0;
+      this.ipOperate = row.operate;
       this.dialogTitleMonitor = row.address;
       this.dialogVisibleMonitor = true;
+      this.$nextTick(() => {
+        this.getTreeData(); // 渲染左侧树
+        this.getTableData(this.monitorTree[0].tableData); // 渲染右侧表格
+      });
+    },
+    // 监视数据框 - 渲染左侧树
+    getTreeData () {
+      const treeData = JSON.parse(JSON.stringify(this.treeData)); // 深拷贝
+      this.monitorTree = [
+        {
+          text: "系统",
+          icon: "fa fa-folder",
+          id: "root",
+          level: 0,
+          selected: true,
+          opened: true,
+          children: this.operate && this.ipOperate ? treeData : treeTempleteData
+        }
+      ];
       this.handleRecursion(this.monitorTree); // 左侧树数据递归处理
-      this.monitorTable = this.operate ? this.monitorTree[0].tableData : []; // 渲染表格
-      this.refreshTableData(); // 表格数据处理
+    },
+    // 监视数据框 - 渲染右侧表格
+    getTableData (data) {
+      this.monitorTable = this.operate && this.ipOperate ? data : []; // 渲染表格
+      this.monitorTable.forEach((item, i) => { // 表格数据处理
+        this.$set(item, "curTime", parseTime(new Date()));
+        this.$set(item, "qualityStamp", "good");
+        this.$set(item, "changeTimes", Math.floor(Math.random() * (1 - 101) + 101));
+        this.$set(item, "direction", "只读");
+        item.name === "_project_name" && this.factoryData[0].children.forEach(group => {
+          group.children.forEach(factory => {
+            factory.id === this.idFactory && this.$set(item, "curValue", factory.text);
+          });
+        });
+        item.name === "_project_create_time" && this.factoryData[0].children.forEach(group => {
+          group.children.forEach(factory => {
+            factory.id === this.idFactory && this.$set(item, "curValue", factory.creatTime);
+          });
+        });
+      });
     },
     // 监视数据框 - 点击左侧树节点
     itemClick (param) {
       console.log(param);
-      this.monitorTable = this.operate ? param.tableData || [] : [];
-      this.refreshTableData();
+      this.getTableData(param.tableData); // 渲染右侧表格
     },
     // 监视数据框 - 左侧树数据处理 - 递归函数
     handleRecursion (recursionData) {
@@ -364,34 +406,8 @@ export default {
         this.$set(_item, "handle", this.handle);
         this.handle++;
       });
-    },
-    // 监视数据框 - 表格数据处理
-    refreshTableData () {
-      this.monitorTable.forEach((item, i) => {
-        this.$set(item, "curTime", parseTime(new Date()));
-        this.$set(item, "qualityStamp", "good");
-        this.$set(item, "changeTimes", Math.floor(Math.random() * (1 - 101) + 101));
-        this.$set(item, "direction", "只读");
-        item.name === "_project_name" && this.factoryData[0].children.forEach(group => {
-          group.children.forEach(factory => {
-            factory.id === this.idFactory && this.$set(item, "curValue", factory.text);
-          });
-        });
-        item.name === "_project_create_time" && this.factoryData[0].children.forEach(group => {
-          group.children.forEach(factory => {
-            factory.id === this.idFactory && this.$set(item, "curValue", factory.creatTime);
-          });
-        });
-      });
     }
-  },
-  watch: {
-    idFactory () {
-      this.getTreeData();
-    },
-    operate (val) {
-      val && this.getTreeData();
-    }
+
   }
 };
 </script>
