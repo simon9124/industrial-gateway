@@ -38,8 +38,8 @@
     <v-jstree v-else
               :data="data"
               :collapse="collapse"
-              @item-click="itemClick"
-              @item-toggle="itemClick"></v-jstree>
+              @item-click="itemClick"></v-jstree>
+    <!-- @item-toggle="itemClick" -->
 
     <!--右键菜单-->
     <context-menu id="ctx"

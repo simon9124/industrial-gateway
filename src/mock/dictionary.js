@@ -11,7 +11,8 @@ const IPList = [
     faultTimes: 0,
     createTime: "",
     status: "离线",
-    id: "1"
+    id: "1",
+    operate: false
   }
 ];
 
