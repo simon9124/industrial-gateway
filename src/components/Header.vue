@@ -791,12 +791,17 @@ export default {
     .el-dialog {
       min-width: 1000px;
       min-height: 500px;
-      // .btns {
-      //   margin-bottom: 20px;
-      // }
       .el-table {
         tr {
           cursor: pointer;
+          .el-icon-check {
+            color: #67c23a;
+            border: 1px solid #67c23a;
+          }
+          .el-icon-close {
+            color: #f56c6c;
+            border: 1px solid #f56c6c;
+          }
         }
       }
     }
