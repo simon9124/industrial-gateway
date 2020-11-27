@@ -4,18 +4,20 @@
     <!-- 采集服务 -->
     <el-form v-if="id.slice(0,1)==='1'"
              :model="formPass"
+             ref="formPass"
+             :rules="formPassRule"
              label-position="left">
 
       <el-row>
         <el-col style="width:420px">
-          <el-form-item label-width="95px"
+          <el-form-item label-width="105px"
                         label="名称(英文)："
                         prop="passName">
             <el-input v-model="formPass.passName"></el-input>
           </el-form-item>
         </el-col>
         <el-col style="width:380px">
-          <el-form-item label-width="55px"
+          <el-form-item label-width="65px"
                         label="描述："
                         prop="passDescribe">
             <el-input v-model="formPass.passDescribe"></el-input>
@@ -178,18 +180,20 @@
           <i class="el-icon-setting"></i> 配置参数
         </span>
         <el-form :model="formPass"
+                 ref="formPass"
+                 :rules="formPassRule"
                  label-position="left">
 
           <el-row>
             <el-col style="width:420px">
-              <el-form-item label-width="95px"
+              <el-form-item label-width="105px"
                             label="名称(英文)："
                             prop="passName">
                 <el-input v-model="formPass.passName"></el-input>
               </el-form-item>
             </el-col>
             <el-col style="width:380px">
-              <el-form-item label-width="55px"
+              <el-form-item label-width="65px"
                             label="描述："
                             prop="passDescribe">
                 <el-input v-model="formPass.passDescribe"></el-input>
@@ -472,6 +476,14 @@ export default {
   data () {
     return {
       formPass: {}, // 表单数据
+      formPassRule: { // 表单验证
+        passName: [
+          { required: true, message: "请输入名称", trigger: "blur" }
+        ],
+        passDescribe: [
+          { required: true, message: "请输入描述", trigger: "blur" }
+        ]
+      },
       activeName: "first", // tabs选中的标签
       activeNames: ["1"], // 手风琴展开的标签
       /* dialog */
@@ -512,22 +524,26 @@ export default {
     },
     // 保存通道
     passSubmit () {
-      this.passList.forEach((pass, i) => { // 更新通道列表
-        pass.id === this.id &&
-          this.$set(this.passList, i, this.formPass);
-      });
-      this.treeData.forEach(service => { // 更新树
-        service.children.forEach((pass, i) => {
-          pass.id === this.id &&
-            this.$set(pass, "text",
-              `${this.formPass.passName}[${this.formPass.passDescribe}]`
-            );
-        });
-      });
-      this.$message({
-        message: "保存成功",
-        type: "success",
-        duration: "1000"
+      this.$refs.formPass.validate(valid => {
+        if (valid) {
+          this.passList.forEach((pass, i) => { // 更新通道列表
+            pass.id === this.id &&
+              this.$set(this.passList, i, this.formPass);
+          });
+          this.treeData.forEach(service => { // 更新树
+            service.children.forEach((pass, i) => {
+              pass.id === this.id &&
+                this.$set(pass, "text",
+                  `${this.formPass.passName}[${this.formPass.passDescribe}]`
+                );
+            });
+          });
+          this.$message({
+            message: "保存成功",
+            type: "success",
+            duration: "1000"
+          });
+        }
       });
     }
   },

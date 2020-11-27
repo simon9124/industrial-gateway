@@ -8,18 +8,20 @@
           <i class="el-icon-setting"></i> 配置参数
         </span>
         <el-form :model="formEquipment"
+                 ref="formEquipment"
+                 :rules="formEquipmentRule"
                  label-position="left">
 
           <el-row>
             <el-col style="width:420px">
-              <el-form-item label-width="95px"
+              <el-form-item label-width="105px"
                             label="名称(英文)："
                             prop="equipmentName">
                 <el-input v-model="formEquipment.equipmentName"></el-input>
               </el-form-item>
             </el-col>
             <el-col style="width:380px">
-              <el-form-item label-width="55px"
+              <el-form-item label-width="65px"
                             label="描述："
                             prop="equipmentDescribe">
                 <el-input v-model="formEquipment.equipmentDescribe"></el-input>
@@ -107,6 +109,14 @@ export default {
   data () {
     return {
       formEquipment: {}, // 表单数据
+      formEquipmentRule: { // 表单验证
+        equipmentName: [
+          { required: true, message: "请输入名称", trigger: "blur" }
+        ],
+        equipmentDescribe: [
+          { required: true, message: "请输入描述", trigger: "blur" }
+        ]
+      },
       activeName: "first", // tabs选中的标签
       activeNames: ["1"] // 手风琴展开的标签
     };
@@ -129,22 +139,26 @@ export default {
     },
     // 保存设备
     equipmentSubmit () {
-      this.equipmentList.forEach((equipment, i) => { // 更新设备列表
-        equipment.id === this.id &&
-          this.$set(this.equipmentList, i, this.formEquipment);
-      });
-      this.treeData[0].children.forEach(pass => { // 更新树
-        pass.children.forEach((equipment, i) => {
-          equipment.id === this.id &&
-            this.$set(equipment, "text",
-              `${this.formEquipment.equipmentName}[${this.formEquipment.equipmentDescribe}]`
-            );
-        });
-      });
-      this.$message({
-        message: "保存成功",
-        type: "success",
-        duration: "1000"
+      this.$refs.formEquipment.validate(valid => {
+        if (valid) {
+          this.equipmentList.forEach((equipment, i) => { // 更新设备列表
+            equipment.id === this.id &&
+              this.$set(this.equipmentList, i, this.formEquipment);
+          });
+          this.treeData[0].children.forEach(pass => { // 更新树
+            pass.children.forEach((equipment, i) => {
+              equipment.id === this.id &&
+                this.$set(equipment, "text",
+                  `${this.formEquipment.equipmentName}[${this.formEquipment.equipmentDescribe}]`
+                );
+            });
+          });
+          this.$message({
+            message: "保存成功",
+            type: "success",
+            duration: "1000"
+          });
+        }
       });
     }
   },

@@ -41,18 +41,20 @@
       <!-- 采集通道配置 -->
       <el-form v-if="level===1"
                :model="formPass"
+               ref="formPass"
+               :rules="formPassRule"
                label-position="left">
 
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item label-width="95px"
+            <el-form-item label-width="105px"
                           label="名称(英文)："
                           prop="passName">
               <el-input v-model="formPass.passName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label-width="55px"
+            <el-form-item label-width="65px"
                           label="描述："
                           prop="passDescribe">
               <el-input v-model="formPass.passDescribe"></el-input>
@@ -221,18 +223,20 @@
       <!-- 采集设备配置 -->
       <el-form v-if="level===2"
                :model="formEquipment"
+               ref="formEquipment"
+               :rules="formEquipmentRule"
                label-position="left">
 
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-form-item label-width="95px"
+            <el-form-item label-width="105px"
                           label="名称(英文)："
                           prop="equipmentName">
               <el-input v-model="formEquipment.equipmentName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label-width="55px"
+            <el-form-item label-width="65px"
                           label="描述："
                           prop="equipmentDescribe">
               <el-input v-model="formEquipment.equipmentDescribe"></el-input>
@@ -492,10 +496,26 @@ export default {
         otherParams: {},
         plugin: {}
       },
+      formPassRule: { // 表单验证
+        passName: [
+          { required: true, message: "请输入名称", trigger: "blur" }
+        ],
+        passDescribe: [
+          { required: true, message: "请输入描述", trigger: "blur" }
+        ]
+      },
       disposeActiveNames: ["1"], // 手风琴展开的标签
       /* 设备 */
       formEquipment: { // 表单数据
         otherParams: {}
+      },
+      formEquipmentRule: { // 表单验证
+        equipmentName: [
+          { required: true, message: "请输入名称", trigger: "blur" }
+        ],
+        equipmentDescribe: [
+          { required: true, message: "请输入描述", trigger: "blur" }
+        ]
       },
       activeNames: ["1"] // 手风琴展开的标签
     };
@@ -605,8 +625,12 @@ export default {
     },
     // 回调：新增 通道/设备
     itemAdd () {
-      this.$emit("item-add", this.level === 1 ? this.formPass : this.formEquipment);
-      this.dialogDisposeVisible = false;
+      this.level === 1 && this.$refs.formPass.validate(valid => {
+        valid && this.$emit("item-add", this.formPass);
+      });
+      this.level === 2 && this.$refs.formEquipment.validate(valid => {
+        valid && this.$emit("item-add", this.formEquipment);
+      });
     },
     // 复制
     copyItems () {
