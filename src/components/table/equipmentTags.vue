@@ -115,18 +115,19 @@
 
       <el-form ref="dialogForm"
                :model="formData"
+               :rules="formRule"
                label-position="left">
 
         <el-row :gutter="0">
           <el-col :span="9">
-            <el-form-item label-width="55px"
+            <el-form-item label-width="65px"
                           label="名称："
                           prop="name">
               <el-input v-model="formData.name"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="9">
-            <el-form-item label-width="55px"
+            <el-form-item label-width="65px"
                           label="描述："
                           prop="describe">
               <el-input v-model="formData.describe"></el-input>
@@ -166,7 +167,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="9">
-            <el-form-item label-width="145px"
+            <el-form-item label-width="155px"
                           label="采集周期（毫秒）："
                           prop="acquisitionCycle">
               <el-input v-model="formData.acquisitionCycle"></el-input>
@@ -327,6 +328,17 @@ export default {
         useBCD: false
       },
       formDataOrg: {}, // 表单数据 - 行内原始
+      formRule: { // 表单验证
+        name: [
+          { required: true, message: "请输入名称", trigger: "blur" }
+        ],
+        describe: [
+          { required: true, message: "请输入描述", trigger: "blur" }
+        ],
+        acquisitionCycle: [
+          { required: true, message: "请输入采集周期", trigger: "blur" }
+        ]
+      },
       directionList: ["只读", "只写", "读写"], // select - 读写方向
       registerTypeList: [ // select列表 - 寄存器类型
         {
@@ -423,6 +435,7 @@ export default {
       this.dialogVisible = true;
       this.dialogType = "edit";
       this.$nextTick(() => {
+        this.$refs.dialogForm.resetFields();
         this.dialogTitle = `IO数据标签-${this.dialogType === "insert" ? "新建" : "修改"}`;
         this.formDataOrg = row;
         this.formData = JSON.parse(JSON.stringify(row)); // 深拷贝，取消时还原数据用
@@ -435,49 +448,53 @@ export default {
     // 表单提交
     tagSubmit () {
       const formData = JSON.parse(JSON.stringify(this.formData));
-      this.submitLoading = true;
-      switch (this.dialogType) {
-        case "insert":
-          if (
-            this.dataTags.some(
-              tag => tag.name === this.formData.name
-            )
-          ) {
-            // 判断重复
-            this.$message.error("该标签已存在！");
-            this.submitLoading = false;
-          } else {
-            // 随机生成id
-            formData.id = Math.random()
-              .toString(36)
-              .substr(-10);
-            this.dataTags.push(JSON.parse(JSON.stringify(formData)));
-            this.refreshData();
-            this.submitLoading = false;
-            this.dialogVisible = false;
+      this.$refs.dialogForm.validate(valid => {
+        if (valid) {
+          this.submitLoading = true;
+          switch (this.dialogType) {
+            case "insert":
+              if (
+                this.dataTags.some(
+                  tag => tag.name === this.formData.name
+                )
+              ) {
+                // 判断重复
+                this.$message.error("该标签已存在！");
+                this.submitLoading = false;
+              } else {
+                // 随机生成id
+                formData.id = Math.random()
+                  .toString(36)
+                  .substr(-10);
+                this.dataTags.push(JSON.parse(JSON.stringify(formData)));
+                this.refreshData();
+                this.submitLoading = false;
+                this.dialogVisible = false;
+              }
+              break;
+            case "edit":
+              if (
+                this.dataTags.some(
+                  tag => tag.name === this.formData.name
+                ) &&
+                this.formData.name !== this.formDataOrg.name
+              ) {
+                // 判断重复
+                this.$message.error("该标签已存在！");
+                this.submitLoading = false;
+              } else {
+                this.$set(
+                  this.dataTags,
+                  this.formData.index - 1,
+                  JSON.parse(JSON.stringify(formData))
+                );
+                this.submitLoading = false;
+                this.dialogVisible = false;
+              }
+              break;
           }
-          break;
-        case "edit":
-          if (
-            this.dataTags.some(
-              tag => tag.name === this.formData.name
-            ) &&
-            this.formData.name !== this.formDataOrg.name
-          ) {
-            // 判断重复
-            this.$message.error("该标签已存在！");
-            this.submitLoading = false;
-          } else {
-            this.$set(
-              this.dataTags,
-              this.formData.index - 1,
-              JSON.parse(JSON.stringify(formData))
-            );
-            this.submitLoading = false;
-            this.dialogVisible = false;
-          }
-          break;
-      }
+        }
+      });
     },
     // 删除单个标签
     deleteTag (id) {
